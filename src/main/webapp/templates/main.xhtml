@@ -56,7 +56,12 @@
         <ui:define name="topLeftMenu">
             <ul id="main">
                 <li class="current_page_item" >
-                   <p:commandLink value="Home" action="/home.faces?faces-redirect=true" actionListener="#{stateController.clearState}" ajax="false"  style="margin-left: -300px;"/>
+                   <p:commandLink value="Showcase Home" action="/home.faces?faces-redirect=true" actionListener="#{stateController.clearState}" ajax="false"  style="margin-left: -300px;"/>
+                </li>
+                <li class="current_page_item">
+                <h:outputLink target="_blank" value="http://conventionsframework.org/">
+                    Conventions Home
+                </h:outputLink>  
                 </li>
             </ul>
         </ui:define>

@@ -8,11 +8,11 @@
 
 
        <factory>
-            <exception-handler-factory>com.jsf.conventions.util.ViewExpiredExceptionExceptionHandlerFactory</exception-handler-factory>
+            <exception-handler-factory>org.conventionsframework.util.ViewExpiredExceptionExceptionHandlerFactory</exception-handler-factory>
        </factory>
 	 
          <application>
-            <action-listener>com.jsf.conventions.exception.ConventionsActionListenerImpl</action-listener>
+            <action-listener>org.conventionsframework.exception.ConventionsActionListenerImpl</action-listener>
         </application>      
       
     <navigation-rule>
