@@ -5,7 +5,7 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.BaseMBean;
-import org.conventionsframework.event.LanguageChangeEvent;
+import org.conventionsframework.event.LocaleChangeEvent;
 import org.conventionsframework.model.AbstractBaseEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,16 +24,16 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 @ViewAccessScoped
 public class SimpleI18nMBean extends BaseMBean<AbstractBaseEntity> implements Serializable{
 
-    private String selectedLang;
+    private String selectedLocale;
 
     @PostConstruct
-    public void initLanguage() {
-        selectedLang = getResourceBundleProvider().getLanguage();
+    public void initLocale () {
+        selectedLocale = getResourceBundleProvider().getCurrentLocale();
     }
     
     
     @Inject 
-    private Event<LanguageChangeEvent> languageChangeEvent;
+    private Event<LocaleChangeEvent> localeChangeEvent;
     
     public String getSimpleHello(){
         return getResourceBundle().getString("simpleHello");
@@ -50,18 +50,18 @@ public class SimpleI18nMBean extends BaseMBean<AbstractBaseEntity> implements Se
     }
 
 
-    public String getSelectedLang() {
-        return selectedLang;
+    public String getSelectedLocale() {
+        return selectedLocale;
     }
 
-    public void setSelectedLang(String selectedLang) {
-        this.selectedLang = selectedLang;
+    public void setSelectedLocale(String selectedLocale) {
+        this.selectedLocale = selectedLocale;
     }
 
-    public void changeLanguage(){
-        if(selectedLang != null && !"".endsWith(selectedLang)){
-            languageChangeEvent.fire(new LanguageChangeEvent(selectedLang));
-//   OR     getResourceBundleProvider().setLanguage(selectedLang);
+    public void changeLocale(){
+        if(selectedLocale != null && !"".endsWith(selectedLocale)){
+            localeChangeEvent.fire(new LocaleChangeEvent(selectedLocale));
+//   OR     getResourceBundleProvider().setCurrentLocale(selectedLocale);
             
         }
     }

@@ -22,7 +22,7 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 @ViewAccessScoped
 public class PropertiesMBean implements Serializable{
 
-    @Inject @PropertyKey(key="key1",file="/com/conventions/showcase/showcase.properties")
+    @Inject @PropertyKey(key="key1",file="/org/conventionsframework/showcase/showcase.properties")
     private String key;
     
     @Inject @PropertyKey(key="key1",file="/otherProps.properties")
@@ -38,7 +38,7 @@ public class PropertiesMBean implements Serializable{
     private String otherKey2;
     
     //Injection of properties files is also allowed
-    @Inject @PropertyFile(file="/com/conventions/showcase/showcase.properties")
+    @Inject @PropertyFile(file="/org/conventionsframework/showcase/showcase.properties")
     private Properties propertyFile;
     
     private String keyTyped;

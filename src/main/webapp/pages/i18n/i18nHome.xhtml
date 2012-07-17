@@ -14,19 +14,19 @@
                 
                 <h:panelGrid columns="2">
                     <h:outputText value="Language:"/>
-                    <p:selectOneMenu value="#{simpleI18nMBean.selectedLang}" style="width:100px;text-align: left" >
+                    <p:selectOneMenu value="#{simpleI18nMBean.selectedLocale}" style="width:100px;text-align: left" >
                        <f:selectItem itemValue="#{null}" itemLabel="" />
                        <f:selectItem itemValue="en" itemLabel="English" />
                        <f:selectItem itemValue="pt" itemLabel="Português" />
-                       <p:ajax update="@form :leftMenu" listener="#{simpleI18nMBean.changeLanguage}"/>
+                       <p:ajax update="@form :leftMenu" listener="#{simpleI18nMBean.changeLocale}"/>
                     </p:selectOneMenu>
-                    <h:outputLabel rendered="#{not empty simpleI18nMBean.selectedLang}" for="simpleMsg" value="#{msg.simpleLabel}:"/>
-                    <h:outputText rendered="#{not empty simpleI18nMBean.selectedLang}" id="simpleMsg" value="#{simpleI18nMBean.simpleHello}"/>
-                    <h:outputLabel rendered="#{not empty simpleI18nMBean.selectedLang}" for="paramMsg" value="#{msg.paramLabel}:"/>
-                    <h:outputText rendered="#{not empty simpleI18nMBean.selectedLang}" id="paramMsg" value="#{simpleI18nMBean.parametrizedHello}"/>
+                    <h:outputLabel rendered="#{not empty simpleI18nMBean.selectedLocale}" for="simpleMsg" value="#{msg.simpleLabel}:"/>
+                    <h:outputText rendered="#{not empty simpleI18nMBean.selectedLocale}" id="simpleMsg" value="#{simpleI18nMBean.simpleHello}"/>
+                    <h:outputLabel rendered="#{not empty simpleI18nMBean.selectedLocale}" for="paramMsg" value="#{msg.paramLabel}:"/>
+                    <h:outputText rendered="#{not empty simpleI18nMBean.selectedLocale}" id="paramMsg" value="#{simpleI18nMBean.parametrizedHello}"/>
                 </h:panelGrid>
             <br/>
-            <p:outputPanel styleClass="homeText" rendered="#{not empty simpleI18nMBean.selectedLang}">
+            <p:outputPanel styleClass="homeText" rendered="#{not empty simpleI18nMBean.selectedLocale}">
                       - #{msg.tip1} 
                 <br/> - #{msg.tip2} 
                 <br/> - #{msg.tip3} 

@@ -17,8 +17,8 @@
         <ui:define name="head">
             <link type="text/css" rel="stylesheet" href="#{request.contextPath}/syntaxhighlighter/styles/syntaxhighlighter.css" />
             <h:outputStylesheet library="css" name="showcase.css"/>
-                                                                              <!-- showcase only supports en and pt languages -->
-            <f:loadBundle basename="com.conventions.showcase.bundle.messages_#{(resourceBundleProvider.language ne 'en' and resourceBundleProvider.language ne 'pt') ? 'en': resourceBundleProvider.language }" var="msg"/>
+                                                                              <!-- showcase only supports en and pt locales -->
+            <f:loadBundle basename="org.conventionsframework.showcase.bundle.messages_#{(resourceBundleProvider.currentLocale ne 'en' and resourceBundleProvider.currentLocale ne 'pt') ? 'en': resourceBundleProvider.currentLocale}" var="msg"/>
         </ui:define>
         
         <ui:define name="topRightMenu">

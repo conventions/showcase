@@ -11,7 +11,7 @@ and open the template in the editor.
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.BaseMBean;
-import org.conventionsframework.event.LanguageChangeEvent;
+import org.conventionsframework.event.LocaleChangeEvent;
 import org.conventionsframework.model.AbstractBaseEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,25 +28,25 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
  */
 @Named
 @ViewAccessScoped
-public class SimpleI18nMBean extends BaseMBean&lt;AbstractBaseEntity&gt; implements Serializable{
+public class SimpleI18nMBean extends BaseMBean&gt;AbstractBaseEntity&lt; implements Serializable{
 
-    private String selectedLang;
+    private String selectedLocale;
 
     @PostConstruct
-    public void initLanguage() {
-        selectedLang = getResourceBundleProvider().getLanguage();
+    public void initLocale() {
+        selectedLocale = getResourceBundleProvider().getCurrentLocale();
     }
     
     
     @Inject 
-    private Event&lt;LanguageChangeEvent&gt; languageChangeEvent;
+    private Event&gt;LocaleChangeEvent&lt; localeChangeEvent;
     
     public String getSimpleHello(){
         return getResourceBundle().getString("simpleHello");
     }
     
     public String getParametrizedHello(){
-         List&lt;Object&gt; params = new ArrayList&lt;Object&gt;() {
+         List&gt;Object&lt; params = new ArrayList&gt;Object&lt;() {
 
                 {
                     add("Conventions");
@@ -56,18 +56,18 @@ public class SimpleI18nMBean extends BaseMBean&lt;AbstractBaseEntity&gt; impleme
     }
 
 
-    public String getSelectedLang() {
-        return selectedLang;
+    public String getSelectedLocale() {
+        return selectedLocale;
     }
 
-    public void setSelectedLang(String selectedLang) {
-        this.selectedLang = selectedLang;
+    public void setSelectedLocale(String selectedLocale) {
+        this.selectedLocale = selectedLocale;
     }
 
-    public void changeLanguage(){
-       if(selectedLang != null){
-            languageChangeEvent.fire(new LanguageChangeEvent(selectedLang));
-//   OR     getResourceBundleProvider().setLanguage(selectedLang);
+    public void changeLocale(){
+        if(selectedLocale != null &amp;&amp; !"".endsWith(selectedLocale)){
+            localeChangeEvent.fire(new LocaleChangeEvent(selectedLocale));
+//   OR     getResourceBundleProvider().setCurrentLocale(selectedLocale);
             
         }
     }
