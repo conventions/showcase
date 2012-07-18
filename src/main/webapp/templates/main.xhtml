@@ -22,6 +22,9 @@
         </ui:define>
         
         <ui:define name="topRightMenu">
+             <h:outputLink target="_blank" style="font-size: 10px!important;text-decoration: underline" value="http://conventionsframework.org/">
+                       Conventions Framework Homepage
+              </h:outputLink>
             <h:panelGrid columns="2" id="themes">
                 <h:outputText value="Theme:"/>
                 <p:themeSwitcher value="#{themeMBean.theme}" style="width:158px;text-align: left" effect="fade" var="t" converter="themeConverter">
@@ -54,21 +57,7 @@
             <p:remoteCommand name="historyNorthSize" oncomplete=" mainLayout.sizePane('north',155);"/>
         </ui:define>
         <ui:define name="topLeftMenu">
-            <ul id="main">
-                <li class="current_page_item" >
-                   <p:commandLink value="Showcase Home" action="/home.faces?faces-redirect=true" actionListener="#{stateController.clearState}" ajax="false"  style="margin-left: -300px;"/>
-                </li>
-                <li class="current_page_item">
-                    <h:outputLink target="_blank" value="http://conventionsframework.org/">
-                        Conventions Home
-                    </h:outputLink>  
-                </li>
-                <li class="current_page_item">
-                    <h:outputLink target="_blank" value="http://issuetracker-rpestano.rhcloud.com/issuetracker/">
-                        Conventions Issuetracker example
-                    </h:outputLink>  
-                </li>
-            </ul>
+                <p:commandLink  value="Showcase Home" style="margin-left: 10px;font-size: 20px!important" action="/home.faces?faces-redirect=true" actionListener="#{stateController.clearState}" ajax="false"  />
         </ui:define>
         
         <ui:define name="centerBottom">

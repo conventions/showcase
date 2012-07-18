@@ -5,7 +5,6 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.producer.ResourceBundleProvider;
-import org.conventionsframework.util.ResourceBundle;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.impl.resource.bundle.ResourceBundleProducer;
 
 /**
  *

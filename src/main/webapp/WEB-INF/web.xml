@@ -15,11 +15,11 @@
     </context-param>
     <context-param>
         <param-name>BUNDLE_BASE_NAME</param-name>
-        <param-value>/com/conventions/showcase/bundle/messages</param-value>
+        <param-value>/org/conventionsframework/showcase/bundle/messages</param-value>
     </context-param>
     <context-param>
         <param-name>DEFAULT_PROPERTIES_PATH</param-name>
-        <param-value>/com/conventions/showcase/showcase.properties</param-value>
+        <param-value>/org/conventionsframework/showcase/showcase.properties</param-value>
     </context-param>
      <context-param>
         <param-name>STACK_SIZE</param-name>

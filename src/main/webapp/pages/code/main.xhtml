@@ -29,6 +29,9 @@ and open the template in the editor.
         &lt;/ui:define&gt;
 
         &lt;ui:define name="topRightMenu"&gt;
+            &lt;h:outputLink target="_blank" style="font-size: 10px!important;text-decoration: underline" value="http://conventionsframework.org/"&gt;
+                Conventions Framework Homepage
+            &lt;/h:outputLink&gt;
             &lt;h:panelGrid columns="2" id="themes"&gt;
                 &lt;h:outputText value="Theme:"/&gt;
                 &lt;p:themeSwitcher value="\#{themeMBean.theme}" style="width:158px;text-align: left" effect="fade" var="t" converter="themeConverter"&gt;
@@ -61,16 +64,7 @@ and open the template in the editor.
             &lt;p:remoteCommand name="historyNorthSize" oncomplete=" mainLayout.sizePane('north',155);"/&gt;
         &lt;/ui:define&gt;
         &lt;ui:define name="topLeftMenu"&gt;
-            &lt;ul id="main"&gt;
-                &lt;li class="current_page_item" &gt;
-                    &lt;p:commandLink value="Showcase Home" action="/home.faces?faces-redirect=true" actionListener="\#{stateController.clearState}" ajax="false"  style="margin-left: -300px;"/&gt;
-                &lt;/li&gt;
-                &lt;li class="current_page_item"&gt;
-                    &lt;h:outputLink target="_blank" value="http://conventionsframework.org/"&gt;
-                        Conventions Home
-                    &lt;/h:outputLink&gt;  
-                &lt;/li&gt;
-            &lt;/ul&gt;
+            &lt;p:commandLink  value="Showcase Home" style="margin-left: 10px;font-size: 20px!important" action="/home.faces?faces-redirect=true" actionListener="\#{stateController.clearState}" ajax="false"  /&gt;
         &lt;/ui:define&gt;
 
         &lt;ui:define name="centerBottom"&gt;
@@ -107,10 +101,10 @@ and open the template in the editor.
         &lt;ui:define name="footer"&gt;
             &lt;p:outputPanel id="evenRowPanel"&gt;
                 &lt;style type="text/css"&gt;
-                    .even-row{
-                        background-color: \#{themeMBean.evenRow} !important;
-                        background-image: none;
-                    }
+                      .even-row{
+                             background-color: \#{themeMBean.evenRow} !important;
+                             background-image: none;
+                               }
                 &lt;/style&gt;
             &lt;/p:outputPanel&gt;
             &lt;p class="copyright" style="font-size: 9px" &gt;&copy;&nbsp;&nbsp;2011-2012 &nbsp;&nbsp; &lt;a href="https://github.com/rmpestano/conventions/" target="_blank"&gt;Conventions \#{applicationInfoMBean.infoMap['conventions.version']}&lt;/a&gt;&lt;/p&gt;
