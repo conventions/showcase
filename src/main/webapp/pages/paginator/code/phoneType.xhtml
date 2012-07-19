@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+package org.conventionsframework.showcase.model;
+
+import org.conventionsframework.model.SelectItemAware;
+
+/**
+ *
+ * @author rmpestano
+ */
+
+
+public enum PhoneType implements SelectItemAware{
+    LANDLINE("Landline"),WIRELESS("Wireless"),CELLULAR("Cellular"); 
+    
+    private final String name;
+
+    public String getName() {
+        return name;
+    }
+
+    private PhoneType(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getLabel() {
+        return name;//selectItem label for conventions:combo component
+    }
+    
+}
+
+</ui:composition>

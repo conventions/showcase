@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+  &lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"  
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:p="http://primefaces.org/ui"
+                template="paginatorHome.xhtml"&gt;
+
+
+    &lt;ui:define name="sampleContent"&gt;
+
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;'Advanced' Paginator example&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+                        &lt;p:panelGrid style="width: 600px"&gt;
+                            &lt;p:row&gt;
+                                &lt;p:column&gt;
+                                    &lt;h:outputText value="Phone number:" /&gt;
+                                &lt;/p:column&gt;
+                                &lt;p:column&gt;
+                                    &lt;!-- bind the typed number to a key called 'phone' in the filter map to be accessed in configFindPaginated --&gt;
+                                    &lt;p:inputText value="\#{paginatorMBean.advancedPaginator.filter.phone}" maxlength="8"/&gt;
+                                &lt;/p:column&gt;
+                            &lt;/p:row&gt;
+                                &lt;p:row&gt;
+                                    &lt;p:column&gt;
+                                        &lt;h:outputText value="Phone Type:"/&gt;
+                                    &lt;/p:column&gt;
+                                    &lt;p:column&gt;
+                                        &lt;!-- bind the chosen phoneType to a key called 'type' in the filter map to be accessed in configFindPaginated --&gt;
+                                        &lt;framework:combo value="\#{paginatorMBean.advancedPaginator.filter.type}" list="\#{paginatorMBean.phoneTypes}" /&gt;
+                                    &lt;/p:column&gt;
+                                &lt;/p:row&gt;
+                            &lt;p:row&gt;
+                                &lt;p:column colspan="2"&gt;
+                                    &lt;center&gt;
+                                        &lt;p:commandButton value="Search..." update="paginatorForm:advTable" oncomplete="updateAdvRowCount()" style="width: 120px"/&gt;
+                                        &lt;p:spacer width="5px"/&gt;
+                                        &lt;pe:tooltip for="paginatorForm:bt-adv" value="find persons with age between 1 and 10 with phoneNumber IN 11111111, 22222222 and 333333333 (you also can use above filters)" showEffect="fadeIn" hideEffect="fadeIn" position="top center"/&gt;  
+                                        &lt;p:commandButton id="bt-adv" value="Advanced Search" action="\#{paginatorMBean.advancedSearch}" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 150px"/&gt;
+                                    &lt;/center&gt;
+                                &lt;/p:column&gt;
+                            &lt;/p:row&gt;
+                        &lt;/p:panelGrid&gt;
+                    &lt;p:remoteCommand name="updateAdvRowCount" update="paginatorForm:advCountPanel" process="@none"/&gt;
+                    &lt;p:outputPanel layout="block" style="float: right" id="advCountPanel"&gt;
+                        Records Found: \#{paginatorMBean.advancedPaginator.rowCount}
+                    &lt;/p:outputPanel&gt;
+                    &lt;p:dataTable value="\#{paginatorMBean.advancedPaginator.dataModel}" widgetVar="tableVar" id="advTable" var="row" emptyMessage="No person found" 
+                                 rowIndexVar="rowIndex"
+                                 lazy="true"
+                                 rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,20,30" &gt;
+
+                        &lt;p:ajax event="page" onstart="block('div[id$=advTable]','paging...');" oncomplete="unblock('div[id$=advTable]')" /&gt;
+                        &lt;p:ajax event="sort" onstart="block('div[id$=advTable]','sorting...');" oncomplete="jQuery('div[id$=advTable]').unblock({ message: null  })"/&gt;
+                        &lt;p:ajax event="filter" process="@this" onstart="block('div[id$=advTable]','filtering...');" oncomplete="jQuery('div[id$=advTable]').unblock({ message: null  });updateAdvRowCount();" /&gt;
+                        &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" &gt;
+                            &lt;f:facet name="header"&gt;
+                                Name
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.name}"/&gt;
+                        &lt;/p:column&gt;
+                        &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" &gt;
+                            &lt;f:facet name="header"&gt;
+                                Lastname
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.lastname}"/&gt;
+                        &lt;/p:column&gt;
+
+                        &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}" filterStyle="width:50px" style="width: 50px" &gt;
+                            &lt;f:facet name="header"&gt;
+                                Age
+                            &lt;/f:facet&gt;
+                            &lt;h:outputText value="\#{row.age}"/&gt;
+
+                        &lt;/p:column&gt;
+
+                        &lt;p:column headerText="Telephones"&gt;
+                            &lt;p:dataTable value="\#{row.telephones}" var="t"&gt;
+                                &lt;p:column headerText="Number"&gt;
+                                    &lt;h:outputText value="\#{t.number}"/&gt;
+                                &lt;/p:column&gt;
+                                &lt;p:column headerText="Type"&gt;
+                                    &lt;h:outputText value="\#{t.type.name}"/&gt;
+                                &lt;/p:column&gt;
+                            &lt;/p:dataTable&gt;
+                        &lt;/p:column&gt;
+                    &lt;/p:dataTable&gt;
+        &lt;/div&gt;
+        &lt;script type="text/javascript"&gt;
+            jQuery(function() {
+                resetNorthSize();
+                updateAdvRowCount();
+            });
+        &lt;/script&gt;
+    &lt;/ui:define&gt;
+  &lt;/ui:composition&gt;
+</ui:composition>

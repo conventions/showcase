@@ -10,9 +10,13 @@ import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.util.BeanManagerController;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.conventionsframework.showcase.model.Phone;
+import org.conventionsframework.showcase.model.PhoneType;
 
 /**
  *
@@ -34,6 +38,7 @@ public class DatabaseHelper implements Serializable{
         if (hibernatePersonService.countAll() == 0) {
             for (int i = 0; i < 1000; i++) {
                 Person p = new Person("Person " + i, "Lastname " + i, i % 100);
+                p.setTelephones(generateTelephones(i));
                 hibernatePersonService.save(p);
             }
         }
@@ -53,5 +58,33 @@ public class DatabaseHelper implements Serializable{
     public void setAplicattionInitialized(boolean aplicattionInitialized) {
         this.aplicattionInitialized = aplicattionInitialized;
     }
+
+    private List<Phone> generateTelephones(int i) {
+        List<Phone> phoneList = new ArrayList<Phone>();
+        if(i%2 == 0){
+            phoneList.add(createPhone(i%10));
+            phoneList.add(createPhone((i+1)%10));
+        }
+        else{
+             phoneList.add(createPhone(i%10));
+        }
+        return phoneList;
+    }
+
+    private Phone createPhone(int i) {
+          Phone phone = new Phone();
+          phone.setNumber(i+""+i+""+i+""+i+""+i+""+i+""+i+""+i+"");
+           if(i%7 == 0){
+                phone.setType(PhoneType.WIRELESS);
+            }
+            else if(i%5 == 0){
+                phone.setType(PhoneType.LANDLINE);
+            }
+            else{
+                phone.setType(PhoneType.CELLULAR);
+            }
+          return  phone;
+    }
+    
     
 }

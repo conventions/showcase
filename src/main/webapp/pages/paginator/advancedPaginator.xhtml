@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"  
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:p="http://primefaces.org/ui"
+                template="paginatorHome.xhtml">
+
+
+    <ui:define name="sampleContent">
+
+        <h1 class="title ui-widget-header ui-corner-all">'Advanced' Paginator example</h1>
+        <div class="entry">
+                        <p:panelGrid style="width: 600px">
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Phone number:" />
+                                </p:column>
+                                <p:column>
+                                    <!-- bind the chosen number to a key called 'phone' in the filter map to be accessed in configFindPaginated -->
+                                    <p:inputText value="#{paginatorMBean.advancedPaginator.filter.phone}" maxlength="8"/>
+                                </p:column>
+                            </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="Phone Type:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <!-- bind the chosen phoneType to a key called 'type' in the filter map to be accessed in configFindPaginated -->
+                                        <framework:combo value="#{paginatorMBean.advancedPaginator.filter.type}" list="#{paginatorMBean.phoneTypes}" />
+                                    </p:column>
+                                </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <center>
+                                        <p:commandButton value="Search..." update="paginatorForm:advTable" oncomplete="updateAdvRowCount()" style="width: 120px"/>
+                                        <p:spacer width="5px"/>
+                                        <pe:tooltip for="paginatorForm:bt-adv" value="find persons with age between 1 and 10 with phoneNumber IN 11111111, 22222222 and 333333333 (you also can use above filters)" showEffect="fadeIn" hideEffect="fadeIn" position="top center"/>  
+                                        <p:commandButton id="bt-adv" value="Advanced Search" action="#{paginatorMBean.advancedSearch}" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 150px"/>
+                                    </center>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    <p:remoteCommand name="updateAdvRowCount" update="paginatorForm:advCountPanel" process="@none"/>
+                    <p:outputPanel layout="block" style="float: right" id="advCountPanel">
+                        Records Found: #{paginatorMBean.advancedPaginator.rowCount}
+                    </p:outputPanel>
+                    <p:dataTable value="#{paginatorMBean.advancedPaginator.dataModel}" widgetVar="tableVar" id="advTable" var="row" emptyMessage="No person found" 
+                                 rowIndexVar="rowIndex"
+                                 lazy="true"
+                                 rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                                 paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15,20,30" >
+
+                        <p:ajax event="page" onstart="block('div[id$=advTable]','paging...');" oncomplete="unblock('div[id$=advTable]')" />
+                        <p:ajax event="sort" onstart="block('div[id$=advTable]','sorting...');" oncomplete="jQuery('div[id$=advTable]').unblock({ message: null  })"/>
+                        <p:ajax event="filter" process="@this" onstart="block('div[id$=advTable]','filtering...');" oncomplete="jQuery('div[id$=advTable]').unblock({ message: null  });updateAdvRowCount();" />
+                        <p:column sortBy="#{row.name}" filterBy="#{row.name}" >
+                            <f:facet name="header">
+                                Name
+                            </f:facet>
+                            <h:outputText value="#{row.name}"/>
+                        </p:column>
+                        <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" >
+                            <f:facet name="header">
+                                Lastname
+                            </f:facet>
+                            <h:outputText value="#{row.lastname}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{row.age}" filterBy="#{row.age}" filterStyle="width:50px" style="width: 50px" >
+                            <f:facet name="header">
+                                Age
+                            </f:facet>
+                            <h:outputText value="#{row.age}"/>
+
+                        </p:column>
+
+                        <p:column headerText="Telephones">
+                            <p:dataTable value="#{row.telephones}" var="t">
+                                <p:column headerText="Number">
+                                    <h:outputText value="#{t.number}"/>
+                                </p:column>
+                                <p:column headerText="Type">
+                                    <h:outputText value="#{t.type.name}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:dataTable>
+        </div>
+        <script type="text/javascript">
+            jQuery(function() {
+                resetNorthSize();
+                updateAdvRowCount();
+            });
+        </script>
+    </ui:define>
+
+    
+</ui:composition>
