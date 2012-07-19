@@ -33,15 +33,17 @@ public class PaginatorMBean implements Serializable {
 //    @Inject @Service(name="personService") //uses the PersonServiceImpl as service, just uncomment 
 //    @Inject @Service(name="statelessHibernateService",entity=Person.class) //also works, uses the BaseService as service, just uncomment 
     private Paginator paginator;
+    
     @Inject
     @Service(name = "advancedFilterService")
     private Paginator advancedPaginator;
+    
     @Inject
     @StatelessService(entity = Person.class)
     private BaseService baseService;
 
     public void initPaginator() {
-        // paginator need a service to access DB and perform
+        // paginator needs a service to access DB and perform
         // true pagination, sort and filtering over a collection
         paginator = new Paginator(baseService);
     }

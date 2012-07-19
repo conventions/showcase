@@ -34,7 +34,7 @@
         </dependency>
        
        
-         <dependency>
+        <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <version>1.0-SP4</version>
@@ -42,11 +42,11 @@
         </dependency>
             
         
-        <dependency>
+<!--   already defined in conventions     <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>${primefaces.version}</version>
-        </dependency>
+        </dependency>-->
          
         <!-- framework -->
         <dependency>
@@ -162,11 +162,11 @@
             <artifactId>glass-x</artifactId>
             <version>${primefaces.theme.version}</version>
         </dependency>
-        <dependency>
+<!-- already defined by conventions       <dependency>
             <groupId>org.primefaces.extensions</groupId>
             <artifactId>primefaces-extensions</artifactId>
             <version>${primefaces-ext.version}</version>
-        </dependency>
+        </dependency>-->
         
         <!-- end primefaces -->
         
@@ -185,17 +185,6 @@
             <version>2.0</version>
         </dependency>
  
-
-        <!-- test -->    
-            <!--dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.8.1</version>
-                <scope>test</scope>
-            </dependency-->
-        
-
-   
 
             <!-- apache myfaces -->
 
@@ -244,7 +233,15 @@
         </dependency>-->
 
     </dependencies>
-    
+      <dependencyManagement>
+        <dependencies> <!-- override Conventions Primefaces version -->
+            <dependency>
+                <groupId>org.primefaces</groupId>
+                <artifactId>primefaces</artifactId>
+                <version>3.4-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+      </dependencyManagement>
     <profiles>
         <profile>
             <id>Glassfish</id>
