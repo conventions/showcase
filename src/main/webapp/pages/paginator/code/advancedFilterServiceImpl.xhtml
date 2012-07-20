@@ -59,8 +59,6 @@ public class AdvancedFilterServiceImpl extends StatelessHibernateService&lt;Pers
         }
         if(externalFilters != null &amp;&amp; !externalFilters.isEmpty()){
             getDao().addBasicFilterRestrictions(dc, externalFilters);
-        }
-        if(externalFilters != null &amp;&amp; !externalFilters.isEmpty()){
             String phone = (String) externalFilters.get("phone");
             if(phone != null &amp;&amp; !"".endsWith(phone)){
                 //create join with Phone table

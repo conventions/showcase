@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import org.conventionsframework.model.SelectItemAware;
 import org.hibernate.validator.constraints.NotEmpty;
 
 
@@ -18,7 +19,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "person")
 @SequenceGenerator(allocationSize = 1, name = "seq_person", sequenceName = "seq_person")
-public class Person extends VersionatedBaseEntityLong implements Serializable{
+public class Person extends VersionatedBaseEntityLong implements Serializable,SelectItemAware{
 
     private static final long serialVersionUID = -3065107295253073402L;
     private String name;
