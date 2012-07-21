@@ -45,6 +45,9 @@ public class PropertiesMBean implements Serializable{
 
  
     public void keyFromInjectedProperties(){
+        if(keyTyped == null){//fixme 
+            return;
+        }
         String value = propertyFile.getProperty(keyTyped.trim());   
         if(value != null){
             MessagesController.addInfo("Value of "+keyTyped + " = " +value);
