@@ -78,7 +78,7 @@
 
                         </p:column>
 
-                        <p:column headerText="Telephones" >
+                        <p:column headerText="Telephones" sortBy="#{row.telephones.number}">
                             <p:dataTable value="#{row.telephones}" var="t">
                                 <p:column headerText="Number">
                                     <h:outputText value="#{t.number}"/>

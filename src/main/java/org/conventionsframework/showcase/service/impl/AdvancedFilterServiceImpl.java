@@ -14,6 +14,7 @@ import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.PhoneType;
 import org.conventionsframework.showcase.service.AdvancedFilterService;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.primefaces.model.SortOrder;
@@ -41,6 +42,8 @@ public class AdvancedFilterServiceImpl extends StatelessHibernateService<Person,
     public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters) {
         
         DetachedCriteria dc = getDetachedCriteria();
+        boolean alreadyJoinedPhone = false;
+        
         
         /**
          * keep basic restrictions  as name(iLike),age(eq) and lastName(iLike)
@@ -56,14 +59,18 @@ public class AdvancedFilterServiceImpl extends StatelessHibernateService<Person,
             String phone = (String) externalFilters.get("phone");
             if(phone != null && !"".endsWith(phone)){
                 //create join with Phone table
-                dc.createAlias("telephones", "telephones",JoinType.LEFT_OUTER_JOIN);
+                if(!alreadyJoinedPhone){
+                    dc.createAlias("telephones", "telephones",JoinType.LEFT_OUTER_JOIN);
+                     alreadyJoinedPhone = true;
+                }
                 dc.add(Restrictions.eq("telephones.number", phone));
             }
             PhoneType type = (PhoneType) externalFilters.get("type");
             if(type != null){
-                if(phone == null || phone.trim().equals("")){
+                if(!alreadyJoinedPhone){
                     //if join was not created yet just create it
                     dc.createAlias("telephones", "telephones",JoinType.LEFT_OUTER_JOIN);
+                    alreadyJoinedPhone = true;
                 }
                 dc.add(Restrictions.eq("telephones.type", type));
             }
@@ -74,13 +81,20 @@ public class AdvancedFilterServiceImpl extends StatelessHibernateService<Person,
             }
             List<String> numberList = (List<String>) externalFilters.get("numberList");
             if(numberList != null){
-                if(type == null && (phone == null || phone.trim().equals(""))){
+                if(!alreadyJoinedPhone){
+                     alreadyJoinedPhone = true;
                     //if alias was not created yet
                      dc.createAlias("telephones", "telephones",JoinType.LEFT_OUTER_JOIN);
                      dc.add(Restrictions.in("telephones.number", numberList));
                 }
             }
         }
+        if(sortField != null && sortField.equals("telephones.number")){
+               if(!alreadyJoinedPhone){
+                //create join to sort by phone number
+                dc.createAlias("telephones", "telephones");
+               }
+       }
         return super.findPaginated(first, pageSize, sortField, sortOrder, dc);
     }
     

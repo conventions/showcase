@@ -29,6 +29,7 @@ public class ThemeMBean implements Serializable{
         themeList = new ArrayList<Theme>();
         themeList.add(new Theme("aristo", "aristo.png"));
         themeList.add(new Theme("afterdark", "afterdark.png"));
+        themeList.add(new Theme("afternoon", "afternoon.png"));
         themeList.add(new Theme("blitzer", "blitzer.png"));
         themeList.add(new Theme("bluesky", "bluesky.png"));
         themeList.add(new Theme("casablanca", "casablanca.png"));

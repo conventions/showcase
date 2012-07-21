@@ -42,10 +42,6 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
         super.init();
     }
 
-    
-  
-
-    
 
   /**
      * this method is REQUIRED (or use the @Service annotation) to tell the framework how to 'crud' the managed bean's entity

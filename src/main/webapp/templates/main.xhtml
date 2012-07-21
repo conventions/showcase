@@ -17,7 +17,6 @@
         <ui:define name="head">
             <link type="text/css" rel="stylesheet" href="#{request.contextPath}/syntaxhighlighter/styles/syntaxhighlighter.css" />
             <h:outputStylesheet library="css" name="showcase.css"/>
-                                                                              <!-- showcase only supports en and pt locales -->
             <f:loadBundle basename="org.conventionsframework.showcase.bundle.messages_#{(resourceBundleProvider.currentLocale ne 'en' and resourceBundleProvider.currentLocale ne 'pt') ? 'en': resourceBundleProvider.currentLocale}" var="msg"/>
         </ui:define>
         
@@ -94,6 +93,9 @@
         <ui:define name="footer">
             <p:outputPanel id="evenRowPanel">
              <style type="text/css">
+                    .back {
+                            background-image: url(#{resource['images:back.png']})
+                        }
                    .even-row{
                           background-color: #{themeMBean.evenRow} !important;
                           background-image: none;
