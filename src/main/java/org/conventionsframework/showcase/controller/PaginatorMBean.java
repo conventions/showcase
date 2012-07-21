@@ -64,6 +64,7 @@ public class PaginatorMBean implements Serializable {
         return new ArrayList<PhoneType>(Arrays.asList(PhoneType.values()));
     }
 
+    
     public void advancedSearch() {
         List<String> numbersList = new ArrayList<String>();
         numbersList.add("11111111");
@@ -72,5 +73,9 @@ public class PaginatorMBean implements Serializable {
         //add parammeters to the filter so service layer can get them in configFindPaginated
         advancedPaginator.getFilter().put("numberList", numbersList);
         advancedPaginator.getFilter().put("activateBetween", true);
+    }
+    
+    public void resetFilters(){
+        advancedPaginator.getFilter().clear();
     }
 }

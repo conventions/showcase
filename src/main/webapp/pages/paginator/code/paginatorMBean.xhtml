@@ -83,6 +83,10 @@ public class PaginatorMBean implements Serializable {
         advancedPaginator.getFilter().put("numberList", numbersList);
         advancedPaginator.getFilter().put("activateBetween", true);
     }
+    
+    public void resetFilters(){
+        advancedPaginator.getFilter().clear();
+    }
 }
 
 </ui:composition>
