@@ -140,6 +140,23 @@ public class AjaxStateMBean extends StateMBean&lt;Person&gt; implements ModalObs
 
 }
 
+/**
+     * if saving from friend page just store the entity 
+     * and keep in friendState
+     * case super.store set state to update
+     */
+    @Override
+    public void store() {
+        if(isFriendState()){
+            getBaseService().store(getEntity());
+            MessagesController.addInfo(getUpdateMessage());
+        }
+        else{
+            super.store();
+        }
+        
+    }
+
     
 }
 

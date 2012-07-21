@@ -25,6 +25,7 @@ import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.Service;
 
 /**
  *
@@ -43,13 +44,8 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
     @BeanState(beanState=ConstantUtils.State.FRIEND_STATE,title="Manage Friends",callback="#{ajaxStateMBean.setFriendState}",update=":historyForm:pageControl"),
     @BeanState(beanState="init",title="Ajax StateMBean",callback="#{ajaxStateMBean.setInitState}",update=":historyForm:pageControl")
 })
+@Service(name="personService")
 public class AjaxStateMBean extends StateMBean<Person> implements ModalObserver{
-    
-    
-    @Inject
-    public void setService(PersonService service){
-        super.setBaseService(service);
-    }
     
     public PersonService getPersonService(){
         return (PersonService)super.getBaseService();
@@ -112,7 +108,26 @@ public class AjaxStateMBean extends StateMBean<Person> implements ModalObserver{
             getEntity().removeFriend(getEntityAux().getId());
             MessagesController.addInfo("Friend removed from list");
         }
-    } 
+    }
+
+    /**
+     * if saving from friend page just store the entity 
+     * and keep in friendState
+     * case super.store set state to update
+     */
+    @Override
+    public void store() {
+        if(isFriendState()){
+            getBaseService().store(getEntity());
+            MessagesController.addInfo(getUpdateMessage());
+        }
+        else{
+            super.store();
+        }
+        
+    }
+    
+    
 
     /**
  * Custom state for ajax history stack

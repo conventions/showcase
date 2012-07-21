@@ -18,7 +18,7 @@ and open the template in the editor.
             <center>
                 <framework:backButton update=":historyForm:pageControl"/>
                 <h:panelGrid columns="2">
-                    <framework:saveButton  mbean="#{ajaxStateMBean}" process=":historyForm:trackablePanelFriend" ajax="true"
+                    <framework:saveButton id="saveButton" mbean="#{ajaxStateMBean}" process=":historyForm:trackablePanelFriend" ajax="true"
                                            update=":historyForm:trackablePanelFriend :historyForm:msg" oncomplete="hideMsg(args)" />
                     <p:commandButton value="Go Home" action="#{ajaxStateMBean.setInitState}" actionListener="#{stateController.clearState}" update=":historyForm:pageControl" immediate="true"/>
                 </h:panelGrid>
