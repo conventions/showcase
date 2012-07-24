@@ -7,7 +7,7 @@ package org.conventionsframework.showcase.service.impl;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Named;
-import org.conventionsframework.dao.impl.StatelessGenericHibernateDao;
+import org.conventionsframework.dao.impl.StatelessHibernateDao;
 import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;

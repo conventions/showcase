@@ -10,7 +10,6 @@ import org.conventionsframework.event.ModalCallback;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.util.MessagesController;
-import org.conventionsframework.util.Paginator;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -19,6 +18,7 @@ import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.paginator.Paginator;
 
 /**
  *

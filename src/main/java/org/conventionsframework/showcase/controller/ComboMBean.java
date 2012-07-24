@@ -4,7 +4,6 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.conventionsframework.qualifier.CustomService;
 import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.util.MessagesController;
@@ -13,6 +12,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
 
 /**
  *
@@ -38,7 +39,7 @@ public class ComboMBean implements Serializable {
     
     
     @Inject
-    public void initList(@CustomService(entity=Person.class) BaseService service){
+    public void initList(@Service(type= Type.CUSTOM,entity=Person.class) BaseService service){
         Person p = new Person(); 
         p.setName("1");
         p.setAge(1);

@@ -7,7 +7,6 @@ import org.conventionsframework.qualifier.BeanState;
 import org.conventionsframework.qualifier.BeanStates;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.qualifier.SecurityMethod;
-import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.showcase.util.ConstantUtils;
@@ -17,6 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 
@@ -35,13 +35,17 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
     @BeanState(beanState="secret",page=Pages.Security.SECRET_PAGE+ConstantUtils.FACES_REDIRECT,title="Secret Area")
 })
 @PersistentClass(value=Person.class)
-@Service(name="personService")
 public class SecurityMBean extends StateMBean<Person> implements Serializable{
     
     private String currentRole = "";
 
     public SecurityMBean() {
         this.clearProfile();
+    }
+    
+    @Inject
+    public void setPersonService(PersonService personService){
+        super.setBaseService(personService);
     }
     
     public PersonService getPersonService(){

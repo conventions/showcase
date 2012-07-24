@@ -6,7 +6,6 @@ package org.conventionsframework.showcase.provider;
 
 import org.conventionsframework.entitymanager.provider.CustomEntityManagerProvider;
 import org.conventionsframework.entitymanager.provider.EntityManagerProvider;
-import org.conventionsframework.entitymanager.provider.Type;
 import org.conventionsframework.qualifier.ConventionsEntityManager;
 import org.conventionsframework.showcase.controller.ComboMBean;
 import javax.enterprise.context.RequestScoped;
@@ -14,6 +13,7 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.Specializes;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.conventionsframework.qualifier.Type;
 
 /**
  * entityManager provider for CustomHibernateService

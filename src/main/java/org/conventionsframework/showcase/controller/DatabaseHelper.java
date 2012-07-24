@@ -4,8 +4,6 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.conventionsframework.qualifier.PersistentClass;
-import org.conventionsframework.qualifier.StatelessService;
 import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.util.BeanManagerController;
@@ -15,6 +13,8 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
 import org.conventionsframework.showcase.model.Phone;
 import org.conventionsframework.showcase.model.PhoneType;
 
@@ -26,7 +26,7 @@ import org.conventionsframework.showcase.model.PhoneType;
 @SessionScoped
 public class DatabaseHelper implements Serializable{
     
-    @Inject @StatelessService(entity=Person.class)
+    @Inject @Service(type= Type.STATELESS,entity=Person.class)
     private BaseService hibernatePersonService;
     private boolean aplicattionInitialized;
     
