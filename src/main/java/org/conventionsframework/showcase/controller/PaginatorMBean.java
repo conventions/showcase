@@ -31,7 +31,7 @@ public class PaginatorMBean implements Serializable {
 //    injection of paginator is also supported, you can inform the service at injection point
 //    so you dont need to instantiate the Paginator and pass the service in the contructor like in initPaginator method    
 //    @Inject @PaginatorService(name="personService") //uses the PersonServiceImpl as service, just uncomment 
-//    @Inject @PaginatorService(name="statelessHibernateService",entity=Person.class) //also works, uses the BaseService as service, just uncomment 
+//    @Inject @PaginatorService(name=Service.STATELESS,entity=Person.class) //also works, uses the BaseService as service, just uncomment 
     private Paginator paginator;
     
     @Inject

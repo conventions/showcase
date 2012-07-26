@@ -4,7 +4,6 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.ModalMBean;
 import org.conventionsframework.bean.modal.ModalInitializable;
 import org.conventionsframework.event.ModalInitialization;
@@ -15,6 +14,8 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.service.BaseService;
 import org.primefaces.event.CloseEvent;
 
  /**
@@ -37,7 +38,7 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
      * @param personService
      */
     @Inject
-    public void setPersonService(PersonService personService) {
+    public void setPersonService(@Service(name=Service.STATELESS,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 

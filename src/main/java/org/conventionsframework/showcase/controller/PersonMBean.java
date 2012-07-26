@@ -9,8 +9,6 @@ import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.event.ModalCallback;
-import org.conventionsframework.qualifier.PropertyFile;
-import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
 import org.conventionsframework.showcase.service.PersonService;
@@ -21,9 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
-import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 
@@ -33,7 +31,7 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
  */
 @ViewAccessScoped
 @Named("personMBean")
-@Service(name="personService")
+//@Service(name="personService")
 public class PersonMBean extends BaseMBean<Person> implements Serializable,ModalObserver {
     
     @Override
@@ -48,9 +46,13 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
      * @param personService
      */
 //    @Inject
-//    public void setPersonService(PersonService personService) {
+//    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
 //        super.setBaseService(personService);
 //    }
+    @EJB
+    public void setPersonService(PersonService personService) {
+        super.setBaseService(personService);
+    }
     
 
     

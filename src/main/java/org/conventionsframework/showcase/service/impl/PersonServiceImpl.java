@@ -1,13 +1,16 @@
 package org.conventionsframework.showcase.service.impl;
 
-import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.service.impl.StatefulHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateful;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -20,8 +23,17 @@ import org.primefaces.model.SortOrder;
  */
 @Named(value = "personService")
 @PersistentClass(Person.class)
+@Stateful
 public class PersonServiceImpl extends StatefulHibernateService<Person, Long> implements PersonService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+    
+    @PostConstruct
+    public void test(){
+        getDao().setEntityManager(entityManager);
+    }
+    
     @Override
     public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
 
@@ -73,43 +85,4 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
         return true;
     }
 
-    @Override
-    public void beforeRemove(Person entity) {
-        //override to perform logic before removing an entity
-        super.beforeRemove(entity);
-    }
-
-    @Override
-    public void remove(Person entity) {
-        //called by remove button, override to perform logic when removing an entity
-        if (this.alowDeletePerson(entity)) {
-            super.remove(entity);
-        } else {
-            throw new BusinessException("Not allowed to remove person above 60 year old.");
-        }
-    }
-
-    @Override
-    public void afterRemove(Person entity) {
-        //override to perform logic after removing an entity
-        super.afterRemove(entity);
-    }
-
-    @Override
-    public void beforeStore(Person entity) {
-        //override to perform logic before storing an entity
-        super.beforeStore(entity);
-    }
-
-    @Override
-    public void store(Person entity) {
-        //called save button click, override to perform logic when storing an entity
-        super.store(entity);
-    }
-
-    @Override
-    public void afterStore(Person entity) {
-        //override to perform logic after storing an entity
-        super.afterStore(entity);
-    }
 }
