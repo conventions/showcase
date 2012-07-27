@@ -14,11 +14,14 @@ import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.ejb.EJB;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.*;
+import org.conventionsframework.service.BaseService;
 
 
 
@@ -44,7 +47,7 @@ public class SecurityMBean extends StateMBean<Person> implements Serializable{
     }
     
     @Inject
-    public void setPersonService(PersonService personService){
+    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
     

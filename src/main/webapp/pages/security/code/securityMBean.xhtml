@@ -45,10 +45,14 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
     @BeanState(beanState="secret",page=Pages.Security.SECRET_PAGE+ConstantUtils.FACES_REDIRECT,title="Secret Area")
 })
 @PersistentClass(value=Person.class)
-@Service(name="personService")
 public class SecurityMBean extends StateMBean&lt;Person&gt; implements Serializable{
     
     private String currentRole = "";
+    
+    @Inject
+    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
+        super.setBaseService(personService);
+    }
     
     public PersonService getPersonService(){
         return (PersonService)super.getBaseService();

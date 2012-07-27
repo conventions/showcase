@@ -54,7 +54,7 @@ public class PersonSelectionMBean extends BaseMBean&lt;Person&gt;
      * @param personService
      */
     @Inject
-    public void setPersonService(PersonService personService) {
+    public void setPersonService(@Service(name=Service.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 

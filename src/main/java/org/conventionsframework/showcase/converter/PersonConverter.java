@@ -5,10 +5,12 @@
 package org.conventionsframework.showcase.converter;
 
 import org.conventionsframework.converter.AbstractBaseConverter;
-import org.conventionsframework.showcase.service.PersonService;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import org.apache.myfaces.extensions.cdi.core.api.Advanced;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.service.BaseService;
+import org.conventionsframework.showcase.model.Person;
 
 /**
  *
@@ -18,8 +20,8 @@ import org.apache.myfaces.extensions.cdi.core.api.Advanced;
 @FacesConverter(value="personConverter")
 public class PersonConverter extends AbstractBaseConverter {
     
-    @Inject 
-    public void setPersonService(PersonService personService){
+    @Inject
+    public void setPersonService(@Service(name=Service.STATELESS,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 	

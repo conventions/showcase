@@ -21,6 +21,7 @@ import org.conventionsframework.util.MessagesController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.inject.Inject;

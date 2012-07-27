@@ -13,12 +13,15 @@ import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.paginator.Paginator;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -48,9 +51,10 @@ public class PersonSelectionMBean extends BaseMBean<Person>
      * @param personService
      */
     @Inject
-    public void setPersonService(PersonService personService) {
+    public void setPersonService(@Service(name=Service.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
+
 
     public PersonService getPersonService(){
         return (PersonService)super.getBaseService();

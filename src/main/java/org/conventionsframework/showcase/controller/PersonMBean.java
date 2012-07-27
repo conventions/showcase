@@ -42,7 +42,7 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
 //        super.setBaseService(personService);
 //    }
     
-    @EJB//glassfish bug, should work with Inject even if service is an EJB
+    @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }

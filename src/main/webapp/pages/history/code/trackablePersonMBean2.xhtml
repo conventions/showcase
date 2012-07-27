@@ -59,7 +59,7 @@ public class TrackablePersonMBean2 extends StateMBean&lt;Person&gt; implements S
      * @param personService
      */
     @Inject
-    public void setPersonService(PersonService personService) {
+    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 

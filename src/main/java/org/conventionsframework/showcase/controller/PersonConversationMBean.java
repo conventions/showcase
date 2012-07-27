@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
@@ -34,7 +35,7 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
      * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
      * @param personService
      */
-    @Inject
+    @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }

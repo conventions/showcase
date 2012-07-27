@@ -10,7 +10,6 @@ import org.conventionsframework.util.BeanManagerController;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,12 +28,8 @@ public class DatabaseHelper implements Serializable{
     
     @Inject @Service(type= Type.STATELESS,entity=Person.class)
     private BaseService hibernatePersonService;
-    private boolean aplicattionInitialized;
     
-//    @PostConstruct
-//    public void test(){
-//        hibernatePersonService.getDao().setPersistentClass(Person.class);
-//    }
+    private boolean aplicattionInitialized;
     
     public void initDatabase(){
          /* populate database */

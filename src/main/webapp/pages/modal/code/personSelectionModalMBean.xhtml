@@ -13,7 +13,9 @@ and open the template in the editor.
  */
 package org.conventionsframework.showcase.controller;
 
-import org.conventionsframework.bean.AbstractModalMBean;
+import org.conventionsframework.bean.ModalMBean;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.service.BaseService;
 import org.conventionsframework.bean.modal.ModalInitializable;
 import org.conventionsframework.event.ModalInitialization;
 import org.conventionsframework.showcase.model.Person;
@@ -32,7 +34,7 @@ import org.primefaces.event.CloseEvent;
  */
 @Named(value = "personSelectionModalMBean")
 @WindowScoped
-public class PersonSelectionModalMBean extends AbstractModalMBean&lt;Person&gt; implements Serializable, ModalInitializable {
+public class PersonSelectionModalMBean extends ModalMBean&lt;Person&gt; implements Serializable, ModalInitializable {
 
     private Person[] selectedPeople;
     public static final String MODAL_NAME = "personSelectionModal"; 
@@ -45,7 +47,7 @@ public class PersonSelectionModalMBean extends AbstractModalMBean&lt;Person&gt; 
      * @param personService
      */
     @Inject
-    public void setPersonService(PersonService personService) {
+    public void setPersonService(@Service(name=Service.STATELESS,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 

@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 
@@ -54,7 +55,7 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
      * this method is REQUIRED (or use the @Service annotation) to tell the framework how to 'crud' the managed bean's entity
      * @param personService
      */
-    @EJB//glassfish bug, should work with Inject
+    @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }
