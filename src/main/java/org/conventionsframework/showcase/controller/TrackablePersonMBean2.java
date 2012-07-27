@@ -7,7 +7,6 @@ package org.conventionsframework.showcase.controller;
 import org.conventionsframework.bean.StateMBean;
 import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.event.ModalCallback;
-import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.qualifier.BeanState;
 import org.conventionsframework.qualifier.BeanStates;
@@ -27,6 +26,9 @@ import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
+import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -54,7 +56,7 @@ public class TrackablePersonMBean2 extends StateMBean<Person> implements Seriali
      * @param personService
      */
     @Inject
-    public void setPersonService(PersonService personService) {
+    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 

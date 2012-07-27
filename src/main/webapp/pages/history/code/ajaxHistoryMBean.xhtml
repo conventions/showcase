@@ -51,11 +51,9 @@ import org.conventionsframework.qualifier.Service;
     @BeanState(beanState=ConstantUtils.State.FRIEND_STATE,title="Manage Friends",callback="\#{ajaxStateMBean.setFriendState}",update=":historyForm:pageControl"),
     @BeanState(beanState="init",title="Ajax State Bean",callback="\#{ajaxStateMBean.setInitState}",update=":historyForm:pageControl")
 })
-@Service(name="personService")
+@Service(name=Service.STATEFUL,entity=Person.class)
 public class AjaxStateMBean extends StateMBean&lt;Person&gt; implements ModalObserver{
     
-    
-   
     
     public PersonService getPersonService(){
         return (PersonService)super.getBaseService();

@@ -7,7 +7,6 @@ package org.conventionsframework.showcase.controller;
 import org.conventionsframework.bean.StateMBean;
 import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.event.ModalCallback;
-import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.qualifier.BeanState;
 import org.conventionsframework.qualifier.BeanStates;
@@ -22,9 +21,9 @@ import org.conventionsframework.util.MessagesController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
-import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 
@@ -55,7 +54,7 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
      * this method is REQUIRED (or use the @Service annotation) to tell the framework how to 'crud' the managed bean's entity
      * @param personService
      */
-    @Inject
+    @EJB//glassfish bug, should work with Inject
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }

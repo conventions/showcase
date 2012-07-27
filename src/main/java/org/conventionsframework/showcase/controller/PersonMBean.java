@@ -18,7 +18,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
@@ -31,15 +30,8 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
  */
 @ViewAccessScoped
 @Named("personMBean")
-//@Service(name="personService")
 public class PersonMBean extends BaseMBean<Person> implements Serializable,ModalObserver {
     
-    @Override
-    @PostConstruct
-    public void init() {
-        super.init();
-    }
-
 
   /**
      * this method is REQUIRED (or use the @Service annotation) to tell the framework how to 'crud' the managed bean's entity
@@ -49,7 +41,8 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
 //    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
 //        super.setBaseService(personService);
 //    }
-    @EJB
+    
+    @EJB//glassfish bug, should work with Inject even if service is an EJB
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }

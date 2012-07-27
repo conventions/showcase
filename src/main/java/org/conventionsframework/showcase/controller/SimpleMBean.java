@@ -4,12 +4,15 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import javax.inject.Inject;
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.showcase.model.Person;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.Type;
+import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -19,7 +22,7 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 @Named("simpleMBean")
 @ViewAccessScoped
 @PersistentClass(Person.class)//managed bean entity
-@Service(name="statefulHibernateService",entity=Person.class)//same as commented setService method
+@Service(name=Service.STATEFUL,entity=Person.class)//same as commented setService method
 public class SimpleMBean extends BaseMBean<Person> {
     
     
@@ -29,7 +32,7 @@ public class SimpleMBean extends BaseMBean<Person> {
      * @param baseService
      */
 //    @Inject 
-//    public void setService(@StatefulService(entity=Person.class) BaseService service){
+//    public void setService(@Service(type= Type.STATEFUL,entity=Person.class) BaseService service){
 //        super.setBaseService(service);
 //    }
 

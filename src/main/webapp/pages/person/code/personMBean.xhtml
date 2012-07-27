@@ -8,6 +8,7 @@ and open the template in the editor.
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets">
 
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -18,19 +19,18 @@ import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.event.ModalCallback;
-import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
 import org.conventionsframework.showcase.service.PersonService;
-import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
-import javax.inject.Inject;
+import javax.enterprise.event.Reception;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 
@@ -40,19 +40,25 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
  */
 @ViewAccessScoped
 @Named("personMBean")
-@Service(name="personService") //same as commented setPersonService
-public class PersonMBean extends BaseMBean&lt;Person&gt; implements Serializable, ModalObserver {
-
+public class PersonMBean extends BaseMBean&lt;Person&gt; implements Serializable,ModalObserver {
+    
 
   /**
      * this method is REQUIRED (or use the @Service annotation) to tell the framework how to 'crud' the managed bean's entity
      * @param personService
      */
 //    @Inject
-//    public void setPersonService(PersonService personService) {
+//    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
 //        super.setBaseService(personService);
 //    }
+    
+    @EJB//glassfish bug, should work with Inject even if service is an EJB
+    public void setPersonService(PersonService personService) {
+        super.setBaseService(personService);
+    }
+    
 
+    
     public PersonService getPersonService(){
         return (PersonService)super.getBaseService();
     }
@@ -72,11 +78,9 @@ public class PersonMBean extends BaseMBean&lt;Person&gt; implements Serializable
     public void store() {
         super.store();
     }
-
-
+ 
     public boolean isFriendState() {
-
-        return (getBeanState().equals(ShowcaseState.FRIEND));
+        return ShowcaseState.FRIEND.equals(getBeanState());
     }
 
 
@@ -119,11 +123,10 @@ public class PersonMBean extends BaseMBean&lt;Person&gt; implements Serializable
      */
     @Override
     public void modalResponse(@Observes(notifyObserver= Reception.IF_EXISTS) ModalCallback callback) {
-         /**
+        /**
          * invokerName is used for identifying purposes as ModalCallback event
          * can be observed by various managed beans.
          * also receive= Reception.IF_EXISTS can do this job
-         * and has the advantage that the bean constructor is not called 
          */
         if(callback.getInvokerName() != null &amp;&amp; callback.getInvokerName().equals(ConstantUtils.Invoker.PERSON_BEAN)){
             if (getEntity().getFriends() == null) {
@@ -138,11 +141,9 @@ public class PersonMBean extends BaseMBean&lt;Person&gt; implements Serializable
         }
     }
 
-    
-    //pass parameters to modal and call beforeOpen method
     public void initPersonSelectionModal() {
         Map&lt;String,Object&gt; parameters = new HashMap&lt;String, Object&gt;();
-        parameters.put("age", getEntity().getAge());
+        parameters.put("age", getEntity().getAge().toString());
         parameters.put("ignoreId", getEntity().getId());
         super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
     }
@@ -166,6 +167,8 @@ public class PersonMBean extends BaseMBean&lt;Person&gt; implements Serializable
         }
     }
 }
+
+ 
 
  
 </ui:composition> 

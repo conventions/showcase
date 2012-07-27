@@ -24,7 +24,7 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 @Named("simpleMBean")
 @ViewAccessScoped
 @PersistentClass(Person.class)//managed bean entity
-@Service(name="statefulHibernateService",entity=Person.class)//same as commented setService method
+@Service(name=Service.STATEFUL,entity=Person.class)//same as commented setService method
 public class SimpleMBean extends BaseMBean&lt;Person&gt; {
     
     
@@ -34,7 +34,7 @@ public class SimpleMBean extends BaseMBean&lt;Person&gt; {
      * @param baseService
      */
 //    @Inject 
-//    public void setService(@StatefulService(entity=Person.class) BaseService service){
+//    public void setService(@Service(type= Type.STATEFUL,entity=Person.class) BaseService service){
 //        super.setBaseService(service);
 //    }
 

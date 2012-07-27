@@ -60,7 +60,7 @@ public class TrackablePersonMBean extends StateMBean&lt;Person&gt; implements Se
      * this method is REQUIRED(or use the @Service annotation) to tell the framework how to 'crud' the managed bean's entity
      * @param personService
      */
-    @Inject
+    @EJB//glassfish bug, should work with Inject even if service is an EJB
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }
