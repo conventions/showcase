@@ -29,8 +29,6 @@ public class ShowcaseEntityManagerProvider extends CustomEntityManagerProvider i
     private EntityManager entityManager;
 
     @Override
-    @Produces
-    @RequestScoped
     public EntityManager getEntityManager() {
         return entityManager;
     }

@@ -15,6 +15,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.util.VersionUtils;
 
 /**
  *
@@ -40,13 +41,8 @@ public class SimpleI18nMBean extends BaseMBean<AbstractBaseEntity> implements Se
     }
     
     public String getParametrizedHello(){
-         List<Object> params = new ArrayList<Object>() {
-
-                {
-                    add("Conventions");
-                }
-            };
-        return getResourceBundle().getString("parametrizedHello",params);
+         
+        return getResourceBundle().getString("parametrizedHello","Conventions ",VersionUtils.INSTANCE.getCoreVersion().getVersion());
     }
 
 

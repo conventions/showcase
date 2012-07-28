@@ -8,6 +8,10 @@ and open the template in the editor.
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets">
     
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.BaseMBean;
@@ -21,6 +25,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.util.VersionUtils;
 
 /**
  *
@@ -28,31 +33,26 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
  */
 @Named
 @ViewAccessScoped
-public class SimpleI18nMBean extends BaseMBean&gt;AbstractBaseEntity&lt; implements Serializable{
+public class SimpleI18nMBean extends BaseMBean&lt;AbstractBaseEntity&gt; implements Serializable{
 
     private String selectedLocale;
 
     @PostConstruct
-    public void initLocale() {
+    public void initLocale () {
         selectedLocale = getResourceBundleProvider().getCurrentLocale();
     }
     
     
     @Inject 
-    private Event&gt;LocaleChangeEvent&lt; localeChangeEvent;
+    private Event&lt;LocaleChangeEvent&gt; localeChangeEvent;
     
     public String getSimpleHello(){
         return getResourceBundle().getString("simpleHello");
     }
     
     public String getParametrizedHello(){
-         List&gt;Object&lt; params = new ArrayList&gt;Object&lt;() {
-
-                {
-                    add("Conventions");
-                }
-            };
-        return getResourceBundle().getString("parametrizedHello",params);
+         
+        return getResourceBundle().getString("parametrizedHello","Conventions ",VersionUtils.INSTANCE.getCoreVersion().getVersion());
     }
 
 
@@ -73,6 +73,7 @@ public class SimpleI18nMBean extends BaseMBean&gt;AbstractBaseEntity&lt; impleme
     }
     
 }
+
 
 
 
