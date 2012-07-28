@@ -34,7 +34,8 @@ public class AdvancedFilterServiceImpl extends StatelessHibernateService<Person,
      * configure filtering and sort for lazy datatable, this method is called 
      * everytime datatable is updated, you need to override it when you need complex
      * filtering/sort or if you want to change the default filters behavior
-     * @see StatelessGenericHibernateDao#addBasicFilterRestrictions(org.hibernate.criterion.DetachedCriteria, java.util.Map) 
+     * @see StatelessHibernateService#addBasicFilterRestrictions(org.hibernate.criterion.DetachedCriteria, java.util.Map) 
+     * 
      */
     @Override
     public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters) {
@@ -44,12 +45,15 @@ public class AdvancedFilterServiceImpl extends StatelessHibernateService<Person,
         
         
         /**
-         * keep basic restrictions  as name(iLike),age(eq) and lastName(iLike)
-         * on top of the entity being paged(Person), basicFilterRestrictions 
-         * is used when you dont override this method
-         * @see StatelessGenericHibernateDao#configFindPaginated((int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters)
+         * keep basic restrictions, conventions will infer restrictions with reflections
+         * and add a database 'ilike' for String properties, 'eq' for Integer/Long and 'greater than' for 
+         * date/calendar properties on top of the entity being paged(Person), 
+         * when you override configFindPaginated basicFilterRestrictions is not applied
+         * so if you want to keep this behavior you need to explicit call addBasicFilterRestrictions
+         * @see BaseHibernateDaoImpl#configFindPaginated((int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters)
          */
         if(columnFilters != null && !columnFilters.isEmpty()){
+      
             getDao().addBasicFilterRestrictions(dc, columnFilters);
         }
         if(externalFilters != null && !externalFilters.isEmpty()){
