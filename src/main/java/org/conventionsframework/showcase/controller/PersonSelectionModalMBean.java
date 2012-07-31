@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
 import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
 import org.conventionsframework.service.BaseService;
 import org.primefaces.event.CloseEvent;
 
@@ -38,9 +39,13 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
      * @param personService
      */
     @Inject
-    public void setPersonService(@Service(name=Service.STATELESS,entity=Person.class)BaseService personService) {
+    public void setPersonService(@Service(type= Type.STATELESS,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
+//    @EJB
+//    public void setPersonService(PersonService personService) {
+//        super.setBaseService(personService);
+//    }
 
     public PersonService getPersonService(){
         return (PersonService)super.getBaseService();

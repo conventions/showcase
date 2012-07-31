@@ -10,11 +10,11 @@ import javax.annotation.PostConstruct;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
 import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
 import org.conventionsframework.service.BaseService;
 
  /**
@@ -38,7 +38,7 @@ public class PersonSelectionModalMBean2 extends ModalMBean<Person> implements Se
      * @param personService
      */
     @Inject
-    public void setPersonService(@Service(name=Service.STATEFUL,entity=Person.class)BaseService personService) {
+    public void setPersonService(@Service(type=Type.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 

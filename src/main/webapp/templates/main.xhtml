@@ -5,6 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
         xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
 	template="/templates/layout.xhtml">
         
@@ -54,6 +55,7 @@
                              /> 
             <p:remoteCommand name="resetNorthSize" oncomplete=" mainLayout.sizePane('north',125);"/>
             <p:remoteCommand name="historyNorthSize" oncomplete=" mainLayout.sizePane('north',155);"/>
+             <pe:ajaxErrorHandler  button="#{msg['timeout.reload']}" title="#{msg['timeout.header']}" body="#{msg['timeout.message']}"/>  
         </ui:define>
         <ui:define name="topLeftMenu">
                 <p:commandLink  value="Showcase Home" style="margin-left: 10px;font-size: 20px!important" action="/home.faces?faces-redirect=true" actionListener="#{stateController.clearState}" ajax="false"  />
@@ -102,8 +104,8 @@
                             }
                </style>
                </p:outputPanel>
-             <p class="copyright" style="font-size: 9px" >&copy;&nbsp;&nbsp;2011-2012 &nbsp;&nbsp; <a href="https://github.com/rmpestano/conventions/" target="_blank">Conventions #{applicationInfoMBean.infoMap['conventions.version']}</a></p>
-             <p style="float:right;font-size: 9px"  >Powered by  <a style="font-size: 9px" href="http://javaserverfaces.java.net/" target="_blank">Mojarra #{applicationInfoMBean.infoMap['mojarra.version']}</a>, <a style="font-size: 9px" href="http://www.primefaces.org/" target="_blank">Primefaces #{applicationInfoMBean.infoMap['primefaces.version']}</a>, <a style="font-size: 9px" href="http://code.google.com/p/primefaces-extensions/" target="_blank">Primefaces Ext #{applicationInfoMBean.infoMap['primefaces-ext.version']}</a>, <a style="font-size: 9px" href="http://hibernate.org" target="_blank">Hibernate #{applicationInfoMBean.infoMap['hibernate.version']}</a>, <a href="http://jcp.org/aboutJava/communityprocess/final/jsr318/" style="font-size: 9px" target="_blank">EJB3.1</a>, <a style="font-size: 9px" href="http://myfaces.apache.org/extensions/cdi/" target="_blank">CODI #{applicationInfoMBean.infoMap['myfaces.codi.version']}</a> on <a style="font-size: 9px" href="http://glassfish.java.net/public/downloadsindex.html#top" target="_blank">Glassfish 3.x</a> and <a href="http://www.jboss.org/as7" style="font-size: 9px" target="_blank">JBossAS 7.x</a> - <h:outputText style="font-size: 9px" value="deploy time: "/> <h:outputText style="font-size: 9px" value="#{applicationInfoMBean.buildTime}"><f:convertDateTime locale="pt_BR" timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy HH:mm:ss zzzz"/> </h:outputText> - [<h:outputText style="font-size: 9px" value="#{accessCountMBean.accessCount}"/>] </p>
+             <p class="copyright" style="font-size: 9px;text-decoration: underline" >&copy;&nbsp;&nbsp;2011-2012 &nbsp;&nbsp; <a href="https://github.com/rmpestano/conventions/" target="_blank">Conventions #{applicationInfoMBean.infoMap['conventions.version']}</a></p>
+             <p style="float:right;font-size: 9px"  >Powered by  <a style="font-size: 9px;text-decoration: underline" href="http://javaserverfaces.java.net/" target="_blank">Mojarra #{applicationInfoMBean.infoMap['mojarra.version']}</a>, <a style="font-size: 9px;text-decoration: underline" href="http://www.primefaces.org/" target="_blank">Primefaces #{applicationInfoMBean.infoMap['primefaces.version']}</a>, <a style="font-size: 9px;text-decoration: underline" href="http://code.google.com/p/primefaces-extensions/" target="_blank">Primefaces Ext #{applicationInfoMBean.infoMap['primefaces-ext.version']}</a>, <a style="font-size: 9px;text-decoration: underline" href="http://hibernate.org" target="_blank">Hibernate #{applicationInfoMBean.infoMap['hibernate.version']}</a>, <a href="http://jcp.org/aboutJava/communityprocess/final/jsr318/" style="font-size: 9px;text-decoration: underline" target="_blank">EJB3.1</a>, <a style="font-size: 9px;text-decoration: underline" href="http://myfaces.apache.org/extensions/cdi/" target="_blank">CODI #{applicationInfoMBean.infoMap['myfaces.codi.version']}</a> on <a style="font-size: 9px;text-decoration: underline" href="http://glassfish.java.net/public/downloadsindex.html#top" target="_blank">Glassfish 3.x</a> and <a href="http://www.jboss.org/as7" style="font-size: 9px;text-decoration: underline" target="_blank">JBossAS 7.x</a> - <h:outputText style="font-size: 9px" value="deploy time: "/> <h:outputText style="font-size: 9px" value="#{applicationInfoMBean.buildTime}"><f:convertDateTime locale="pt_BR" timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy HH:mm:ss zzzz"/> </h:outputText> - [<h:outputText style="font-size: 9px" value="#{accessCountMBean.accessCount}"/>] </p>
              
         </ui:define>
         

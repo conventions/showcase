@@ -9,7 +9,7 @@ import javax.inject.Named;
 import javax.validation.constraints.Size;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.hibernate.validator.constraints.NotEmpty;
-
+ 
 /**
  *
  * @author Rafael M. Pestano Apr 4, 2011 7:58:11 PM

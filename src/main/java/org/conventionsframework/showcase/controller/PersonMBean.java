@@ -135,7 +135,7 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
         Map<String,Object> parameters = new HashMap<String, Object>();
         parameters.put("age", getEntity().getAge().toString());
         parameters.put("ignoreId", getEntity().getId());
-        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
+//        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
     }
 
     public void backEdit() {

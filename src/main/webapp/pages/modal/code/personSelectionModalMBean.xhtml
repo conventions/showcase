@@ -47,7 +47,7 @@ public class PersonSelectionModalMBean extends ModalMBean&lt;Person&gt; implemen
      * @param personService
      */
     @Inject
-    public void setPersonService(@Service(name=Service.STATELESS,entity=Person.class)BaseService personService) {
+    public void setPersonService(@Service(type=Type.STATELESS,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 
