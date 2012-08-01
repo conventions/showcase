@@ -91,7 +91,8 @@ and open the template in the editor.
                 
                 &lt;framework:modalRemoval mbean="\#{personSelectionMBean}"
                                         update=":personSelectionForm:pageControl :personSelectionForm:msg"
-                                        oncomplete="removeGridPersonModal.hide();hideMsg(args);"
+                                        appendToBody="true"
+                                        oncomplete="hideMsg(args);"
                                         persistentRemove="false"
                                         widgetVar="removeGridPersonModal"&gt;
                 &lt;/framework:modalRemoval&gt;

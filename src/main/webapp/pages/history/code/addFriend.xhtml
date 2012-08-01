@@ -82,8 +82,8 @@ and open the template in the editor.
                     &lt;/p:dataTable&gt;
                 &lt;/p:panel&gt;
                 &lt;framework:modalRemoval mbean="\#{trackablePersonMBean}"
-                                        update="historyForm:removeFriendModal:msgRemove :historyForm:table personConversationForm:logTxtArea"
-                                        oncomplete="removeFriendModal.hide();hideMsg(args);"
+                                        update="historyForm:removeFriendModal:msgRemove :historyForm:table"
+                                        appendToBody="true"
                                         persistentRemove="false"
                                         id="removeFriendModal"
                                         height="200"

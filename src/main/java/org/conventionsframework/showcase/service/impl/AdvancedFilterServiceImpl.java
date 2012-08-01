@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Named;
 import org.conventionsframework.model.WrappedData;
+import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.PhoneType;
@@ -53,7 +54,6 @@ public class AdvancedFilterServiceImpl extends StatelessHibernateService<Person,
          * @see BaseHibernateDaoImpl#configFindPaginated((int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters)
          */
         if(columnFilters != null && !columnFilters.isEmpty()){
-      
             getDao().addBasicFilterRestrictions(dc, columnFilters);
         }
         if(externalFilters != null && !externalFilters.isEmpty()){

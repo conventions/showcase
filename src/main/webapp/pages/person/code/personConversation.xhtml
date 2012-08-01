@@ -123,7 +123,7 @@ and open the template in the editor.
                 &lt;framework:messageHide messageId=":personConversationForm:msg" timeout="1600" /&gt;
                 &lt;framework:modalRemoval id="removePersonModal" mbean="\#{personConversationMBean}"
                                         update=":personConversationForm:tablePanel :personConversationForm:removePersonModal:msgRemove"
-                                        oncomplete="removePersonModal.hide();hideMsg(args);"
+                                        appendToBody="true"
                                         header="Remove Person"
                                         widgetVar="removePersonModal"
                                         height="215"

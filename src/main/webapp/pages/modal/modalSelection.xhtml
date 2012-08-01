@@ -82,8 +82,9 @@
 
                 <framework:modalRemoval mbean="#{personSelectionMBean}"
                                         update=":personSelectionForm:pageControl :personSelectionForm:msg"
-                                        oncomplete="removeGridPersonModal.hide();hideMsg(args);"
                                         persistentRemove="false"
+                                        oncomplete="hideMsg(args);"
+                                        appendToBody="true"
                                         widgetVar="removeGridPersonModal">
                 </framework:modalRemoval>
             </h:form>

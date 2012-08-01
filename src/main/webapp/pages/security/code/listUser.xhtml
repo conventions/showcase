@@ -87,7 +87,7 @@ and open the template in the editor.
                     &lt;/center&gt;
         &lt;/div&gt;
         
-        &lt;framework:modalRemoval widgetVar="securityRemoval" mbean="\#{securityMBean}" update=":securityForm:listPanel" header="Remove Person"&gt;
-            &lt;framework:inputText label="Person" value="\#{securityMBean.entityAux.name}" disabled="true"/&gt;
+        &lt;framework:modalRemoval widgetVar="securityRemoval" appendToBody="true" mbean="\#{securityMBean}" update=":securityForm:listPanel" header="Remove Person"&gt;
+            &lt;framework:inputText label="Person" value="\#{securityMBean.entityAux.name}"  disabled="true"/&gt;
         &lt;/framework:modalRemoval&gt;
 </ui:composition>

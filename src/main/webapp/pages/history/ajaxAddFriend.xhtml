@@ -72,7 +72,7 @@ and open the template in the editor.
         </p:panel>
         <framework:modalRemoval mbean="#{ajaxStateMBean}"
                                 update=":historyForm:removeFriendModal:msgRemove :historyForm:tableFriend"
-                                oncomplete="removeFriendModal.hide();hideMsg(args);"
+                                appendToBody="true"
                                 persistentRemove="false"
                                 id="removeFriendModal"
                                 height="200"

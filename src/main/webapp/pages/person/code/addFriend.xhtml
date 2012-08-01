@@ -83,7 +83,8 @@ and open the template in the editor.
                 &lt;/p:panel&gt;
                 &lt;framework:modalRemoval mbean="\#{personMBean}"
                                         update=":personCrudForm:panelFriend"
-                                        oncomplete="removeFriendModal.hide();hideMsg(args);"
+                                        appendToBody="true"
+                                        oncomplete="hideMsg(args);"
                                         persistentRemove="false"
                                         id="removeFriendModal"
                                         widgetVar="removeFriendModal"&gt;

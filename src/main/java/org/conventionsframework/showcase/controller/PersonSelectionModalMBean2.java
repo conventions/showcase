@@ -42,8 +42,8 @@ public class PersonSelectionModalMBean2 extends ModalMBean<Person> implements Se
         super.setBaseService(personService);
     }
 
-    public PersonService getPersonService(){
-        return (PersonService)super.getBaseService();
+    public BaseService getPersonService(){
+        return super.getBaseService();
     }
     
     @PostConstruct

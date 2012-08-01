@@ -114,6 +114,7 @@ and open the template in the editor.
      &lt;framework:modalRemoval  mbean="\#{simpleMBean}"
                                     update=":simpleCrudForm:removePersonModal:msgRemove :simpleCrudForm:tablePanel"
                                     header="Remove Person"
+                                    appendToBody="true"
                                     id="removePersonModal"
                                     widgetVar="removePersonModal"&gt;
                   &lt;p:inputText value="\#{simpleMBean.entityAux.name}" disabled="true"/&gt;        
