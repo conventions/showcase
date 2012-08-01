@@ -22,6 +22,9 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
+import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -33,15 +36,15 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
 
     /**
      * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
-     * @param personService
+     * @param personService 
      */
-    @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
-    public void setPersonService(PersonService personService) {
+    @Inject
+    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 
-    public PersonService getPersonService(){
-        return (PersonService)super.getBaseService();
+    public BaseService getPersonService(){
+        return  super.getBaseService();
     }
 
     /**
@@ -136,7 +139,7 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
             Person[] selectedPerson = (Person[]) callback.getResult();
             for (Person person : selectedPerson) {
                 if (!getEntity().hasFriend(person.getId())) {
-                    getEntity().getFriends().add(getPersonService().load(person.getId()));
+                    getEntity().getFriends().add((Person)getPersonService().load(person.getId()));
                 }
             }
         }
@@ -146,7 +149,7 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
         Map<String,Object> parameters = new HashMap<String, Object>();
         parameters.put("age", getEntity().getAge().toString());
         parameters.put("ignoreId", getEntity().getId());
-        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
+//        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
     }
      
      public String goList(){

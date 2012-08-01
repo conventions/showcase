@@ -43,4 +43,8 @@
       <exception-type>org.jboss.weld.context.NonexistentConversationException</exception-type>
       <location>/error.xhtml</location>
    </error-page>
+    <error-page>
+      <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+      <location>/index.html</location>
+   </error-page>
 </web-app>

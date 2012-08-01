@@ -8,7 +8,6 @@ import org.conventionsframework.bean.ModalMBean;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import org.conventionsframework.showcase.model.Person;
-import org.conventionsframework.showcase.service.PersonService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;

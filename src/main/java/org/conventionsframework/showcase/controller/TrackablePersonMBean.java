@@ -14,18 +14,20 @@ import org.conventionsframework.qualifier.PersistentClass;
 import java.io.Serializable;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
-import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
+import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -48,19 +50,19 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
    
 
     public TrackablePersonMBean() {
-    }
+    }    
 
     /**
      * this method is REQUIRED (or use the @Service annotation) to tell the framework how to 'crud' the managed bean's entity
      * @param personService
      */
-    @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
-    public void setPersonService(PersonService personService) {
+    @Inject
+    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 
-    public PersonService getPersonService() {
-        return (PersonService) super.getBaseService();
+    public BaseService getPersonService() {
+        return super.getBaseService();
     }
 
     @Override
@@ -103,7 +105,7 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
         Person[] selectedPerson = (Person[]) callback.getResult();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add(getPersonService().load(person.getId()));
+                getEntity().getFriends().add((Person)getPersonService().load(person.getId()));
             }
         }
     }

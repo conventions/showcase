@@ -5,7 +5,6 @@ import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.util.Map;
-import javax.ejb.Local;
 import javax.ejb.Stateful;
 import javax.inject.Named;
 import org.apache.commons.lang3.StringUtils;

@@ -10,7 +10,9 @@ import org.conventionsframework.event.ModalInitialization;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.io.Serializable;
+import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
@@ -38,14 +40,10 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
      * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
      * @param personService
      */
-    @Inject
-    public void setPersonService(@Service(type= Type.STATELESS,entity=Person.class)BaseService personService) {
+    @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
+    public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }
-//    @EJB
-//    public void setPersonService(PersonService personService) {
-//        super.setBaseService(personService);
-//    }
 
     public PersonService getPersonService(){
         return (PersonService)super.getBaseService();
@@ -76,7 +74,7 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
      * @param modalInit 
      */
     @Override
-    public void beforeOpen(@Observes ModalInitialization modalInit) {
+    public void beforeOpen(@Observes(notifyObserver= Reception.IF_EXISTS) ModalInitialization modalInit) {
         if(getModalName().equals(modalInit.getModal())){//make sure the parameter is for you 
            getPaginator().getFilter().put("age", modalInit.getParameters().get("age").toString());
            getPaginator().getFilter().put("ignoreId", modalInit.getParameters().get("ignoreId"));
