@@ -10,4 +10,5 @@ import org.conventionsframework.showcase.model.Person;
 public interface PersonService extends BaseService<Person, Long>{
 
      boolean alowDeletePerson(Person entity);
+     void setRollbackTest(boolean rollbackTest);
 }

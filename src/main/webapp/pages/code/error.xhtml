@@ -9,16 +9,18 @@ and open the template in the editor.
     xmlns:ui="http://java.sun.com/jsf/facelets">
  
         &lt;center&gt;
-            &lt;h:form&gt;
+             &lt;h:form&gt;
 
                 &lt;h:link value="Unexpected error - click here to go home" 
                         style="color: red;text-transform: uppercase"
                         outcome="home.faces"/&gt;
                 &lt;br/&gt;
                 
-                &lt;p:panel header="Error Detail" style="overflow: auto" toggleable="true" collapsed="true" closeTitle="Error"&gt;
-                     
-                     Error &lt;span style="color: red;"&gt;\#{errorName}&lt;/span&gt;  
+                &lt;p:panel header="Error Name" style="overflow: auto" toggleable="true" collapsed="true" closeTitle="Error"&gt;
+                     &lt;br/&gt;
+                     Error &lt;span style="font-size: 14px;color: red;"&gt;\#{errorName}&lt;/span&gt;  
+                     &lt;br/&gt;
+                     &lt;br/&gt;
                     &lt;p:tabView &gt;  
                         &lt;p:tab title="Message"&gt;  
                             &lt;h:panelGrid columns="2"&gt;  
@@ -27,7 +29,7 @@ and open the template in the editor.
                             &lt;/h:panelGrid&gt;  
 
                         &lt;/p:tab&gt;  
-                        &lt;p:tab title="Detail"&gt;  
+                        &lt;p:tab title="Stacktrace"&gt;  
                             &lt;div style="overflow: auto; height: 300px; width: 700px;"&gt;  
                                 \#{stacktrace}
                             &lt;/div&gt;  

@@ -16,7 +16,7 @@
                         outcome="home.faces"/>
                 <br/>
                 
-                <p:panel header="Error Detail" style="overflow: auto" toggleable="true" collapsed="true" closeTitle="Error">
+                <p:panel header="Error Name" style="overflow: auto" toggleable="true" collapsed="true" closeTitle="Error">
                      <br/>
                      Error <span style="font-size: 14px;color: red;">#{errorName}</span>  
                      <br/>
@@ -29,7 +29,7 @@
                             </h:panelGrid>  
 
                         </p:tab>  
-                        <p:tab title="Detail">  
+                        <p:tab title="Stacktrace">  
                             <div style="overflow: auto; height: 300px; width: 700px;">  
                                 #{stacktrace}
                             </div>  

@@ -145,6 +145,11 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
     public void back(){
          setBeanState(CrudState.FIND);
     }
+    
+    public void saveAndRollback(){
+        getPersonService().setRollbackTest(true);
+        getPersonService().store(getEntity());
+    }
    
     @Override
     public void removeFromList() {

@@ -44,7 +44,7 @@
         </ui:define>
 	 
         <ui:define name="headerForm">
-            <p:growl id="growl" life="1200"/>
+            <p:growl id="growl" life="3000"/>
             <p:remoteCommand name="onload"  rendered="#{not databaseHelper.aplicattionInitialized}" 
                              global="false" action="#{databaseHelper.initDatabase()}" 
                              onstart="jQuery.blockUI();"
