@@ -1,17 +1,22 @@
 package org.conventionsframework.showcase.service.impl;
 
+import java.rmi.RemoteException;
 import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.util.Map;
+import java.util.logging.Logger;
+import javax.ejb.EJBException;
 import javax.ejb.SessionSynchronization;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.conventionsframework.exception.BusinessException;
+import org.conventionsframework.qualifier.Log;
 import org.conventionsframework.service.impl.StatefulHibernateService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -32,6 +37,9 @@ import org.primefaces.model.SortOrder;
 public class PersonServiceImpl extends StatefulHibernateService<Person, Long> implements PersonService, SessionSynchronization {
     
     private boolean rollbackTest;
+    @Inject @Log
+    private transient Logger log;
+    
     
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -133,6 +141,21 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
 
     public void setRollbackTest(boolean rollbackTest) {
         this.rollbackTest = rollbackTest;
+    }
+
+    @Override
+    public void afterBegin() throws EJBException, RemoteException {
+       log.info("afterBegin()");
+    }
+
+    @Override
+    public void beforeCompletion() throws EJBException, RemoteException {
+        log.info("beforeCompletion()");
+    }
+
+    @Override
+    public void afterCompletion(boolean committed) throws EJBException, RemoteException {
+         log.info("afterCompletion()");
     }
 
 }

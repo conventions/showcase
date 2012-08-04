@@ -8,7 +8,6 @@ import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.event.ModalCallback;
 import org.conventionsframework.showcase.model.Person;
-import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.List;
