@@ -27,12 +27,14 @@ and open the template in the editor.
                 &lt;p:panel id="panelFriend" style="width: 650px;min-height:300px " header="Friends"&gt;
                   
                     &lt;center&gt;
-                        &lt;h:panelGrid columns="4"&gt;
+                        &lt;h:panelGrid columns="5"&gt;
                             &lt;framework:saveButton  mbean="\#{personMBean}" process=":personCrudForm:panelFriend" ajax="true"
                                                    update=":personCrudForm:panelFriend :personCrudForm:msg" oncomplete="hideMsg(args)"&gt;
                             &lt;/framework:saveButton&gt;
                             &lt;p:commandButton value="Back" action="\#{personMBean.backEdit}" update="personCrudForm:pageControl" immediate="true" icon="ui-icon back_img"/&gt;
                             &lt;p:commandButton value="Go Home" action="\#{personMBean.back}" update="personCrudForm:pageControl" immediate="true"/&gt;
+                            &lt;p:commandButton value="Save and Rollback transaction" action="\#{personMBean.saveAndRollback}" update="personCrudForm:pageControl"/&gt;
+
                         &lt;/h:panelGrid&gt;
                         &lt;framework:messageHide messageId=":personCrudForm:msg"/&gt;
                     &lt;/center&gt;
