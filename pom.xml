@@ -17,7 +17,7 @@
         <primefaces.version>3.4-SNAPSHOT</primefaces.version>
         <primefaces-ext.version>0.5.1</primefaces-ext.version>
         <primefaces.theme.version>1.0.6</primefaces.theme.version>
-        <conventions.version>0.9.6-SNAPSHOT</conventions.version>
+        <conventions.version>0.9.7-SNAPSHOT</conventions.version>
         <openwebbeans.version>1.1.4</openwebbeans.version>
         <hibernate.version>4.1.5.Final</hibernate.version>
         <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>

@@ -23,7 +23,6 @@ import org.primefaces.event.CloseEvent;
  */
 @Named(value = "personSelectionModalMBean")
 @WindowScoped
-//@Service(value=PersonService.class)
 public class PersonSelectionModalMBean extends ModalMBean<Person> implements Serializable, ModalInitializable {
 
     private Person[] selectedPeople;
