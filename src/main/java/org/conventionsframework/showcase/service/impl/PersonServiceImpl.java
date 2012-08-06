@@ -7,6 +7,7 @@ import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
 import javax.ejb.SessionSynchronization;
 import javax.ejb.Stateful;
@@ -14,6 +15,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import org.apache.commons.lang3.StringUtils;
 import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.qualifier.Log;
@@ -40,6 +44,20 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
     @Inject @Log
     private transient Logger log;
     
+    //you can also change service entityManager but remember to set a valid
+    //PersistenceContext, for example if your service extends StatelessHibernateService
+    //only type= PersistenceContextType.TRANSACTION is allowed cause the service has
+    //a Stateless EntityManagerProvider
+    // just uncomment the block below
+    /*
+    @PersistenceContext(type= PersistenceContextType.TRANSACTION)
+    private EntityManager entityManager;
+    
+    @PostConstruct
+    public void initEntityManager(){
+        getEntityManagerProvider().setEntityManager(entityManager);
+    }
+    */
     
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)

@@ -42,6 +42,21 @@ public class PersonServiceImpl extends StatefulHibernateService&lt;Person, Long&
     
     private boolean rollbackTest;
     
+    //you can also change service entityManager but remember to set a valid
+    //PersistenceContext, for example if your service extends StatelessHibernateService
+    //only type= PersistenceContextType.TRANSACTION is allowed cause the service has
+    //a Stateless EntityManagerProvider
+    // just uncomment the block below
+    /*
+    @PersistenceContext(type= PersistenceContextType.TRANSACTION)
+    private EntityManager entityManager;
+    
+    @PostConstruct
+    public void initEntityManager(){
+        getEntityManagerProvider().setEntityManager(entityManager);
+    }
+    */
+    
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public WrappedData&lt;Person&gt; configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
