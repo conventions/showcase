@@ -45,7 +45,8 @@ public class ThemeMBean implements Serializable{
         themeList.add(new Theme("ui-darkness", "ui-darkness.png"));
 //        themeList.add(new Theme("ui-lightness", "ui-lightness.png"));
         themeList.add(new Theme("vader", "vader.png"));
-        theme = this.getThemeByName("afterDark");
+//        theme = this.getThemeByName("bootstrap");
+        theme = this.getThemeByName("afterdark");
     }
 
     public List<Theme> getThemeList() {
@@ -77,6 +78,9 @@ public class ThemeMBean implements Serializable{
             evenRow = "#505050";
         }
         if(theme.getName().equalsIgnoreCase("bluesky")){
+            evenRow = "#E5EEFC";
+        }
+        if(theme.getName().equalsIgnoreCase("bootstrap")){
             evenRow = "#E5EEFC";
         }
         if(theme.getName().equalsIgnoreCase("cupertino")){

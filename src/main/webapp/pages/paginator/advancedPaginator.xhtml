@@ -51,7 +51,7 @@
                     </p:outputPanel>
                     <p:dataTable value="#{paginatorMBean.advancedPaginator.dataModel}" widgetVar="tableVar" id="advTable" var="row" emptyMessage="No person found" 
                                  rowIndexVar="rowIndex"
-                                 lazy="true"
+                                 lazy="true" filteredValue="#{paginatorMBean.advancedPaginator.filteredValue}"
                                  rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
                                  paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  rowsPerPageTemplate="5,10,15,20,30" >

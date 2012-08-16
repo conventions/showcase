@@ -38,7 +38,7 @@ import org.primefaces.model.SortOrder;
 @Stateful
 @Named(value = "personService")
 @PersistentClass(Person.class)
-public class PersonServiceImpl extends StatefulHibernateService&lt;Person, Long&gt; implements PersonService, SessionSynchronization {
+public class PersonServiceImpl extends StatefulHibernateService&lt;Person, Long&gt; implements PersonService {
     
     private boolean rollbackTest;
     

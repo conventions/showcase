@@ -15,6 +15,7 @@ and open the template in the editor.
                         &lt;p:panel id="trackablePanel" style="overflow: auto;margin-top: 50px"&gt;
                             &lt;p:dataTable value="\#{trackablePersonMBean2.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found"
                                          rowIndexVar="rowIndex"
+                                         lazy="true" filteredValue="\#{trackablePersonMBean2.paginator.filteredValue}"
                                          rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
                                          paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                          rowsPerPageTemplate="5,10,15,20,30"&gt;

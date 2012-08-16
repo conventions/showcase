@@ -7,7 +7,6 @@ import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
 import javax.ejb.SessionSynchronization;
 import javax.ejb.Stateful;
@@ -15,9 +14,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import org.apache.commons.lang3.StringUtils;
 import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.qualifier.Log;
@@ -38,7 +34,7 @@ import org.primefaces.model.SortOrder;
 @Stateful
 @Named(value = "personService")
 @PersistentClass(Person.class)
-public class PersonServiceImpl extends StatefulHibernateService<Person, Long> implements PersonService, SessionSynchronization {
+public class PersonServiceImpl extends StatefulHibernateService<Person, Long> implements PersonService {
     
     private boolean rollbackTest;
     @Inject @Log
@@ -159,21 +155,6 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
 
     public void setRollbackTest(boolean rollbackTest) {
         this.rollbackTest = rollbackTest;
-    }
-
-    @Override
-    public void afterBegin() throws EJBException, RemoteException {
-       log.info("afterBegin()");
-    }
-
-    @Override
-    public void beforeCompletion() throws EJBException, RemoteException {
-        log.info("beforeCompletion()");
-    }
-
-    @Override
-    public void afterCompletion(boolean committed) throws EJBException, RemoteException {
-         log.info("afterCompletion()");
     }
 
 }
