@@ -8,8 +8,6 @@ import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.event.LocaleChangeEvent;
 import org.conventionsframework.model.AbstractBaseEntity;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;

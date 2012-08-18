@@ -9,6 +9,7 @@ and open the template in the editor.
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+        xmlns:showcase="http://java.sun.com/jsf/composite/components/showcase"
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:p="http://primefaces.org/ui"
         xmlns:c="http://java.sun.com/jsp/jstl/core">
@@ -26,7 +27,7 @@ and open the template in the editor.
                                         <framework:inputText numeric="true" value="#{personMBean.paginator.filter.age}"/>
                                     </h:panelGrid>
                                     <h:panelGrid columns="2" >
-                                        <framework:filterButton mbean="#{personMBean}" id="filter-bt" onclick="tableVar.getPaginator().setPage(0);" update=":personCrudForm:tablePanel" process=":personCrudForm:panelFilter"
+                                        <framework:filterButton mbean="#{personMBean}" id="filter-bt" onclick="tableVar.getPaginator().setPage(0);" update=":personCrudForm:tablePanel" process=":personCrudForm:tablePanel,:personCrudForm:panelFilter"
                                                                      />
                                         <p:commandButton value="Hide Filters" update="inplace"/>
                                         <framework:uiBlocker message="Filtering...." source="button[id$=filter-bt]" target="#personCrudForm\\:table"/>    
@@ -36,7 +37,6 @@ and open the template in the editor.
                         </p:inplace> 
            
            <p:panel id="tablePanel" style="overflow: auto;">
-           <p:remoteCommand name="updateRowCount" process="@none" update="personCrudForm:table:tableFooter"/>        
            <p:dataTable value="#{personMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found" 
                         rowIndexVar="rowIndex"
                         lazy="true" filteredValue="#{personMBean.paginator.filteredValue}"
@@ -101,7 +101,7 @@ and open the template in the editor.
                     </div>
                 </p:column>
                   <f:facet name="footer">
-                      <framework:tableFooter mbean="#{personMBean}" id="tableFooter"/>
+                      <framework:tableFooter  mbean="#{personMBean}" id="tableFooter"/>
                 </f:facet>
            </p:dataTable>
             

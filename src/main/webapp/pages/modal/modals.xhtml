@@ -22,6 +22,7 @@ and open the template in the editor.
                              >
                     <p:dataTable value="#{personSelectionModalMBean.paginator.dataModel}" 
                                  selection="#{personSelectionModalMBean.selectedPeople}"
+                                 filteredValue="#{personSelectionModalMBean.paginator.filteredValue}"
                                  id="selectionTable" var="row" 
                                  emptyMessage="No person found" 
                                  lazy="true"

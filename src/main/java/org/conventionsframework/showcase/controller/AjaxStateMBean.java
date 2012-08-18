@@ -13,7 +13,6 @@ import org.conventionsframework.qualifier.BeanStates;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
-import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
@@ -22,9 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
+import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -43,12 +45,13 @@ import org.conventionsframework.qualifier.Service;
     @BeanState(beanState=ConstantUtils.State.FRIEND_STATE,title="Manage Friends",callback="#{ajaxStateMBean.setFriendState}",update=":historyForm:pageControl"),
     @BeanState(beanState="init",title="Ajax StateMBean",callback="#{ajaxStateMBean.setInitState}",update=":historyForm:pageControl")
 })
-@Service(name=Service.STATEFUL,entity=Person.class)
+@Service(name=Service.STATEFUL,entity=Person.class)//same as commented method below 
 public class AjaxStateMBean extends StateMBean<Person> implements ModalObserver{
     
-    public PersonService getPersonService(){
-        return (PersonService)super.getBaseService();
-    }
+//    @Inject
+//    public void initService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService service){
+//        super.setBaseService(service);
+//    }
     
     public boolean isFriendState() {
         return ShowcaseState.isFriendState(getBeanState());
@@ -86,7 +89,7 @@ public class AjaxStateMBean extends StateMBean<Person> implements ModalObserver{
         Person[] selectedPerson = (Person[]) callback.getResult();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add(getPersonService().load(person.getId()));
+                getEntity().getFriends().add((Person)getBaseService().load(person.getId()));
             }
         }
     }
