@@ -1,0 +1,10 @@
+Steps to generate an openshift compatible .war
+
+0 - use jboss maven profile
+1 - rename content in index.html to /conventions/home.faces
+2 - change JTA datasource in persistence.xtm to  <jta-data-source>java:jboss/datasources/conventionsDS</jta-data-source> (its commented)
+3 - use @Inject in setPersonService method of PersonMBean.java (its commented)
+4 - use @Inject in setPersonService method of PersonSelectionModalMBean.java (its commented)
+5 - clean & build (or mvn -Pjboss install)
+
+

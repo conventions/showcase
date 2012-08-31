@@ -14,11 +14,11 @@
         <mojarra.version>2.1.7</mojarra.version>
         <myfaces.version>2.1.7</myfaces.version>
         <myfaces.codi.version>1.0.5</myfaces.codi.version>
-        <primefaces.version>3.4.RC1</primefaces.version>
+        <primefaces.version>3.4-SNAPSHOT</primefaces.version>
         <primefaces-ext.version>0.6.0-SNAPSHOT</primefaces-ext.version>
-        <primefaces.theme.version>1.0.7</primefaces.theme.version>
+        <primefaces.theme.version>1.0.8</primefaces.theme.version>
         <conventions.version>0.9.7-SNAPSHOT</conventions.version>
-        <openwebbeans.version>1.1.4</openwebbeans.version>
+        <openwebbeans.version>1.1.5</openwebbeans.version>
         <hibernate.version>4.1.5.Final</hibernate.version>
         <netbeans.hint.j2eeVersion>1.6</netbeans.hint.j2eeVersion>
     </properties>
@@ -90,6 +90,11 @@
         <dependency>
             <groupId>org.primefaces.themes</groupId>
             <artifactId>afterdark</artifactId>
+            <version>${primefaces.theme.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces.themes</groupId>
+            <artifactId>bootstrap</artifactId>
             <version>${primefaces.theme.version}</version>
         </dependency>
         <dependency>
@@ -184,11 +189,7 @@
             <scope>provided</scope>
         </dependency>
         
-        <dependency>
-            <groupId>javax.sql</groupId>
-            <artifactId>jdbc-stdext</artifactId>
-            <version>2.0</version>
-        </dependency>
+        
  
 
             <!-- apache myfaces -->
