@@ -14,7 +14,7 @@
         <mojarra.version>2.1.7</mojarra.version>
         <myfaces.version>2.1.7</myfaces.version>
         <myfaces.codi.version>1.0.5</myfaces.codi.version>
-        <primefaces.version>3.4-SNAPSHOT</primefaces.version>
+        <primefaces.version>3.4</primefaces.version>
         <primefaces-ext.version>0.6.0-SNAPSHOT</primefaces-ext.version>
         <primefaces.theme.version>1.0.8</primefaces.theme.version>
         <conventions.version>0.9.7-SNAPSHOT</conventions.version>

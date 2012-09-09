@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+     &lt;ui:define name="content"&gt;
+
+        &lt;h1 class="title ui-widget-header ui-corner-all"&gt;Query utils Home&lt;/h1&gt;
+        &lt;div class="entry"&gt;
+                
+            &lt;h:form id="queryForm"&gt;
+                &lt;p:tabView &gt;
+                    &lt;p:tab title="query1"&gt;
+                        &lt;p:dataTable value="\#{queryMBean.query1}" widgetVar="tableVar"  var="row" emptyMessage="No person found" 
+                        rowIndexVar="rowIndex"
+                        rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                        paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                        rowsPerPageTemplate="5,10,15,20,30" &gt;
+                            &lt;p:column headerText="Name"&gt;
+                                \#{row.name}
+                            &lt;/p:column&gt;
+                            &lt;p:column headerText="Lastname"&gt;
+                                \#{row.lastname}
+                            &lt;/p:column&gt;
+                            &lt;p:column headerText="Age"&gt;
+                                \#{row.age}
+                            &lt;/p:column&gt;
+                     &lt;/p:dataTable&gt;
+                    &lt;/p:tab&gt;
+                    &lt;p:tab title="query2"&gt;
+                        &lt;p:dataTable value="\#{queryMBean.query2}" var="row" emptyMessage="No phones found" 
+                        rowIndexVar="rowIndex"
+                        rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                        paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                        rowsPerPageTemplate="5,10,15,20,30" &gt;
+                            &lt;p:column headerText="Number"&gt;
+                                \#{row.number}
+                            &lt;/p:column&gt;
+                            &lt;p:column headerText="Type"&gt;
+                                \#{row.type.name}
+                            &lt;/p:column&gt;
+                     &lt;/p:dataTable&gt;
+                    &lt;/p:tab&gt;
+                     &lt;p:tab title="query3"&gt;
+                        &lt;p:dataTable value="\#{queryMBean.query3}" var="row" emptyMessage="No person found" 
+                        rowIndexVar="rowIndex"
+                        rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                        paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                        rowsPerPageTemplate="5,10,15,20,30" &gt;
+                            &lt;p:column headerText="Name"&gt;
+                                \#{row.name}
+                            &lt;/p:column&gt;
+                            &lt;p:column headerText="Lastname"&gt;
+                                \#{row.lastname}
+                            &lt;/p:column&gt;
+                            &lt;p:column headerText="Age"&gt;
+                                \#{row.age}
+                            &lt;/p:column&gt;
+                     &lt;/p:dataTable&gt;
+                    &lt;/p:tab&gt;
+                &lt;/p:tabView&gt;             
+            &lt;/h:form&gt;
+        &lt;/div&gt;
+        &lt;center&gt;
+            &lt;span class="homeText"&gt;easy way to provide queries via annotations.&lt;/span&gt; &lt;br/&gt;
+            &lt;span class="homeText"&gt;just enable QueryProvider in beans.xml.&lt;/span&gt;&lt;br/&gt;
+            &lt;span class="homeText"&gt;Only String and int parameters are allowed.&lt;/span&gt;
+        &lt;/center&gt;
+    &lt;/ui:define&gt;
+</ui:composition>

@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                xmlns:conventions="http://conventions.org/ui" 
+                xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/main.xhtml">
+
+
+    <ui:define name="content">
+
+        <h1 class="title ui-widget-header ui-corner-all">Query utils Home</h1>
+        <div class="entry">
+                
+            <h:form id="queryForm">
+                <p:tabView >
+                    <p:tab title="query1">
+                        <p:dataTable value="#{queryMBean.query1}" widgetVar="tableVar"  var="row" emptyMessage="No person found" 
+                        rowIndexVar="rowIndex"
+                        rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                        paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                        rowsPerPageTemplate="5,10,15,20,30" >
+                            <p:column headerText="Name">
+                                #{row.name}
+                            </p:column>
+                            <p:column headerText="Lastname">
+                                #{row.lastname}
+                            </p:column>
+                            <p:column headerText="Age">
+                                #{row.age}
+                            </p:column> 
+                            <f:facet name="footer">
+                                <framework:tableFooter value="#{conventions:size(queryMBean.query1)}"/>
+                            </f:facet>
+                            
+                     </p:dataTable>
+                    </p:tab>
+                    <p:tab title="query2">
+                        <p:dataTable value="#{queryMBean.query2}" var="row" emptyMessage="No phones found" 
+                        rowIndexVar="rowIndex"
+                        rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                        paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                        rowsPerPageTemplate="5,10,15,20,30" >
+                            <p:column headerText="Number">
+                                #{row.number}
+                            </p:column>
+                            <p:column headerText="Type">
+                                #{row.type.name}
+                            </p:column>
+                            <f:facet name="footer">
+                                <framework:tableFooter value="#{conventions:size(queryMBean.query2)}"/>
+                            </f:facet>
+                     </p:dataTable>
+                    </p:tab>
+                     <p:tab title="query3">
+                        <p:dataTable value="#{queryMBean.query3}" var="row" emptyMessage="No person found" 
+                        rowIndexVar="rowIndex"
+                        rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
+                        paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
+                        rowsPerPageTemplate="5,10,15,20,30" >
+                            
+                            <p:column headerText="Name">
+                                #{row.name}
+                            </p:column>
+                            <p:column headerText="Lastname">
+                                #{row.lastname}
+                            </p:column>
+                            <p:column headerText="Age">
+                                #{row.age}
+                            </p:column>
+                             <f:facet name="footer">
+                                <framework:tableFooter value="#{conventions:size(queryMBean.query3)}"/>
+                            </f:facet>
+                     </p:dataTable>
+                    </p:tab>
+                </p:tabView>             
+            </h:form>
+        </div>
+        <center>
+            <span class="homeText">easy way to provide queries via annotations.</span> <br/>
+            <span class="homeText">just enable QueryProvider in beans.xml.</span><br/>
+            <span class="homeText">Only String and int parameters are allowed.</span>
+        </center>
+    </ui:define>
+
+    <ui:define name="source">
+        <h3>Source</h3>
+
+        <p:tabView >
+             <p:tab title="queryHome.xhtml">
+                <pre name="code" class="xml">
+                         <ui:include src="code/queryHome.xhtml"/>  
+                </pre>
+            </p:tab>
+            <p:tab title="QueryMBean.java">
+                <pre name="code" class="xml">
+                         <ui:include src="code/queryMBean.xhtml"/>  
+                </pre>
+            </p:tab>
+             <p:tab title="QueryUtils.java">
+                <pre name="code" class="xml">
+                         <ui:include src="code/queryUtils.xhtml"/>  
+                </pre>
+            </p:tab>
+             <p:tab title="beans.xml">
+                <pre name="code" class="xml">
+                         <ui:include src="code/beans.xhtml"/>  
+                </pre>
+            </p:tab>
+             <p:tab title="Person.java">
+                <pre name="code" class="xml">
+                         <ui:include src="code/person.xhtml"/>  
+                </pre>
+            </p:tab>
+             <p:tab title="Phone.java">
+                <pre name="code" class="xml">
+                         <ui:include src="code/phone.xhtml"/>  
+                </pre>
+            </p:tab>
+        </p:tabView>  
+    </ui:define>
+</ui:composition>

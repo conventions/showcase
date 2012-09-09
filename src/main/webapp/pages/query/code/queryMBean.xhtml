@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+package org.conventionsframework.showcase.controller;
+
+import java.io.Serializable;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.showcase.model.Person;
+import org.conventionsframework.showcase.model.Phone;
+import org.conventionsframework.showcase.util.QueryUtils;
+
+/**
+ *
+ * @author Rafaem M. Pestano - Sep 8, 2012 9:19:57 PM
+ */
+@ViewAccessScoped
+@Named
+public class QueryMBean implements Serializable{
+    @Inject
+    private QueryUtils queryUtils;
+
+    private List&lt;Person&gt; query1;
+    private List&lt;Phone&gt; query2;
+    private List&lt;Person&gt; query3;
+    
+    @PostConstruct
+    public void init(){
+        query1 = queryUtils.findPersonByAge();
+        query2 = queryUtils.findPhones();
+        query3 = queryUtils.findPersonByOne();
+    }
+
+    public List&lt;Person&gt; getQuery1() {
+        return query1;
+    }
+
+    public void setQuery1(List&lt;Person&gt; query1) {
+        this.query1 = query1;
+    }
+
+    public List&lt;Phone&gt; getQuery2() {
+        return query2;
+    }
+
+    public void setQuery2(List&lt;Phone&gt; query2) {
+        this.query2 = query2;
+    }
+
+    public List&lt;Person&gt; getQuery3() {
+        return query3;
+    }
+
+    public void setQuery3(List&lt;Person&gt; query3) {
+        this.query3 = query3;
+    }
+    
+}
+
+
+</ui:composition>

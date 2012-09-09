@@ -7,6 +7,7 @@ package org.conventionsframework.showcase.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.NamedQuery;
 import org.conventionsframework.model.BaseEntityLong;
 
 /**
@@ -14,6 +15,7 @@ import org.conventionsframework.model.BaseEntityLong;
  * @author VAIO
  */
 @Entity
+@NamedQuery(name="Phone.findByNumber", query="Select p FROM Phone p where p.number = :number")
 public class Phone extends BaseEntityLong{
     
     private String number;

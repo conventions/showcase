@@ -9,11 +9,16 @@ import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.ConventionsEntityManager;
+import org.conventionsframework.qualifier.Query;
 import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.qualifier.Type;
+import org.conventionsframework.showcase.model.Phone;
+import org.conventionsframework.showcase.util.QueryUtils;
 
 /**
  *
@@ -37,6 +42,17 @@ public class ComboMBean implements Serializable {
         this.selectedItem = selectedItem;
     }
     
+    @Inject
+    public void queryProviderTest(QueryUtils queryUtils){
+        List<Person> l1 = queryUtils.findPersonByOne();
+        List<Person> l2 = queryUtils.findAllPerson();
+        List<Phone> l3 = queryUtils.findPhones();
+        System.out.println(l1.size());
+        System.out.println(l2.size());
+        System.out.println(l3.size());
+        queryUtils.findPersonByAge();
+    }
+    
     
     @Inject
     public void initList(@Service(type= Type.CUSTOM,entity=Person.class) BaseService service){
@@ -46,6 +62,7 @@ public class ComboMBean implements Serializable {
         personList = service.findByExample(p,5);
     }
 
+    
     public List<Person> getPersonList() {
         return personList;
     }

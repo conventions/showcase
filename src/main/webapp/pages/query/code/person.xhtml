@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
 package org.conventionsframework.showcase.model;
 
 
@@ -7,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import org.conventionsframework.model.SelectItemAware;
 import org.hibernate.validator.constraints.NotEmpty;
 
 
@@ -18,20 +27,19 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Entity
 @Table(name = "person")
-@SequenceGenerator(allocationSize = 1, name = "seq_person", sequenceName = "seq_person")
 @NamedQueries({
     @NamedQuery(name="Person.One",query="SELECT p from Person AS p WHERE p.name LIKE '%1' AND p.age = 1"),
     @NamedQuery(name="Person.findByAge",query="SELECT p from Person p where p.age = :age")
 })
-
-public class Person extends VersionatedBaseEntityLong implements Serializable,SelectItemAware{
+@SequenceGenerator(allocationSize = 1, name = "seq_person", sequenceName = "seq_person")
+public class Person extends VersionatedBaseEntityLong implements Serializable{
 
     private static final long serialVersionUID = -3065107295253073402L;
     private String name;
     private String lastname;
     private Integer age;
-    private List<Person> friends;
-    private List<Phone> telephones;
+    private List&lt;Person&gt; friends;
+    private List&lt;Phone&gt; telephones;
 
     public Person() {
     }
@@ -71,20 +79,20 @@ public class Person extends VersionatedBaseEntityLong implements Serializable,Se
     }
 
     @ManyToMany
-    public List<Person> getFriends() {
+    public List&lt;Person&gt; getFriends() {
         return friends;
     }
 
-    public void setFriends(List<Person> friends) {
+    public void setFriends(List&lt;Person&gt; friends) {
         this.friends = friends;
     }
 
     @OneToMany(cascade= CascadeType.ALL)
-    public List<Phone> getTelephones() {
+    public List&lt;Phone&gt; getTelephones() {
         return telephones;
     }
 
-    public void setTelephones(List<Phone> telephones) {
+    public void setTelephones(List&lt;Phone&gt; telephones) {
         this.telephones = telephones;
     }
     
@@ -109,49 +117,8 @@ public class Person extends VersionatedBaseEntityLong implements Serializable,Se
         return this.getName();
     }
     
-    /**
-     * 
-     * List 'contains' method does not work with proxy objects
-     * 
-     */
-    public boolean hasFriend(Long friendId){
-        for (Person person : friends) {
-            if(person.getId().equals(friendId)){
-                return true;
-            }
-        }
-        return false;
-    }
-     
-     public void removeFriend(Long friendId) {
-       for (Iterator<Person> i = friends.iterator();i.hasNext();) {
-           Person p = i.next();
-            if(p.getId().equals(friendId)){
-               i.remove();
-            }
-        }
-    }
-    
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Person other = (Person) obj;
-         if (this.getId() != other.getId() && (this.getId() == null || !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
-    }
 
 }
+
+
+</ui:composition>

@@ -4,6 +4,7 @@
    
    <interceptors>
         <class>org.conventionsframework.showcase.security.ShowcaseSecurityInterceptor</class>
+        <class>org.conventionsframework.query.QueryProvider</class>
    </interceptors>
  
 
