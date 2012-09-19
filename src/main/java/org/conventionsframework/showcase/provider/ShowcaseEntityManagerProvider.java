@@ -24,7 +24,7 @@ import org.conventionsframework.qualifier.Type;
 @ConventionsEntityManager(type=Type.CUSTOM)
 public class ShowcaseEntityManagerProvider extends CustomEntityManagerProvider implements EntityManagerProvider {
 
-    @PersistenceContext(unitName="anotherUnit")
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
