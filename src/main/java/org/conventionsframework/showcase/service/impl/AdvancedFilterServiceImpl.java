@@ -6,9 +6,11 @@ package org.conventionsframework.showcase.service.impl;
 
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.inject.Named;
+import org.conventionsframework.entitymanager.EntityManagerProvider;
 import org.conventionsframework.model.WrappedData;
-import org.conventionsframework.qualifier.PersistentClass;
+import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.PhoneType;
@@ -27,9 +29,24 @@ import org.primefaces.model.SortOrder;
  * 
  */
 @Named("advancedFilterService")
-public class AdvancedFilterServiceImpl extends StatelessHibernateService<Person, Long> implements AdvancedFilterService{
+public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> implements AdvancedFilterService{
 
 
+    @Inject @Named("myProvider")
+    private EntityManagerProvider entityManagerProvider;//example of created EntityManagerProvider instead of using built in
+
+    @Override
+    public EntityManagerProvider getEntityManagerProvider() {
+        return entityManagerProvider;
+    }
+
+    @Override
+    public Class<Person> getPersistentClass() {
+        return Person.class;
+
+    }
+
+    
     
     /**
      * configure filtering and sort for lazy datatable, this method is called 

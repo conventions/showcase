@@ -58,7 +58,7 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
-
+        
         DetachedCriteria dc = getDao().getDetachedCriteria();
         if (sortField == null || "".equals(sortField)) {
             sortField = "name";

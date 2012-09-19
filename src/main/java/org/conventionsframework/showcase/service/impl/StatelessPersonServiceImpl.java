@@ -9,6 +9,7 @@ import java.lang.Long;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
@@ -26,6 +27,7 @@ import org.primefaces.model.SortOrder;
 public class StatelessPersonServiceImpl extends StatelessHibernateService<Person, Long> implements
         StatelessPersonService {
 
+    
 
     @Override
     public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {

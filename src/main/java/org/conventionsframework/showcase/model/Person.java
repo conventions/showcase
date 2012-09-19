@@ -1,13 +1,13 @@
 package org.conventionsframework.showcase.model;
 
 
-import org.conventionsframework.model.VersionatedBaseEntityLong;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import org.conventionsframework.model.SelectItemAware;
+import org.conventionsframework.model.VersionatedEntityLong;
 import org.hibernate.validator.constraints.NotEmpty;
 
 
@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name="Person.findByAge",query="SELECT p from Person p where p.age = :age")
 })
 
-public class Person extends VersionatedBaseEntityLong implements Serializable,SelectItemAware{
+public class Person extends VersionatedEntityLong implements Serializable,SelectItemAware{
 
     private static final long serialVersionUID = -3065107295253073402L;
     private String name;

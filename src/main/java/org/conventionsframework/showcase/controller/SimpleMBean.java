@@ -4,15 +4,12 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import javax.inject.Inject;
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.showcase.model.Person;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.qualifier.Type;
-import org.conventionsframework.service.BaseService;
 
 /**
  *
