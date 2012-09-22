@@ -12,7 +12,7 @@ import javax.inject.Named;
  *
  * @author rmpestano Jul 4, 2011 12:10:45 AM
  */
-public enum ShowcaseState  implements State{
+public enum ShowcaseState implements State{
     FRIEND("friend");
 
     private final String stateName;

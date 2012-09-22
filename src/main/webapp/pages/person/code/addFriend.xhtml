@@ -31,7 +31,7 @@ and open the template in the editor.
                             &lt;framework:saveButton  mbean="\#{personMBean}" process=":personCrudForm:panelFriend" ajax="true"
                                                    update=":personCrudForm:panelFriend :personCrudForm:msg" oncomplete="hideMsg(args)"&gt;
                             &lt;/framework:saveButton&gt;
-                            &lt;p:commandButton value="Back" action="\#{personMBean.backEdit}" update="personCrudForm:pageControl" immediate="true" icon="ui-icon back_img"/&gt;
+                            &lt;p:commandButton value="Back" action="\#{personMBean.backEdit}" update="personCrudForm:pageControl" immediate="true" icon="ui-icon back"/&gt;
                             &lt;p:commandButton value="Go Home" action="\#{personMBean.back}" update="personCrudForm:pageControl" immediate="true"/&gt;
                             &lt;p:commandButton value="Save and Rollback transaction" action="\#{personMBean.saveAndRollback}" update="personCrudForm:pageControl"/&gt;
 

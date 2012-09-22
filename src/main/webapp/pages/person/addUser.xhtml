@@ -30,7 +30,7 @@ and open the template in the editor.
                 <framework:saveButton  mbean="#{personMBean}" process=":personCrudForm:panelAdd" 
                                       update=":personCrudForm:panelAdd :personCrudForm:msg" oncomplete="hideMsg(args)"/>
                 <framework:resetButton mbean="#{personMBean}" update=":personCrudForm:panelAdd" />
-                <p:commandButton value="Back" action="#{personMBean.back}" immediate="true" update=":personCrudForm:pageControl" icon="ui-icon back_img"/>
+                <p:commandButton value="Back" action="#{personMBean.back}" immediate="true" update=":personCrudForm:pageControl" icon="ui-icon back"/>
             </h:panelGrid>
              <center>
                   <p:commandButton value="Manage Friends"  

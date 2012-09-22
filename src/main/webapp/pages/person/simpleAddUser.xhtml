@@ -31,7 +31,7 @@ and open the template in the editor.
                 <framework:saveButton  mbean="#{simpleMBean}" process=":simpleCrudForm:panelAdd" 
                                       update=":simpleCrudForm:panelAdd :simpleCrudForm:msg" oncomplete="hideMsg(args)"/>
                 <framework:resetButton mbean="#{simpleMBean}" update=":simpleCrudForm:panelAdd" />
-                <p:commandButton value="Back" action="#{simpleMBean.setFindState}" immediate="true" update=":simpleCrudForm:pageControl" icon="ui-icon back_img"/>
+                <p:commandButton value="Back" action="#{simpleMBean.setFindState}" immediate="true" update=":simpleCrudForm:pageControl" icon="ui-icon back"/>
             </h:panelGrid>
         </p:panel>
     </center>

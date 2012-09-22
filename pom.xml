@@ -28,230 +28,62 @@
 	 <!--Java EE -->
         <dependency>
             <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>6.0</version>
-            <scope>provided</scope>
+            <artifactId>javaee-web-api</artifactId>
         </dependency>
-       
-       
-        <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>1.0-SP4</version>
-            <scope>provided</scope>
-        </dependency>
-            
-        
-<!--   already defined in conventions     <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>${primefaces.version}</version>
-        </dependency>-->
-         
-        <!-- framework -->
-        <dependency>
-            <groupId>org.conventionsframework</groupId>
-            <artifactId>conventions-core</artifactId>
-            <version>${conventions.version}</version>
-        </dependency>
-        
-             <!-- mojarra --> 
         <dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-api</artifactId>
-            <version>${mojarra.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-impl</artifactId>
-            <version>${mojarra.version}</version>
-            <scope>provided</scope>
         </dependency> 
-            
-         <!-- myfaces --> 
-        <!--dependency>
-            <groupId>org.apache.myfaces.core</groupId>
-            <artifactId>myfaces-api</artifactId>
-            <version>${myfaces.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.myfaces.core</groupId>
-            <artifactId>myfaces-impl</artifactId>
-            <version>${myfaces.version}</version>
-        </dependency-->     
-        
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>ui-darkness</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>afterdark</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>ui-lightness</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>sunny</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>casablanca</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>cupertino</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>bluesky</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>redmond</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>vader</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>blitzer</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>trontastic</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>home</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>overcast</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>start</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>afternoon</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>flick</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>glass-x</artifactId>
-            <version>${primefaces.theme.version}</version>
-        </dependency>
-<!-- already defined by conventions       <dependency>
-            <groupId>org.primefaces.extensions</groupId>
-            <artifactId>primefaces-extensions</artifactId>
-            <version>${primefaces-ext.version}</version>
-        </dependency>-->
-        
-        <!-- end primefaces -->
-        
-       
         <dependency>
             <groupId>javax.el</groupId>
             <artifactId>el-api</artifactId>
-            <version>2.2.1-b04</version>
-            <type>jar</type>
-            <scope>provided</scope>
         </dependency>
         
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
         
- 
-
-            <!-- apache myfaces -->
-
-       <!-- MyFaces CODI EXTERNAL Milestones (all-in-one version) -->
+        <dependency>
+            <groupId>org.conventionsframework</groupId>
+            <artifactId>conventions-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>primefaces-extensions</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.myfaces.extensions.cdi.bundles</groupId>
             <artifactId>myfaces-extcdi-bundle-jsf20</artifactId>
-            <version>${myfaces.codi.version}</version>
-        </dependency>
-
-            <!-- FIM CODI -->
-
-        <!-- openwebbeans -->
-         <!--dependency>
-            <groupId>org.apache.openwebbeans</groupId>
-            <artifactId>openwebbeans-impl</artifactId>
-            <version>${openwebbeans.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.openwebbeans</groupId>
-            <artifactId>openwebbeans-jsf</artifactId>
-            <version>${openwebbeans.version}</version>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>all-themes</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.openwebbeans</groupId>
-            <artifactId>openwebbeans-web</artifactId>
-            <version>${openwebbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.openwebbeans</groupId>
-            <artifactId>openwebbeans-spi</artifactId>
-            <version>${openwebbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.openwebbeans</groupId>
-            <artifactId>openwebbeans-resource</artifactId>
-            <version>${openwebbeans.version}</version>
-        </dependency-->
-
-  <!-- end apache myfaces-->
-<!--      <dependency>
-            <groupId>org.apache.deltaspike.modules</groupId>
-            <artifactId>deltaspike-jpa-module-api</artifactId>
-            <version>0.3-incubating-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>-->
 
     </dependencies>
       <dependencyManagement>
-        <dependencies> <!-- override Conventions Primefaces version -->
-            <dependency>
-                <groupId>org.primefaces</groupId>
-                <artifactId>primefaces</artifactId>
-                <version>${primefaces.version}</version>
-            </dependency>
-             <!-- override Conventions Primefaces ext version -->
+          <dependencies>
          <dependency>
-            <groupId>org.primefaces.extensions</groupId>
-            <artifactId>primefaces-extensions</artifactId>
-            <version>${primefaces-ext.version}</version>
-         </dependency>   
+                <groupId>org.conventionsframework</groupId>
+                <artifactId>conventions-bom</artifactId>
+                <version>0.9.7-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
       </dependencyManagement>
     <profiles>
@@ -262,114 +94,65 @@
             </activation>
             <dependencies>
                   <!-- hibernate --> 
-                <dependency>
+               <dependency>
                     <groupId>org.hibernate.javax.persistence</groupId>
                     <artifactId>hibernate-jpa-2.0-api</artifactId>
-                    <version>1.0.1.Final</version>
                 </dependency>
         
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-entitymanager</artifactId>
-                    <version>${hibernate.version}</version>
                 </dependency>
                 
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-core</artifactId>
-                    <version>${hibernate.version}</version>
                 </dependency>
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-validator</artifactId>
-                    <version>4.3.0.Final</version>
                 </dependency>
 
-           <!-- end hibernate --> 
+                <!-- end hibernate --> 
 
                 <dependency>
                     <groupId>org.javassist</groupId>
                     <artifactId>javassist</artifactId>
-                    <version>3.14.0-GA</version>
                 </dependency>
                 
                 
-                    <!-- Logging -->
+                <!-- Logging -->
                 <dependency>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-log4j12</artifactId>
-                    <version>1.5.10</version>
                 </dependency>
+        
                 <dependency>
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
-                    <version>1.1.1</version>
                 </dependency>
-                 <!-- end Logging -->
+                <!-- end Logging -->
 
             </dependencies>
         </profile>
         <profile>
             <id>JBoss</id>
             <dependencies>
-                <!-- framework -->
-                <dependency>
-                    <groupId>org.jboss.spec</groupId>
-                    <artifactId>jboss-javaee-6.0</artifactId>
-                    <version>2.0.0.Final</version>
-                    <type>pom</type>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
+                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-entitymanager</artifactId>
-                    <version>${hibernate.version}</version>
                     <scope>provided</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-validator</artifactId>
-                    <version>4.3.0.Final</version>
                     <scope>provided</scope>
                 </dependency>
-      
                 <dependency>
                     <groupId>org.hibernate.javax.persistence</groupId>
                     <artifactId>hibernate-jpa-2.0-api</artifactId>
                     <scope>provided</scope>
-                    <version>1.0.1.Final</version>
                 </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.ejb</groupId>
-                    <artifactId>jboss-ejb-api_3.1_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.1.Final</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.transaction</groupId>
-                    <artifactId>jboss-transaction-api_1.1_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.0.Final</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.annotation</groupId>
-                    <artifactId>jboss-annotations-api_1.1_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.0.Final</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.servlet</groupId>
-                    <artifactId>jboss-servlet-api_3.0_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.0.Final</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.faces</groupId>
-                    <artifactId>jboss-jsf-api_2.0_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.0.Final</version>
-                </dependency>
-            
             
             </dependencies>
         </profile>  
@@ -386,111 +169,33 @@
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-core</artifactId>
-                    <version>${hibernate.version}</version>
                 </dependency>
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-entitymanager</artifactId>
-                    <version>${hibernate.version}</version>
                       
                 </dependency>
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-validator</artifactId>
-                    <version>4.1.0.Final</version>
                     <scope>provided</scope>
                 </dependency>
       
                 <dependency>
                     <groupId>org.hibernate.javax.persistence</groupId>
                     <artifactId>hibernate-jpa-2.0-api</artifactId>
-                    <version>1.0.1.Final</version>
                     <scope>provided</scope>
                 </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.ejb</groupId>
-                    <artifactId>jboss-ejb-api_3.1_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.1.Final</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.transaction</groupId>
-                    <artifactId>jboss-transaction-api_1.1_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.0.Final</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.annotation</groupId>
-                    <artifactId>jboss-annotations-api_1.1_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.0.Final</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.servlet</groupId>
-                    <artifactId>jboss-servlet-api_3.0_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.0.Final</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.spec.javax.faces</groupId>
-                    <artifactId>jboss-jsf-api_2.0_spec</artifactId>
-                    <scope>provided</scope>
-                    <version>1.0.0.Final</version>
-                </dependency>
-            
-            
             </dependencies>
         </profile>  
        
         <profile>
             <id>Weblogic</id>
-            
-            <dependencies>
-                
-                <dependency>
-                    <groupId>org.hibernate.javax.persistence</groupId>
-                    <artifactId>hibernate-jpa-2.0-api</artifactId>
-                    <version>1.0.1.Final</version>
-                </dependency>
-        
-                <dependency>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-entitymanager</artifactId>
-                    <version>${hibernate.version}</version>
-                </dependency>
-                
-                <dependency>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-core</artifactId>
-                    <version>${hibernate.version}</version>
-                </dependency>
-
-           <!-- end hibernate --> 
-
-                <dependency>
-                    <groupId>javassist</groupId>
-                    <artifactId>javassist</artifactId>
-                    <version>3.9.0.GA</version>
-                    <scope>runtime</scope>
-                </dependency>
-                
-                    <!-- Logging -->
-                <dependency>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                    <version>1.5.10</version>
-                </dependency>
-                <dependency>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                    <version>1.1.1</version>
-                </dependency>
-            </dependencies>
-          
+               <!-- TODO -->
         </profile>
         <profile>
             <id>Resin</id>
-        
+            <!-- TODO -->
         </profile>
     </profiles> 
     <build>

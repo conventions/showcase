@@ -22,7 +22,7 @@ and open the template in the editor.
                             <framework:saveButton  mbean="#{personMBean}" process=":personCrudForm:panelFriend" ajax="true"
                                                    update=":personCrudForm:panelFriend :personCrudForm:msg" oncomplete="hideMsg(args)">
                             </framework:saveButton>
-                            <p:commandButton value="Back" action="#{personMBean.backEdit}" update="personCrudForm:pageControl" immediate="true" icon="ui-icon back_img"/>
+                            <p:commandButton value="Back" action="#{personMBean.backEdit}" update="personCrudForm:pageControl" immediate="true" icon="ui-icon back"/>
                             <p:commandButton value="Go Home" action="#{personMBean.back}" update="personCrudForm:pageControl" immediate="true"/>
                             <p:commandButton value="Save and Rollback transaction" action="#{personMBean.saveAndRollback}" update="personCrudForm:pageControl"/>
                         </h:panelGrid>
