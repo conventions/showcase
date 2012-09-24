@@ -54,7 +54,7 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
         getEntityManagerProvider().setEntityManager(entityManager);
     }
     */
-    
+ 
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
