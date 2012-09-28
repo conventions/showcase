@@ -14,10 +14,10 @@
         <mojarra.version>2.1.7</mojarra.version>
         <myfaces.version>2.1.7</myfaces.version>
         <myfaces.codi.version>1.0.5</myfaces.codi.version>
-        <primefaces.version>3.4</primefaces.version>
+        <primefaces.version>3.4.1</primefaces.version>
         <primefaces-ext.version>0.6.0-SNAPSHOT</primefaces-ext.version>
         <primefaces.theme.version>1.0.8</primefaces.theme.version>
-        <conventions.version>0.9.7-SNAPSHOT</conventions.version>
+        <conventions.version>1.0.0-SNAPSHOT</conventions.version>
         <openwebbeans.version>1.1.5</openwebbeans.version>
         <hibernate.version>4.1.5.Final</hibernate.version>
         <netbeans.hint.j2eeVersion>1.6</netbeans.hint.j2eeVersion>
@@ -77,7 +77,7 @@
          <dependency>
                 <groupId>org.conventionsframework</groupId>
                 <artifactId>conventions-bom</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>1.0.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
