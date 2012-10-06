@@ -15,7 +15,7 @@
         <myfaces.version>2.1.7</myfaces.version>
         <myfaces.codi.version>1.0.5</myfaces.codi.version>
         <primefaces.version>3.4.1</primefaces.version>
-        <primefaces-ext.version>0.6.0-SNAPSHOT</primefaces-ext.version>
+        <primefaces-ext.version>0.6.0</primefaces-ext.version>
         <primefaces.theme.version>1.0.8</primefaces.theme.version>
         <conventions.version>1.0.0-SNAPSHOT</conventions.version>
         <openwebbeans.version>1.1.5</openwebbeans.version>
