@@ -27,5 +27,9 @@ public class ExceptionMBean implements Serializable{
    public void doUncheckedException(){
        System.out.println(1/0);
    }
+   
+   public void focusOnError(){
+       throw new BusinessException("focus on error is useful to show user where error is", "exceptionForm:idToFocus");
+   }
     
 }

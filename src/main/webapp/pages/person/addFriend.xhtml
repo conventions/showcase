@@ -29,7 +29,10 @@ and open the template in the editor.
                         <framework:messageHide messageId=":personCrudForm:msg"/>
                     </center>
                     <p:dataTable value="#{personMBean.entity.friends}" widgetVar="tableVar" id="friendsTable" var="row" emptyMessage="You have no friends"
-                                 rowIndexVar="rowIndex" 
+                                 rowIndexVar="rowIndex"
+                                 selection="#{personMBean.entityAuxList}"
+                                 rowKey="#{row.id}"
+                                 selectionMode="multiple"
                                  rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="10" paginatorPosition="bottom"
                                  paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15,20,30">
@@ -38,7 +41,9 @@ and open the template in the editor.
                             <p:commandButton value="Add Friends"
                                              action="#{personMBean.initPersonSelectionModal}"
                                              update=":findFriendDlg:findFriendDlg_panel"
-                                             oncomplete="findFriendDlg.show()"/>
+                                             oncomplete="findFriendDlg.show()"/><br/>
+                            <p:commandButton id="bt-rm-all" value="Removed selected" action="#{personMBean.removeSelected}" update=":personCrudForm:pageControl"/>
+
                         </f:facet>
                         <p:column sortBy="#{row.name}" filterBy="#{row.name}" filterMatchMode="contains">
                             <f:facet name="header">

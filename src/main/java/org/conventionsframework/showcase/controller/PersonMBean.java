@@ -23,6 +23,7 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.exception.BusinessException;
 
 /**
  *
@@ -150,6 +151,21 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
         getPersonService().setRollbackTest(true);
         getPersonService().store(getEntity());
     }
+    
+                
+    public void removeSelected(){
+        if(getEntityAuxList() != null && getEntityAuxList().length > 0){
+            for (Person p : getEntityAuxList()) {
+                if(getEntity().hasFriend(p.getId())){
+                    getEntity().getFriends().remove(p);
+                }
+            }
+        }
+        else{
+            throw new BusinessException("No friends selected","personCrudForm:friendsTable:bt-rm-all");
+        }
+    }
+    
    
     @Override
     public void removeFromList() {

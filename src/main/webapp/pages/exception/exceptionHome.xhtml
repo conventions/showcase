@@ -11,8 +11,8 @@
         <div class="entry">
             <h:form id="exceptionForm">
                 <p:messages id="msg" />
-                <h:panelGrid columns="2">
-                <p:commandButton value="Business Logic Exception" 
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Business Logic Exception" 
                                  action="#{exceptionMBean.doBusinessLogicException}" 
                                  update="msg"/>
                 
@@ -20,7 +20,24 @@
                                  action="#{exceptionMBean.doUncheckedException}" 
                                  update="msg"
                                  />
+                 <p:commandButton value="Focus on error" 
+                                 action="#{exceptionMBean.focusOnError}" 
+                                 update="msg"
+                                 />
                 </h:panelGrid>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <p:inputText value="focus on error" id="idToFocus"/> 
+                
             </h:form>
             <script type="text/javascript">
                      jQuery(function() {
