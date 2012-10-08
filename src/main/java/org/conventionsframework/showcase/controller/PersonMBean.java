@@ -156,9 +156,7 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
     public void removeSelected(){
         if(getEntityAuxList() != null && getEntityAuxList().length > 0){
             for (Person p : getEntityAuxList()) {
-                if(getEntity().hasFriend(p.getId())){
-                    getEntity().getFriends().remove(p);
-                }
+                 getEntity().removeFriend(p.getId());
             }
         }
         else{
@@ -173,10 +171,8 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
         if (getEntity().getFriends() == null) {
             return;
         }
-        if (getEntity().hasFriend(getEntityAux().getId())) {
-            getEntity().removeFriend(getEntityAux().getId());
-            MessagesController.addInfo("Friend removed from list");
-        }
+          getEntity().removeFriend(getEntityAux().getId());
+          MessagesController.addInfo("Friend removed from list");
     }
 }
 
