@@ -28,11 +28,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.exception.BusinessException;
 
 /**
  *
@@ -52,7 +53,7 @@ public class PersonMBean extends BaseMBean&lt;Person&gt; implements Serializable
 //        super.setBaseService(personService);
 //    }
     
-    @Inject//@EJB //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
+    @Inject //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }
@@ -155,6 +156,27 @@ public class PersonMBean extends BaseMBean&lt;Person&gt; implements Serializable
     public void back(){
          setBeanState(CrudState.FIND);
     }
+    
+    public void saveAndRollback(){
+        getPersonService().setRollbackTest(true);
+        getPersonService().store(getEntity());
+    }
+    
+                
+    public void removeSelected(){
+        if(getEntityAuxList() != null &amp;&amp; getEntityAuxList().length &gt; 0){
+            for (Person p : getEntityAuxList()) {
+                if(getEntity().hasFriend(p.getId())){
+                    getEntity().getFriends().remove(p);
+                }
+            }
+        }
+        else{
+            throw new BusinessException("No friends selected","personCrudForm:friendsTable:bt-rm-all");
+        }
+        setEntityAuxList(null);
+    }
+    
    
     @Override
     public void removeFromList() {
@@ -167,6 +189,7 @@ public class PersonMBean extends BaseMBean&lt;Person&gt; implements Serializable
         }
     }
 }
+
 
  
 

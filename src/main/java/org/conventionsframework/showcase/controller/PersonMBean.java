@@ -164,6 +164,7 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
         else{
             throw new BusinessException("No friends selected","personCrudForm:friendsTable:bt-rm-all");
         }
+        setEntityAuxList(null);
     }
     
    

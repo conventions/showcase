@@ -7,13 +7,7 @@ and open the template in the editor.
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets">
-   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
---&gt;
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
-&lt;ui:composition
+  &lt;ui:composition
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
@@ -34,12 +28,14 @@ and open the template in the editor.
                             &lt;p:commandButton value="Back" action="\#{personMBean.backEdit}" update="personCrudForm:pageControl" immediate="true" icon="ui-icon back"/&gt;
                             &lt;p:commandButton value="Go Home" action="\#{personMBean.back}" update="personCrudForm:pageControl" immediate="true"/&gt;
                             &lt;p:commandButton value="Save and Rollback transaction" action="\#{personMBean.saveAndRollback}" update="personCrudForm:pageControl"/&gt;
-
                         &lt;/h:panelGrid&gt;
                         &lt;framework:messageHide messageId=":personCrudForm:msg"/&gt;
                     &lt;/center&gt;
                     &lt;p:dataTable value="\#{personMBean.entity.friends}" widgetVar="tableVar" id="friendsTable" var="row" emptyMessage="You have no friends"
-                                 rowIndexVar="rowIndex" 
+                                 rowIndexVar="rowIndex"
+                                 selection="\#{personMBean.entityAuxList}"
+                                 rowKey="\#{row.id}"
+                                 selectionMode="multiple"
                                  rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="10" paginatorPosition="bottom"
                                  paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15,20,30"&gt;
@@ -48,7 +44,9 @@ and open the template in the editor.
                             &lt;p:commandButton value="Add Friends"
                                              action="\#{personMBean.initPersonSelectionModal}"
                                              update=":findFriendDlg:findFriendDlg_panel"
-                                             oncomplete="findFriendDlg.show()"/&gt;
+                                             oncomplete="findFriendDlg.show()"/&gt;&lt;br/&gt;
+                            &lt;p:commandButton id="bt-rm-all" value="Removed selected" action="\#{personMBean.removeSelected}" update=":personCrudForm:pageControl"/&gt;
+
                         &lt;/f:facet&gt;
                         &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" filterMatchMode="contains"&gt;
                             &lt;f:facet name="header"&gt;
@@ -85,10 +83,8 @@ and open the template in the editor.
                 &lt;/p:panel&gt;
                 &lt;framework:modalRemoval mbean="\#{personMBean}"
                                         update=":personCrudForm:panelFriend"
-                                        appendToBody="true"
-                                        oncomplete="hideMsg(args);"
                                         persistentRemove="false"
-                                        id="removeFriendModal"
+                                        appendToBody="true"
                                         widgetVar="removeFriendModal"&gt;
                     &lt;p:inputText value="\#{personMBean.entityAux.name}" disabled="true"/&gt;                    
                 &lt;/framework:modalRemoval&gt;
