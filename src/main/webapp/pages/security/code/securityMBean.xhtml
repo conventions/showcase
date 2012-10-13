@@ -12,8 +12,8 @@ package org.conventionsframework.showcase.controller;
 import org.conventionsframework.bean.StateMBean;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.bean.state.State;
-import org.conventionsframework.qualifier.Historic;
-import org.conventionsframework.qualifier.Historics;
+import org.conventionsframework.qualifier.BeanState;
+import org.conventionsframework.qualifier.BeanStates;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.qualifier.SecurityMethod;
 import org.conventionsframework.showcase.model.Person;
@@ -23,10 +23,14 @@ import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.*;
+import org.conventionsframework.service.BaseService;
 
 
 
@@ -36,8 +40,6 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 @Named("securityMBean")
 @ViewAccessScoped
 @BeanStates({
-    //if the managed bean is in "find state", a breadCrumb link with title "Search Person" will be generated in the page(if historyStackLinks component is present),
-    //also when you click the link it will execute an action with return = "Pages.History.LIST_PAGE+ConstantUtils.FACES_REDIRECT"
     @BeanState(beanState=ConstantUtils.State.FIND_STATE,page=Pages.Security.LIST_PAGE+ConstantUtils.FACES_REDIRECT,title="Search Person"),
     @BeanState(beanState=ConstantUtils.State.INSERT_STATE,page=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Create Person"),
     @BeanState(beanState=ConstantUtils.State.UPDATE_STATE,page=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Edit Person"),
@@ -48,6 +50,14 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 public class SecurityMBean extends StateMBean&lt;Person&gt; implements Serializable{
     
     private String currentRole = "";
+ 
+    public SecurityMBean() {
+        List&lt;String&gt; currentRoles = (ArrayList&lt;String&gt;)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userRoles");
+        if(currentRoles != null){//get user roles from session
+            currentRole = currentRoles.get(0);
+        }
+        
+    }
     
     @Inject
     public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
@@ -103,6 +113,14 @@ public class SecurityMBean extends StateMBean&lt;Person&gt; implements Serializa
         return super.prepareUpdate();
     }
     
+     /**
+     * called when 'filterButton' is clicked
+     */
+    @Override
+    public void find() {
+        
+    }
+
     
     @SecurityMethod(rolesAllowed={ConstantUtils.Role.ROLE_ADMIN,ConstantUtils.Role.ROLE_GUEST} ,message="securityGoList")
     public String goList(){
@@ -113,10 +131,10 @@ public class SecurityMBean extends StateMBean&lt;Person&gt; implements Serializa
     public String goSecurity(){
         setBeanState(SecurityState.INIT);
         currentRole = "";
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userRoles",null);
+        this.clearProfile();
         return Pages.Security.HOME_PAGE + ConstantUtils.FACES_REDIRECT;
     }
-    
+
     @SecurityMethod(rolesAllowed="secret")
     public String goSecretArea(){
         setBeanState(SecurityState.SECRET);
@@ -130,6 +148,8 @@ public class SecurityMBean extends StateMBean&lt;Person&gt; implements Serializa
         super.delete();
     }
     
+    
+ 
 
     public String getCurrentRole() {
         return currentRole;
@@ -155,6 +175,11 @@ public class SecurityMBean extends StateMBean&lt;Person&gt; implements Serializa
         return SecurityState.SECRET.equals(getBeanState());
                
     }
+
+    private void clearProfile() {
+           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userRoles",null);
+
+    }
     
 }
 /**
@@ -175,10 +200,20 @@ public class SecurityMBean extends StateMBean&lt;Person&gt; implements Serializa
     public String getStateName() {
         return this.stateName;
     }
+    
+    @Produces
+    @Named
+    public State initState(){
+        return SecurityState.INIT;
+    }
+    
+    @Produces
+    @Named
+    public State secretState(){
+        return SecurityState.SECRET;
+    }
 
 }
-
-
 
 
 </ui:composition>

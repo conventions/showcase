@@ -14,7 +14,7 @@ import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.ArrayList;
-import javax.ejb.EJB;
+import java.util.List;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -41,9 +41,13 @@ import org.conventionsframework.service.BaseService;
 public class SecurityMBean extends StateMBean<Person> implements Serializable{
     
     private String currentRole = "";
-
+ 
     public SecurityMBean() {
-        this.clearProfile();
+        List<String> currentRoles = (ArrayList<String>)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userRoles");
+        if(currentRoles != null){//get user roles from session
+            currentRole = currentRoles.get(0);
+        }
+        
     }
     
     @Inject
