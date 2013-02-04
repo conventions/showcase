@@ -7,6 +7,10 @@ and open the template in the editor.
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets">
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.BaseMBean;
@@ -23,10 +27,10 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 
 @Named("simpleMBean")
 @ViewAccessScoped
-@PersistentClass(Person.class)//managed bean entity
-@Service(name=Service.STATEFUL,entity=Person.class)//same as commented setService method
+@PersistentClass(Person.class)//managed bean entity, you can use commented create() method instead
+@Service(name=Service.STATEFUL,entity=Person.class)//same as commented setService() method
 public class SimpleMBean extends BaseMBean&lt;Person&gt; {
-    
+
     
     /**
      * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
@@ -39,8 +43,12 @@ public class SimpleMBean extends BaseMBean&lt;Person&gt; {
 //    }
 
     
+//    @Override
+//    public Person create() {
+//        return new Person();
+//    }
+    
 }
-
 
             
             </ui:composition>

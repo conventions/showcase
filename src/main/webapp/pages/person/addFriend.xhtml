@@ -26,7 +26,6 @@ and open the template in the editor.
                             <p:commandButton value="Go Home" action="#{personMBean.back}" update="personCrudForm:pageControl" immediate="true"/>
                             <p:commandButton value="Save and Rollback transaction" action="#{personMBean.saveAndRollback}" update="personCrudForm:pageControl"/>
                         </h:panelGrid>
-                        <framework:messageHide messageId=":personCrudForm:msg"/>
                     </center>
                     <p:dataTable value="#{personMBean.entity.friends}" widgetVar="tableVar" id="friendsTable" var="row" emptyMessage="You have no friends"
                                  rowIndexVar="rowIndex"

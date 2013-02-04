@@ -151,7 +151,7 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
             if (getEntity().getFriends() == null) {
                 getEntity().setFriends(new ArrayList<Person>());
             }
-            Person[] selectedPerson = (Person[]) callback.getResult();
+            List<Person> selectedPerson = (List<Person>) callback.getResult();
             for (Person person : selectedPerson) {
             addFriend(person);
             }

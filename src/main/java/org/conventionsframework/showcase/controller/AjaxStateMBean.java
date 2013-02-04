@@ -21,12 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
-import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.qualifier.Service;
-import org.conventionsframework.qualifier.Type;
-import org.conventionsframework.service.BaseService;
 
 /**
  *

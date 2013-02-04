@@ -18,10 +18,10 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 
 @Named("simpleMBean")
 @ViewAccessScoped
-@PersistentClass(Person.class)//managed bean entity
-@Service(name=Service.STATEFUL,entity=Person.class)//same as commented setService method
+@PersistentClass(Person.class)//managed bean entity, you can use create() method instead
+@Service(name=Service.STATEFUL,entity=Person.class)//same as commented setService() method
 public class SimpleMBean extends BaseMBean<Person> {
-    
+
     
     /**
      * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
@@ -33,5 +33,10 @@ public class SimpleMBean extends BaseMBean<Person> {
 //        super.setBaseService(service);
 //    }
 
+    
+//    @Override
+//    public Person create() {
+//        return new Person();
+//    }
     
 }

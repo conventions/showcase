@@ -88,7 +88,7 @@ public class PersonSelectionMBean extends BaseMBean<Person>
      */
     @Override
     public void modalResponse(@Observes(notifyObserver= Reception.IF_EXISTS) ModalCallback callback){
-            Person[] selectedPerson = (Person[]) callback.getResult();
+            List<Person> selectedPerson = (List<Person>) callback.getResult();
             for (Person person : selectedPerson) {
                 if (getList() != null && !getList().contains(person)) {
                     getList().add(person);

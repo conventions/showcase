@@ -57,7 +57,7 @@
                              >
                     
                     <p:dataTable value="#{personSelectionModalMBean.paginator.dataModel}" 
-                                 selection="#{personSelectionModalMBean.selectedPeople}"
+                                 selection="#{personSelectionModalMBean.paginator.selection}"
                                  id="selectionTable" var="row" 
                                  lazy="true"
                                  emptyMessage="No person found" 

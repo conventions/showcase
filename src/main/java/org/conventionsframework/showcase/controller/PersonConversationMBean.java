@@ -7,16 +7,13 @@ package org.conventionsframework.showcase.controller;
 import org.conventionsframework.bean.ConversationalMBean;
 import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.event.ModalCallback;
-import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.showcase.model.Person;
-import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
@@ -154,6 +151,7 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
      
      public String goList(){
          beginConversation();
+         setFindState();
          return "personConversation.faces??cid=" + conversation.getId() + "&amp;faces-redirect=true";
      }
 }

@@ -17,15 +17,19 @@ import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.event.ModalCallback;
 import org.conventionsframework.showcase.model.Person;
-import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.paginator.Paginator;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
+import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -36,7 +40,7 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 public class PersonSelectionMBean extends BaseMBean&lt;Person&gt;
         implements Serializable, ModalObserver {
 
-    private List&lt;Person&gt; list;
+    private List&lt;Person&gt; list; 
     
     public PersonSelectionMBean() {
     }
@@ -46,6 +50,7 @@ public class PersonSelectionMBean extends BaseMBean&lt;Person&gt;
     public void init() {
         Person p = new Person();
         p.setAge(100);
+        setPaginator(new Paginator());
         this.setList(getPersonService().findByExample(p));
     }
 
@@ -54,12 +59,13 @@ public class PersonSelectionMBean extends BaseMBean&lt;Person&gt;
      * @param personService
      */
     @Inject
-    public void setPersonService(@Service(name=Service.STATEFUL,entity=Person.class)BaseService personService) {
+    public void setPersonService(@Service(type=Type.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 
-    public PersonService getPersonService(){
-        return (PersonService)super.getBaseService();
+
+    public BaseService getPersonService(){
+        return (BaseService)super.getBaseService();
     }
 
     /**
@@ -81,16 +87,17 @@ public class PersonSelectionMBean extends BaseMBean&lt;Person&gt;
         this.list = list;
     }
 
+
     /**
      * the ModalCallback event if fired by modalButton 
      * and carries the value returned by modalCallback 
      * method implemented by AbstractModalMBean s 
-     * @see PersonSelectionModalMBean#modalCallback()  
+     * @see PersonSelectionModalMBean\#modalCallback()  
      * @param callback 
      */
     @Override
-    public void modalResponse(@Observes ModalCallback callback){
-            Person[] selectedPerson = (Person[]) callback.getResult();
+    public void modalResponse(@Observes(notifyObserver= Reception.IF_EXISTS) ModalCallback callback){
+            List&lt;Person&gt; selectedPerson = (List&lt;Person&gt;) callback.getResult();
             for (Person person : selectedPerson) {
                 if (getList() != null &amp;&amp; !getList().contains(person)) {
                     getList().add(person);
@@ -98,17 +105,17 @@ public class PersonSelectionMBean extends BaseMBean&lt;Person&gt;
             }
     }
     
-     /**
+    /**
      * invokes beforeOpen modal event
-     * @see PersonSelectionModalMBean#beforeOpen(org.conventionsframework.event.ModalInitialization) 
+     * @see PersonSelectionModalMBean\#beforeOpen(org.conventionsframework.event.ModalInitialization) 
      */
     public void initPersonSelectionModal() {
-        getFilter().put("age", new Integer(1)); 
+        getPaginator().getFilter().put("age", "1"); 
         /**
          * init modal is used to pass parameters to modals
          * before it opens
          */
-        super.initModal(PersonSelectionModalMBean.MODAL_NAME, getFilter());
+        super.initModal(PersonSelectionModalMBean.MODAL_NAME, getPaginator().getFilter());
     }
     
 }

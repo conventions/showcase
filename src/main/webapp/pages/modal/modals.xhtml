@@ -20,46 +20,33 @@ and open the template in the editor.
                              mbean="#{personSelectionModalMBean}"
                              update=":personSelectionForm:pageControl"
                              >
-                    <p:dataTable value="#{personSelectionModalMBean.paginator.dataModel}" 
-                                 selection="#{personSelectionModalMBean.selectedPeople}"
-                                 filteredValue="#{personSelectionModalMBean.paginator.filteredValue}"
-                                 id="selectionTable" var="row" 
-                                 emptyMessage="No person found" 
-                                 lazy="true"
-                                 rowIndexVar="rowIndex"
-                                 rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
-                                 rows="5" paginatorPosition="bottom"
-                                 rowKey="#{row.id}"
-                                 paginator="true" paginatorTemplate="{CurrentPageReport}  
-                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
-                                 {LastPageLink} {RowsPerPageDropdown}"
-                                 selectionMode="multiple"
-                                 widgetVar="tablevar1"
-                                 rowsPerPageTemplate="5,10,15,20,30">
-                        
-                        <p:column sortBy="#{row.name}" filterBy="#{row.name}" 
-                                  filterMatchMode="contains">
-                            <f:facet name="header">
-                                Name
-                            </f:facet>
-                            <h:outputText value="#{row.name}"/>
-                        </p:column>
-                        <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" 
-                                  filterMatchMode="contains">
-                            <f:facet name="header">
-                                Lastname
-                            </f:facet>
-                            <h:outputText value="#{row.lastname}"/>
-                        </p:column>
+                  
+                  <framework:datatable paginator="#{personSelectionModalMBean.paginator}" emptyMessage="No person found" widgetVar="tablevar1"> 
+                    <p:column selectionMode="multiple" style="width:18px" /> 
+                     <p:column sortBy="#{row.name}" filterBy="#{row.name}" 
+                          filterMatchMode="contains">
+                        <f:facet name="header">
+                            Name
+                        </f:facet>
+                        <h:outputText value="#{row.name}"/>
+                    </p:column>
+                    <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" 
+                              filterMatchMode="contains">
+                        <f:facet name="header">
+                            Lastname
+                        </f:facet>
+                        <h:outputText value="#{row.lastname}"/>
+                    </p:column>
 
-                        <p:column sortBy="#{row.age}" filterBy="#{row.age}"
-                                  filterMatchMode="contains">
-                            <f:facet name="header">
-                                Age
-                            </f:facet>
-                            <h:outputText value="#{row.age}"/>
-                        </p:column>
-                    </p:dataTable>
+                    <p:column sortBy="#{row.age}" filterBy="#{row.age}"
+                              filterMatchMode="contains">
+                        <f:facet name="header">
+                            Age
+                        </f:facet>
+                        <h:outputText value="#{row.age}"/>
+                    </p:column>
+                </framework:datatable> 
+                    
             </framework:modal>
 
             <!-- Modal selection 2-->

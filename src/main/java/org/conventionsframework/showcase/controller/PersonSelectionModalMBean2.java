@@ -25,7 +25,7 @@ import org.conventionsframework.service.BaseService;
 public class PersonSelectionModalMBean2 extends ModalMBean<Person> implements Serializable {
 
 
-    private Person[] selectedPeople;
+    private List<Person> selectedPeople;
     private List<Person> list;
     public static final String MODAL_NAME = "personSelectionModal2";
     
@@ -53,15 +53,16 @@ public class PersonSelectionModalMBean2 extends ModalMBean<Person> implements Se
         list = getPersonService().findByExample(p);
     }
 
-
-    public Person[] getSelectedPeople() {
+    public List<Person> getSelectedPeople() {
         return selectedPeople;
     }
 
-    public void setSelectedPeople(Person selectedPeople[]) {
+    public void setSelectedPeople(List<Person> selectedPeople) {
         this.selectedPeople = selectedPeople;
     }
 
+
+    
     public List<Person> getList() {
         return list;
     }

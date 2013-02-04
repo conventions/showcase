@@ -17,6 +17,7 @@ import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
@@ -123,7 +124,7 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
             if (getEntity().getFriends() == null) {
                 getEntity().setFriends(new ArrayList<Person>());
             }
-            Person[] selectedPerson = (Person[]) callback.getResult();
+            List<Person> selectedPerson = (List<Person>) callback.getResult();
             for (Person person : selectedPerson) {
                 if (!getEntity().hasFriend(person.getId())) {
                     getEntity().getFriends().add(getPersonService().load(person.getId()));

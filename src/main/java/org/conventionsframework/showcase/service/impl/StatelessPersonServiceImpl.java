@@ -6,11 +6,15 @@ import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.StatelessPersonService;
 import java.lang.Long;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
+import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -91,12 +95,19 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService<Person
     @Override
     public List<Person> findFriends(final Long personID) {
        String query = "select p.friends_id from person_person p where p.person_id = :id";
-       Map params = new HashMap(){{put("id",personID);}};
-       List<Long> friendsId = super.dao.findByNativeQuery(query, params,null,null,new ScalarReturn(LongType.INSTANCE, "friends_id")); 
+       Query q = getEntityManager().createNativeQuery(query);
+       q.setParameter("id", personID);
+       List friendsId = q.getResultList(); 
        if(friendsId != null && !friendsId.isEmpty()){
+           List<Long> ids = new ArrayList<Long>();
+           for (Object id : friendsId) {
+              //dependending on the database the native query returns a list of Long or BigInteger
+              //if we had an intermediate table like PersonFriend there was no need for the navive
+              ids.add(new Long(id.toString()));
+           }
            DetachedCriteria dc = getDetachedCriteria();
-           dc.add(Restrictions.in("id", friendsId));
-           return super.dao.findByCriteria(dc);
+           dc.add(Restrictions.in("id", ids));
+           return getDao().findByCriteria(dc);
        }
 
        return null;

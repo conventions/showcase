@@ -25,7 +25,6 @@ import org.primefaces.event.CloseEvent;
 @WindowScoped
 public class PersonSelectionModalMBean extends ModalMBean<Person> implements Serializable, ModalInitializable {
 
-    private Person[] selectedPeople;
     public static final String MODAL_NAME = "personSelectionModal"; 
     
     public PersonSelectionModalMBean() {
@@ -44,18 +43,10 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
         return (PersonService)super.getBaseService();
     }
 
-    public Person[] getSelectedPeople() {
-        return selectedPeople;
-    }
-
-    public void setSelectedPeople(Person selectedPeople[]) {
-        this.selectedPeople = selectedPeople;
-    }
-
 
     @Override
     public Object modalCallback() {
-       return selectedPeople;
+       return getPaginator().getSelection();
     }
 
     public String getModalName() {
@@ -71,13 +62,13 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
     @Override
     public void beforeOpen(@Observes(notifyObserver= Reception.IF_EXISTS) ModalInitialization modalInit) {
         if(getModalName().equals(modalInit.getModal())){//make sure the parameter is for you 
-           getPaginator().getFilter().put("age", modalInit.getParameters().get("age").toString());
+//           getPaginator().getFilter().put("age", modalInit.getParameters().get("age").toString());
            getPaginator().getFilter().put("ignoreId", modalInit.getParameters().get("ignoreId"));
          }
     }
   
     public void clearSelection(CloseEvent event){
-        this.selectedPeople = null;
+        getPaginator().setSelection(null);
     }
     
     

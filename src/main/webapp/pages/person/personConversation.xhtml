@@ -58,20 +58,8 @@ and open the template in the editor.
                             </p:panel>
                         </p:inplace>  
                         <p:panel id="tablePanel" style="overflow: auto;">
-                            <p:remoteCommand name="updateRowCount" process="@none" update="personConversationForm:table:tableFooter"/>    
-                            <p:dataTable value="#{personConversationMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found"
-                                         rowIndexVar="rowIndex"
-                                         lazy="true" filteredValue="#{personConversationMBean.paginator.filteredValue}"
-                                         rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
-                                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}" 
-                                         rowsPerPageTemplate="5,10,15,20,30">
-                                <p:ajax event="page"  onstart="block('div[id$=table]','paging...')" oncomplete="unblock('div[id$=table]')"/>
-                                <p:ajax event="sort"  onstart="block('div[id$=table]','sorting...')" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/>
-                                <p:ajax event="filter" onstart="block('div[id$=table]','filtering...')" oncomplete="unblock('div[id$=table]');updateRowCount();"/>
-                                <f:facet name="header">
-                                    <p:commandButton value="Show External Filters" onclick="inplace.show()" global="false"/>
-                                </f:facet>
-                                <p:column  sortBy="#{row.name}" filterBy="#{row.name}" >
+                            <framework:datatable paginator="#{personConversationMBean.paginator}" emptyMessage="No person found" >
+                                 <p:column  sortBy="#{row.name}" filterBy="#{row.name}" >
                                     <f:facet name="header">
                                         Name
                                     </f:facet>
@@ -122,10 +110,10 @@ and open the template in the editor.
                                                               />
                                     </div>
                                 </p:column>
-                                <f:facet name="footer">
+                                 <f:facet name="footer">
                                     <framework:tableFooter mbean="#{personConversationMBean}" id="tableFooter" renderAddButton="true" footerHeight="30px"/>
-                                </f:facet>
-                            </p:dataTable>
+                                 </f:facet> 
+                            </framework:datatable>
                         </p:panel>
                     </center>
 

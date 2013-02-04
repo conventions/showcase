@@ -13,20 +13,24 @@ and open the template in the editor.
  */
 package org.conventionsframework.showcase.controller;
 
-import org.conventionsframework.bean.AbstractConversationalMBean;
+import org.conventionsframework.bean.ConversationalMBean;
 import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.event.ModalCallback;
-import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.showcase.model.Person;
-import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.qualifier.Type;
+import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -34,19 +38,19 @@ import javax.inject.Named;
  */
 @ConversationScoped
 @Named(value="personConversationMBean")
-public class PersonConversationMBean extends AbstractConversationalMBean&lt;Person&gt; implements Serializable, ModalObserver {
+public class PersonConversationMBean extends ConversationalMBean&lt;Person&gt; implements Serializable, ModalObserver {
 
     /**
      * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
-     * @param personService
+     * @param personService 
      */
     @Inject
-    public void setPersonService(PersonService personService) {
+    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
         super.setBaseService(personService);
     }
 
-    public PersonService getPersonService(){
-        return (PersonService)super.getBaseService();
+    public BaseService getPersonService(){
+        return  super.getBaseService();
     }
 
     /**
@@ -59,6 +63,7 @@ public class PersonConversationMBean extends AbstractConversationalMBean&lt;Pers
 
         super.store();
     }
+
 
     /**
      * removeFromList is called by removeButton with persistentRemove="false"
@@ -81,7 +86,7 @@ public class PersonConversationMBean extends AbstractConversationalMBean&lt;Pers
     @Override
     public String afterPrepareInsert() {
         beginConversation();
-        return "addUserConversation.faces?cid=" + conversation.getId() + "&amp;amp;faces-redirect=true";
+        return "addUserConversation.faces?cid=" + conversation.getId() + "&amp;faces-redirect=true";
     }
 
 
@@ -93,7 +98,7 @@ public class PersonConversationMBean extends AbstractConversationalMBean&lt;Pers
     @Override
     public String afterPrepareUpdate() {
         beginConversation();
-        return "addUserConversation.faces?cid=" + conversation.getId() + "&amp;amp;faces-redirect=true";
+        return "addUserConversation.faces?cid=" + conversation.getId() + "&amp;faces-redirect=true";
     }
 
     /**
@@ -118,19 +123,20 @@ public class PersonConversationMBean extends AbstractConversationalMBean&lt;Pers
     }
 
     public String backEdit() {
-        return "addUserConversation.faces?cid=" + conversation.getId() + "&amp;amp;faces-redirect=true";
+        return "addUserConversation.faces?cid=" + conversation.getId() + "&amp;faces-redirect=true";
     }
 
     public String associateFriends() {
-        return "addFriendConversation.faces?cid=" + conversation.getId() + "&amp;amp;faces-redirect=true";
+        return "addFriendConversation.faces?cid=" + conversation.getId() + "&amp;faces-redirect=true";
     }
 
     @Override
-   public void modalResponse(@Observes ModalCallback callback) {
+   public void modalResponse(@Observes(notifyObserver= Reception.IF_EXISTS) ModalCallback callback) {
         
         /**
          * invokerName is used for identifying purposes as ModalCallback event
          * can be observed by various managed beans.
+         * also receive= Reception.IF_EXISTS can do this job
          */
         if(callback.getInvokerName() != null &amp;&amp; callback.getInvokerName().equals(ConstantUtils.Invoker.PERSON_CONVERSATION_BEAN)){
             if (getEntity().getFriends() == null) {
@@ -139,22 +145,23 @@ public class PersonConversationMBean extends AbstractConversationalMBean&lt;Pers
             Person[] selectedPerson = (Person[]) callback.getResult();
             for (Person person : selectedPerson) {
                 if (!getEntity().hasFriend(person.getId())) {
-                    getEntity().getFriends().add(getPersonService().load(person.getId()));
+                    getEntity().getFriends().add((Person)getPersonService().load(person.getId()));
                 }
             }
         }
     }
     
-     public void initPersonSelectionModal() {
+   public void initPersonSelectionModal() {
         Map&lt;String,Object&gt; parameters = new HashMap&lt;String, Object&gt;();
-        parameters.put("age", getEntity().getAge());
+        parameters.put("age", getEntity().getAge().toString());
         parameters.put("ignoreId", getEntity().getId());
-        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
+//        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
     }
      
      public String goList(){
          beginConversation();
-         return "personConversation.faces??cid=" + conversation.getId() + "&amp;amp;faces-redirect=true";
+         setFindState();
+         return "personConversation.faces??cid=" + conversation.getId() + "&amp;faces-redirect=true";
      }
 }
 </ui:composition> 

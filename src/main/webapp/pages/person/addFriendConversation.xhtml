@@ -99,7 +99,7 @@ and open the template in the editor.
                              invokerName="personConversationMBean"
                              >
                     <p:dataTable value="#{personSelectionModalMBean.paginator.dataModel}" 
-                                 selection="#{personSelectionModalMBean.selectedPeople}"
+                                 selection="#{personSelectionModalMBean.paginator.selection}"
                                  id="selectionTable" var="row" 
                                  emptyMessage="No person found" 
                                  rowIndexVar="rowIndex"

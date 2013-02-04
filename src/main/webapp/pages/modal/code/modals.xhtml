@@ -15,7 +15,7 @@ and open the template in the editor.
     xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
     xmlns:ui="http://java.sun.com/jsf/facelets"&gt;
     
-            &lt;!-- Modal selection 1 --&gt;
+           &lt;!-- Modal selection 1 --&gt;
               &lt;framework:modal id="findPersonDlg" header="find people returned by modal1"
                              widgetVar="findPersonDlg"
                              showEffect="clip"
@@ -24,46 +24,33 @@ and open the template in the editor.
                              mbean="\#{personSelectionModalMBean}"
                              update=":personSelectionForm:pageControl"
                              &gt;
-                    &lt;p:dataTable value="\#{personSelectionModalMBean.paginator.dataModel}" 
-                                 selection="\#{personSelectionModalMBean.selectedPeople}"
-                                 id="selectionTable" var="row" 
-                                 emptyMessage="No person found" 
-                                 rowIndexVar="rowIndex"
-                                 rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" 
-                                 rows="5" paginatorPosition="bottom"
-                                 rowKey="\#{row.id}"
-                                 lazy="true" filteredValue="\#{personSelectionModalMBean.paginator.filteredValue}"
+                  
+                  &lt;framework:datatable paginator="\#{personSelectionModalMBean.paginator}" emptyMessage="No person found" widgetVar="tablevar1"&gt; 
+                    &lt;p:column selectionMode="multiple" style="width:18px" /&gt; 
+                     &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" 
+                          filterMatchMode="contains"&gt;
+                        &lt;f:facet name="header"&gt;
+                            Name
+                        &lt;/f:facet&gt;
+                        &lt;h:outputText value="\#{row.name}"/&gt;
+                    &lt;/p:column&gt;
+                    &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" 
+                              filterMatchMode="contains"&gt;
+                        &lt;f:facet name="header"&gt;
+                            Lastname
+                        &lt;/f:facet&gt;
+                        &lt;h:outputText value="\#{row.lastname}"/&gt;
+                    &lt;/p:column&gt;
 
-                                 paginator="true" paginatorTemplate="{CurrentPageReport}  
-                                 {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink}
-                                 {LastPageLink} {RowsPerPageDropdown}"
-                                 selectionMode="multiple"
-                                 widgetVar="tablevar1"
-                                 rowsPerPageTemplate="5,10,15,20,30"&gt;
-                        
-                        &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" 
-                                  filterMatchMode="contains"&gt;
-                            &lt;f:facet name="header"&gt;
-                                Name
-                            &lt;/f:facet&gt;
-                            &lt;h:outputText value="\#{row.name}"/&gt;
-                        &lt;/p:column&gt;
-                        &lt;p:column sortBy="\#{row.lastname}" filterBy="\#{row.lastname}" 
-                                  filterMatchMode="contains"&gt;
-                            &lt;f:facet name="header"&gt;
-                                Lastname
-                            &lt;/f:facet&gt;
-                            &lt;h:outputText value="\#{row.lastname}"/&gt;
-                        &lt;/p:column&gt;
-
-                        &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}"
-                                  filterMatchMode="contains"&gt;
-                            &lt;f:facet name="header"&gt;
-                                Age
-                            &lt;/f:facet&gt;
-                            &lt;h:outputText value="\#{row.age}"/&gt;
-                        &lt;/p:column&gt;
-                    &lt;/p:dataTable&gt;
+                    &lt;p:column sortBy="\#{row.age}" filterBy="\#{row.age}"
+                              filterMatchMode="contains"&gt;
+                        &lt;f:facet name="header"&gt;
+                            Age
+                        &lt;/f:facet&gt;
+                        &lt;h:outputText value="\#{row.age}"/&gt;
+                    &lt;/p:column&gt;
+                &lt;/framework:datatable&gt; 
+                    
             &lt;/framework:modal&gt;
 
             &lt;!-- Modal selection 2--&gt;
@@ -113,5 +100,6 @@ and open the template in the editor.
                         &lt;/p:column&gt;
                     &lt;/p:dataTable&gt;
             &lt;/framework:modal&gt;
+            
 &lt;/ui:composition&gt; 
 </ui:composition> 
