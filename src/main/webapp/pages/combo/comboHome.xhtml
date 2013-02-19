@@ -35,7 +35,7 @@
                      <framework:combo id="combo" width="150" list="#{comboMBean.personList}" value="#{comboMBean.selectedPerson}" update=":comboForm:selected" converter="personConverter"/>
                      <h:outputText id="selected" value="Selected OneMenu: #{comboMBean.selectedPerson.name}"/>
                      <h:outputLabel  style="text-align: right" for="comboForm:combo2:comboOneMenu" value="OneMenu2:"/>      
-                     <framework:combo list="#{comboMBean.personList}" id="combo2" value="#{comboMBean.selectedPerson}" update=":comboForm:selected2 :headerForm:growl" listener="#{comboMBean.listener()}"/>
+                     <framework:combo list="#{comboMBean.personList}" id="combo2" value="#{comboMBean.selectedPerson}" update=":comboForm:selected2 :headerForm:growl" listener="#{comboMBean.listener()}" emptyOption="false"/>
                      <h:outputText id="selected2" value="Selected OneMenu2: #{comboMBean.selectedPerson.name}"/>
                      <h:outputLabel value="OneRadio:"/>
                      <framework:combo list="#{comboMBean.personList}" type="oneRadio" value="#{comboMBean.selectedPerson}"  update=":comboForm:selectedRadio" />
