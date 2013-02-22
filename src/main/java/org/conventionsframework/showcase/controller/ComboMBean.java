@@ -26,6 +26,7 @@ public class ComboMBean implements Serializable {
     private List<Person> personList;
     private List<Person> selectedPersonList;
     private Person selectedPerson;
+    private Person selectedPerson2;
     private Person selectedPersonRadio;
     private int selectedItem;
     
@@ -44,6 +45,7 @@ public class ComboMBean implements Serializable {
         p.setName("1");
         p.setAge(1);
         personList = service.findByExample(p,5);
+        selectedPerson2 = personList.get(2);
     }
 
     
@@ -78,6 +80,16 @@ public class ComboMBean implements Serializable {
     public void setSelectedPersonList(List<Person> selectedPersonList) {
         this.selectedPersonList = selectedPersonList;
     }
+
+    public Person getSelectedPerson2() {
+        return selectedPerson2;
+    }
+
+    public void setSelectedPerson2(Person selectedPerson2) {
+        this.selectedPerson2 = selectedPerson2;
+    }
+    
+    
     
     
     public void listener(){

@@ -19,8 +19,8 @@ and open the template in the editor.
                      &lt;framework:combo  width="150" list="\#{comboMBean.personList}" value="\#{comboMBean.selectedPerson}" update=":comboForm:selected" converter="personConverter"/&gt;
                      &lt;h:outputText id="selected" value="Selected OneMenu: \#{comboMBean.selectedPerson.name}"/&gt;
                      &lt;h:outputLabel value="OneMenu2:"/&gt;      
-                     &lt;framework:combo list="\#{comboMBean.personList}" value="\#{comboMBean.selectedPerson}" update=":comboForm:selected2" listener="\#{comboMBean.listener()}"/&gt;
-                     &lt;h:outputText id="selected2" value="Selected OneMenu2: \#{comboMBean.selectedPerson.name}"/&gt;
+                     &lt;framework:combo list="\#{comboMBean.personList}" value="\#{comboMBean.selectedPerson2}" update=":comboForm:selected2" listener="\#{comboMBean.listener()}"/&gt;
+                     &lt;h:outputText id="selected2" value="Selected OneMenu2: \#{comboMBean.selectedPerson2.name}"/&gt;
                      &lt;h:outputLabel value="OneRadio:"/&gt;
                      &lt;framework:combo list="\#{comboMBean.personList}" type="oneRadio" value="\#{comboMBean.selectedPerson}"  update=":comboForm:selectedRadio" /&gt;
                      &lt;h:outputText id="selectedRadio" value="Selected Radio: \#{comboMBean.selectedPerson.name}"/&gt;

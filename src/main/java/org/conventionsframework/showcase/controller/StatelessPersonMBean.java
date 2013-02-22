@@ -12,7 +12,6 @@ import org.conventionsframework.bean.state.CrudState;
 import java.io.Serializable;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
-import org.conventionsframework.showcase.service.CustomPersonService;
 import org.conventionsframework.showcase.service.StatelessPersonService;
 import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.util.MessagesController;
