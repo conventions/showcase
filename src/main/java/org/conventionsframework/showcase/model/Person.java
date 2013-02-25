@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import org.conventionsframework.model.SelectItemAware;
 import org.conventionsframework.model.VersionatedEntityLong;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -24,7 +23,7 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name="Person.findByAge",query="SELECT p from Person p where p.age = :age")
 })
 
-public class Person extends VersionatedEntityLong implements Serializable,SelectItemAware{
+public class Person extends VersionatedEntityLong implements Serializable{
 
     private static final long serialVersionUID = -3065107295253073402L;
     private String name;
@@ -100,14 +99,6 @@ public class Person extends VersionatedEntityLong implements Serializable,Select
     }
 
     
-    /**
-     * used as label in selectItem
-     */
-    @Override
-    @Transient
-    public String getLabel() {
-        return this.getName();
-    }
     
     /**
      * 
@@ -153,5 +144,12 @@ public class Person extends VersionatedEntityLong implements Serializable,Select
         int hash = 7;
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return getName(); 
+    }
+    
+    
 
 }

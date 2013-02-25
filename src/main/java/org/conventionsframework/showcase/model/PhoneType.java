@@ -4,7 +4,6 @@
  */
 package org.conventionsframework.showcase.model;
 
-import org.conventionsframework.model.SelectItemAware;
 
 /**
  *
@@ -12,7 +11,7 @@ import org.conventionsframework.model.SelectItemAware;
  */
 
 
-public enum PhoneType implements SelectItemAware{
+public enum PhoneType{
     LANDLINE("Landline"),WIRELESS("Wireless"),CELLULAR("Cellular"); 
     
     private final String name;
@@ -25,9 +24,5 @@ public enum PhoneType implements SelectItemAware{
         this.name = name;
     }
 
-    @Override
-    public String getLabel() {
-        return name;//selectItem label for conventions:combo component
-    }
     
 }
