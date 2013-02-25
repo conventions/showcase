@@ -52,32 +52,33 @@
                          closeListener="#{personSelectionModalMBean.clearSelection}"
                          update=":personCrudForm:panelFriend"
                          invokerName="statelessPersonMBean"
+                         width="800"
                          >
-                <framework:datatable paginator="#{personSelectionModalMBean.paginator}" emptyMessage="No person found"> 
-                    <p:column selectionMode="multiple" style="width:18px" /> 
-                     <p:column sortBy="#{row.name}" filterBy="#{row.name}" 
+            <framework:datatable paginator="#{personSelectionModalMBean.paginator}" emptyMessage="No person found" widgetVar="tableDlgVar"> 
+                <p:column selectionMode="multiple" style="width:18px" /> 
+                <p:column sortBy="#{row.name}" filterBy="#{row.name}" 
                           filterMatchMode="contains">
-                        <f:facet name="header">
-                            Name
-                        </f:facet>
-                        <h:outputText value="#{row.name}"/>
-                    </p:column>
-                    <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" 
-                              filterMatchMode="contains">
-                        <f:facet name="header">
-                            Lastname
-                        </f:facet>
-                        <h:outputText value="#{row.lastname}"/>
-                    </p:column>
+                    <f:facet name="header">
+                        Name
+                    </f:facet>
+                    <h:outputText value="#{row.name}"/>
+                </p:column>
+                <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" 
+                          filterMatchMode="contains">
+                    <f:facet name="header">
+                        Lastname
+                    </f:facet>
+                    <h:outputText value="#{row.lastname}"/>
+                </p:column>
 
-                    <p:column sortBy="#{row.age}" filterBy="#{row.age}"
-                              filterMatchMode="contains">
-                        <f:facet name="header">
-                            Age
-                        </f:facet>
-                        <h:outputText value="#{row.age}"/>
-                    </p:column>
-                </framework:datatable>                     
+                <p:column sortBy="#{row.age}" filterBy="#{row.age}"
+                          filterMatchMode="contains">
+                    <f:facet name="header">
+                        Age
+                    </f:facet>
+                    <h:outputText value="#{row.age}"/>
+                </p:column>
+            </framework:datatable>                     
 
         </framework:modal>
     </ui:define>

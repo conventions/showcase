@@ -45,7 +45,7 @@ and open the template in the editor.
                                              action="\#{personMBean.initPersonSelectionModal}"
                                              update=":findFriendDlg:findFriendDlg_panel"
                                              oncomplete="findFriendDlg.show()"/&gt;&lt;br/&gt;
-                            &lt;p:commandButton id="bt-rm-all" value="Removed selected" action="\#{personMBean.removeSelected}" update=":personCrudForm:pageControl"/&gt;
+                            &lt;p:commandButton id="bt-rm-all" value="Removed selected" action="\#{personMBean.removeSelected}" update=":personCrudForm:panelFriend :personCrudForm:msg"/&gt;
 
                         &lt;/f:facet&gt;
                         &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" filterMatchMode="contains"&gt;

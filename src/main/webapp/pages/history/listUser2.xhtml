@@ -30,13 +30,13 @@ and open the template in the editor.
                                   <p:ajax event="sort" onstart="block('div[id$=table]','sorting...')" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/>
                                   <p:ajax event="filter" onstart="block('div[id$=table]','filtering...')" oncomplete="unblock('div[id$=table]')"/>
                                
-                                <p:column  sortBy="#{row.name}" filterBy="#{row.name}" filterEvent="enter">
+                                <p:column  sortBy="#{row.name}" filterBy="#{row.name}" >
                                     <f:facet name="header">
                                         Name
                                     </f:facet>
                                     <h:outputText value="#{row.name}"/>
                                 </p:column>
-                                <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" filterEvent="enter">
+                                <p:column sortBy="#{row.lastname}" filterBy="#{row.lastname}" >
                                     <f:facet name="header">
                                         Lastname
                                     </f:facet>
