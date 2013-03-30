@@ -5,9 +5,7 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.StateMBean;
-import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.bean.state.State;
-import org.conventionsframework.event.ModalCallback;
 import org.conventionsframework.qualifier.BeanState;
 import org.conventionsframework.qualifier.BeanStates;
 import org.conventionsframework.qualifier.PersistentClass;
@@ -19,8 +17,6 @@ import org.conventionsframework.util.MessagesController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.qualifier.Service;
@@ -29,39 +25,38 @@ import org.conventionsframework.qualifier.Service;
  *
  * @author rmpestano
  */
-
 @ViewAccessScoped
 @Named
 @PersistentClass(Person.class)
 @BeanStates({
     //if this managed bean is in "find state", a breadCrumb link with title "Search Person" will be generated in the page(if stateItens component is present),
     //also when you click the link it will execute the callback "#{ajaxStateMBean.setFindState}" and will update ":historyForm:pageControl"
-    @BeanState(beanState=ConstantUtils.State.FIND_STATE,title="Search Person", callback="#{ajaxStateMBean.setFindState}",update=":historyForm:pageControl"),
-    @BeanState(beanState=ConstantUtils.State.INSERT_STATE,title="Create Person", callback="#{ajaxStateMBean.setInsertState}",update=":historyForm:pageControl"),
-    @BeanState(beanState=ConstantUtils.State.UPDATE_STATE,title="Edit Person",callback="#{ajaxStateMBean.setUpdateState}",update=":historyForm:pageControl"),
-    @BeanState(beanState=ConstantUtils.State.FRIEND_STATE,title="Manage Friends",callback="#{ajaxStateMBean.setFriendState}",update=":historyForm:pageControl"),
-    @BeanState(beanState="init",title="Ajax StateMBean",callback="#{ajaxStateMBean.setInitState}",update=":historyForm:pageControl")
+    @BeanState(beanState = ConstantUtils.State.FIND_STATE, title = "Search Person", callback = "#{ajaxStateMBean.setFindState}", update = ":historyForm:pageControl"),
+    @BeanState(beanState = ConstantUtils.State.INSERT_STATE, title = "Create Person", callback = "#{ajaxStateMBean.setInsertState}", update = ":historyForm:pageControl"),
+    @BeanState(beanState = ConstantUtils.State.UPDATE_STATE, title = "Edit Person", callback = "#{ajaxStateMBean.setUpdateState}", update = ":historyForm:pageControl"),
+    @BeanState(beanState = ConstantUtils.State.FRIEND_STATE, title = "Manage Friends", callback = "#{ajaxStateMBean.setFriendState}", update = ":historyForm:pageControl"),
+    @BeanState(beanState = "init", title = "Ajax StateMBean", callback = "#{ajaxStateMBean.setInitState}", update = ":historyForm:pageControl")
 })
-@Service(name=Service.STATEFUL,entity=Person.class)//same as commented method below 
-public class AjaxStateMBean extends StateMBean<Person> implements ModalObserver{
-    
+@Service(name = Service.STATEFUL, entity = Person.class)//same as commented method below 
+public class AjaxStateMBean extends StateMBean<Person> {
+
 //    @Inject
 //    public void initService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService service){
 //        super.setBaseService(service);
 //    }
-    
     public boolean isFriendState() {
         return ShowcaseState.isFriendState(getBeanState());
     }
+
     public boolean isInitState() {
         return HistoryState.INIT.equals(getBeanState());
     }
-    
-    public void setFriendState(){
+
+    public void setFriendState() {
         setBeanState(ShowcaseState.FRIEND);
     }
-    
-    public void setInitState(){
+
+    public void setInitState() {
         setBeanState(HistoryState.INIT);
     }
 
@@ -69,35 +64,35 @@ public class AjaxStateMBean extends StateMBean<Person> implements ModalObserver{
         setBeanState(HistoryState.INIT);
         return Pages.AjaxHistory.HOME + ConstantUtils.FACES_REDIRECT;
     }
-    
-    public void goList(){
+
+    public void goList() {
         setFindState();
     }
-    
-    public void goFriend(){
+
+    public void goFriend() {
         setBeanState(ShowcaseState.FRIEND);
     }
-    
-     @Override
-     public void modalResponse(@Observes(notifyObserver= Reception.IF_EXISTS) ModalCallback callback) {
+
+    @Override
+    public void afterModalResponse() {
         if (getEntity().getFriends() == null) {
             getEntity().setFriends(new ArrayList<Person>());
         }
-        Person[] selectedPerson = (Person[]) callback.getResult();
+        Person[] selectedPerson = (Person[]) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add((Person)getBaseService().load(person.getId()));
+                getEntity().getFriends().add((Person) getBaseService().load(person.getId()));
             }
         }
     }
-    
-       public void initPersonSelectionModal() {
-        Map<String,Object> parameters = new HashMap<String, Object>();
+
+    public void initPersonSelectionModal() {
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("age", getEntity().getAge().toString());
-        parameters.put("ignoreId", getEntity().getId());
-        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
+        parameters.put("ignoreId", getEntity().getId());//doesnt show me in list of available frieds 
+        super.initModal(parameters);
     }
-    
+
     @Override
     public void removeFromList() {
         if (getEntity().getFriends() == null) {
@@ -110,44 +105,37 @@ public class AjaxStateMBean extends StateMBean<Person> implements ModalObserver{
     }
 
     /**
-     * if saving from friend page just store the entity 
-     * and keep in friendState
+     * if saving from friend page just store the entity and keep in friendState
      * case super.store set state to update
      */
     @Override
     public void store() {
-        if(isFriendState()){
+        if (isFriendState()) {
             getBaseService().store(getEntity());
             MessagesController.addInfo(getUpdateMessage());
-        }
-        else{
+        } else {
             super.store();
         }
-        
+
     }
-    
-    
 
     /**
- * Custom state for ajax history stack
- * @author rmpestano
- */
-   enum HistoryState implements State {
+     * Custom state for ajax history stack
+     *
+     * @author rmpestano
+     */
+    enum HistoryState implements State {
 
-    INIT("init");
-    
-    private final String stateName;
+        INIT("init");
+        private final String stateName;
 
-    HistoryState(String stateName) {
-        this.stateName = stateName;
+        HistoryState(String stateName) {
+            this.stateName = stateName;
+        }
+
+        @Override
+        public String getStateName() {
+            return this.stateName;
+        }
     }
-
-    @Override
-    public String getStateName() {
-        return this.stateName;
-    }
-
-}
-
-    
 }

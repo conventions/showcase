@@ -5,8 +5,6 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.StateMBean;
-import org.conventionsframework.bean.modal.ModalObserver;
-import org.conventionsframework.event.ModalCallback;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.qualifier.BeanState;
 import org.conventionsframework.qualifier.BeanStates;
@@ -20,10 +18,8 @@ import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import javax.ejb.EJB;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
@@ -47,7 +43,7 @@ import org.conventionsframework.service.BaseService;
     @BeanState(beanState=ConstantUtils.State.FRIEND_STATE,page=Pages.History2.FRIEND_PAGE+ConstantUtils.FACES_REDIRECT,title="Friends of ManagedBean2")
 })
 @PersistentClass(Person.class)
-public class TrackablePersonMBean2 extends StateMBean<Person> implements Serializable, ModalObserver {
+public class TrackablePersonMBean2 extends StateMBean<Person> implements Serializable {
 
     public TrackablePersonMBean2() {
     }
@@ -104,12 +100,12 @@ public class TrackablePersonMBean2 extends StateMBean<Person> implements Seriali
     }
 
     @Override
-   public void modalResponse(@Observes(notifyObserver= Reception.IF_EXISTS) ModalCallback callback) {
+   public void afterModalResponse() {
         
         if (getEntity().getFriends() == null) {
             getEntity().setFriends(new ArrayList<Person>());
         }
-        Person[] selectedPerson = (Person[]) callback.getResult();
+        List<Person> selectedPerson = (List<Person>) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
                 getEntity().getFriends().add(getPersonService().load(person.getId()));
@@ -121,7 +117,7 @@ public class TrackablePersonMBean2 extends StateMBean<Person> implements Seriali
         Map<String,Object> parameters = new HashMap<String, Object>();
         parameters.put("age", getEntity().getAge().toString());
         parameters.put("ignoreId", getEntity().getId());
-        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
+        super.initModal(parameters);
     }
 
 

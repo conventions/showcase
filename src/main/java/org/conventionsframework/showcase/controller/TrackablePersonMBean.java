@@ -5,8 +5,6 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.StateMBean;
-import org.conventionsframework.bean.modal.ModalObserver;
-import org.conventionsframework.event.ModalCallback;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.qualifier.BeanState;
 import org.conventionsframework.qualifier.BeanStates;
@@ -19,9 +17,8 @@ import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
@@ -39,25 +36,26 @@ import org.conventionsframework.service.BaseService;
     //as some people asked me, translating:
     //if this managed bean is in "find state", a breadCrumb link with title "Search ManagedBean1" will be generated in the page(if historyStackLinks component is present),
     //also when you click the link it will execute an action with return = "Pages.History.LIST_PAGE+ConstantUtils.FACES_REDIRECT"
-    @BeanState(beanState=ConstantUtils.State.FIND_STATE,page=Pages.History.LIST_PAGE+ConstantUtils.FACES_REDIRECT,title="Search ManagedBean1"),
-    @BeanState(beanState=ConstantUtils.State.INSERT_STATE,page=Pages.History.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Create ManagedBean1"),
-    @BeanState(beanState=ConstantUtils.State.UPDATE_STATE,page=Pages.History.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Edit ManagedBean1"),
-    @BeanState(beanState=ConstantUtils.State.FRIEND_STATE,page=Pages.History.FRIEND_PAGE+ConstantUtils.FACES_REDIRECT,title="Friends of ManagedBean1")
+    @BeanState(beanState = ConstantUtils.State.FIND_STATE, page = Pages.History.LIST_PAGE + ConstantUtils.FACES_REDIRECT, title = "Search ManagedBean1"),
+    @BeanState(beanState = ConstantUtils.State.INSERT_STATE, page = Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT, title = "Create ManagedBean1"),
+    @BeanState(beanState = ConstantUtils.State.UPDATE_STATE, page = Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT, title = "Edit ManagedBean1"),
+    @BeanState(beanState = ConstantUtils.State.FRIEND_STATE, page = Pages.History.FRIEND_PAGE + ConstantUtils.FACES_REDIRECT, title = "Friends of ManagedBean1")
 })
 @PersistentClass(Person.class)
-public class TrackablePersonMBean extends StateMBean<Person> implements Serializable, ModalObserver {
-
-   
+public class TrackablePersonMBean extends StateMBean<Person> implements Serializable {
 
     public TrackablePersonMBean() {
-    }    
+    }
 
     /**
-     * this method is REQUIRED (or use the @Service annotation) to tell the framework how to 'crud' the managed bean's entity
+     * this method is REQUIRED (or use the
+     *
+     * @Service annotation) to tell the framework how to 'crud' the managed
+     * bean's entity
      * @param personService
      */
     @Inject
-    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
+    public void setPersonService(@Service(type = Type.STATEFUL, entity = Person.class) BaseService personService) {
         super.setBaseService(personService);
     }
 
@@ -70,15 +68,13 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
         super.store();
     }
 
-  
     public boolean isFriendState() {
         return ShowcaseState.isFriendState(getBeanState());
     }
 
-
     /**
-     * this method is called after 'newButton' is clicked  
-     * you dont need to overhide this method
+     * this method is called after 'newButton' is clicked you dont need to
+     * overhide this method
      */
     @Override
     public String afterPrepareInsert() {
@@ -90,34 +86,31 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
         return Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT;
     }
 
-
     public String associateFriends() {
         setBeanState(ShowcaseState.FRIEND);
         return Pages.History.FRIEND_PAGE + ConstantUtils.FACES_REDIRECT;
     }
 
     @Override
-     public void modalResponse(@Observes(notifyObserver= Reception.IF_EXISTS) ModalCallback callback) {
-        
+    public void afterModalResponse() {
+
         if (getEntity().getFriends() == null) {
             getEntity().setFriends(new ArrayList<Person>());
         }
-        Person[] selectedPerson = (Person[]) callback.getResult();
+        List<Person> selectedPerson = (List<Person>) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add((Person)getPersonService().load(person.getId()));
+                getEntity().getFriends().add((Person) getPersonService().load(person.getId()));
             }
         }
     }
 
-   public void initPersonSelectionModal() {
-        Map<String,Object> parameters = new HashMap<String, Object>();
+    public void initPersonSelectionModal() {
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("age", getEntity().getAge().toString());
         parameters.put("ignoreId", getEntity().getId());
-        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
+        super.initModal(parameters);
     }
-
-
 
     public String go() {
         setBeanState(CrudState.FIND);
@@ -134,6 +127,4 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
             MessagesController.addInfo("Friend removed from list");
         }
     }
-    
-    
 }

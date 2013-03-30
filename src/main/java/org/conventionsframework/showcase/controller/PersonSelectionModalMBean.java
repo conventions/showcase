@@ -5,14 +5,10 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.ModalMBean;
-import org.conventionsframework.bean.modal.ModalInitializable;
-import org.conventionsframework.event.ModalInitialization;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
 import org.primefaces.event.CloseEvent;
@@ -23,10 +19,8 @@ import org.primefaces.event.CloseEvent;
  */
 @Named(value = "personSelectionModalMBean")
 @WindowScoped
-public class PersonSelectionModalMBean extends ModalMBean<Person> implements Serializable, ModalInitializable {
+public class PersonSelectionModalMBean extends ModalMBean<Person> implements Serializable {
 
-    public static final String MODAL_NAME = "personSelectionModal"; 
-    
     public PersonSelectionModalMBean() {
     }
 
@@ -49,27 +43,26 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
        return getPaginator().getSelection();
     }
 
-    public String getModalName() {
-        return MODAL_NAME;
-    }
-     
-
     /**
      * this event is fired by initModal method
      * @see PersonSelectionMBean#initPersonSelectionModal()
+     * @see PersonMBean#initPersonSelectionModal()
+     * @see BaseMBean#initModal()
      * @param modalInit 
      */
     @Override
-    public void beforeOpen(@Observes(notifyObserver= Reception.IF_EXISTS) ModalInitialization modalInit) {
-        if(getModalName().equals(modalInit.getModal())){//make sure the parameter is for you 
-//           getPaginator().getFilter().put("age", modalInit.getParameters().get("age").toString());
-           getPaginator().getFilter().put("ignoreId", modalInit.getParameters().get("ignoreId"));
-         }
+    public void onOpen() {
+           //parameter variable is populated via CDI event
+           //and used to pass parameters from caller to modalMBeans
+           //eg: open a modal with already filtered listOfValues
+           if(getParameters() != null){
+               getPaginator().getFilter().put("ignoreId", super.getParameters().get("ignoreId"));
+           }
+           
     }
   
     public void clearSelection(CloseEvent event){
         getPaginator().setSelection(null);
     }
-    
     
 }

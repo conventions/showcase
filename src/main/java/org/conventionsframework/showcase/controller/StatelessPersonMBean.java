@@ -6,21 +6,16 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.BaseMBean;
-import org.conventionsframework.bean.modal.ModalObserver;
-import org.conventionsframework.event.ModalCallback;
 import org.conventionsframework.bean.state.CrudState;
 import java.io.Serializable;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
 import org.conventionsframework.showcase.service.StatelessPersonService;
-import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.util.MessagesController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
@@ -31,12 +26,14 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
  */
 @ViewAccessScoped
 @Named("statelessPersonMBean")
-public class StatelessPersonMBean extends BaseMBean<Person> implements Serializable, ModalObserver {
+public class StatelessPersonMBean extends BaseMBean<Person> implements Serializable {
 
     private List<Person> friends;
 
-  /**
-     * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
+    /**
+     * this method is REQUIRED to tell the framework how to 'crud' the managed
+     * bean's entity
+     *
      * @param personService
      */
     @Inject
@@ -44,19 +41,19 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
         super.setBaseService(statelessPersonService);
     }
 
-    public StatelessPersonService getStatelessPersonService(){
-        return (StatelessPersonService)super.getBaseService();
+    public StatelessPersonService getStatelessPersonService() {
+        return (StatelessPersonService) super.getBaseService();
     }
 
     public List<Person> getFriends() {
-        if(friends == null){
+        if (friends == null) {
             friends = new ArrayList<Person>();
         }
         return friends;
     }
-   
-    public void addFriend(Person p){
-        if(!getFriends().contains(p)){
+
+    public void addFriend(Person p) {
+        if (!getFriends().contains(p)) {
             getFriends().add(p);
         }
     }
@@ -65,7 +62,6 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
         this.friends = friends;
     }
 
-    
     @Override
     public Person create() {
         Person p = new Person();
@@ -73,13 +69,11 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
         p.setAge(25);
         return p;
     }
-    
-    
 
     @Override
     public void store() {
         getEntity().setFriends(this.attachPersons(getFriends()));
-        
+
         super.store();
     }
 
@@ -97,10 +91,9 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
         return ShowcaseState.FRIEND.equals(getBeanState());
     }
 
-
     /**
-     * this method is called after 'newButton' is clicked  
-     * you dont need to overhide this method
+     * this method is called after 'newButton' is clicked you dont need to
+     * overhide this method
      */
     @Override
     public String afterPrepareInsert() {
@@ -112,16 +105,16 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
         return null;
     }
 
-    public int getNumFriends(){
-        if(friends != null){
+    public int getNumFriends() {
+        if (friends != null) {
             return friends.size();
         }
         return 0;
     }
-    
+
     /**
-     * called when 'filterButton' is clicked
-     * you dont need to override this method
+     * called when 'filterButton' is clicked you dont need to override this
+     * method
      */
     @Override
     public void find() {
@@ -132,48 +125,41 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
         setBeanState(ShowcaseState.FRIEND);
     }
 
-     /**
-     * ModalCallback event is fired by modal popup
-     * and is observed by ModalObserver ManagedBeans
-     * to retrieve data from popup(acts like lov pattern)
-     * @param callback 
+    /**
+     * ModalCallback event is fired by modal popup and is observed by
+     * ModalObserver ManagedBeans to retrieve data from popup(acts like lov
+     * pattern)
+     *
+     * @param callback
      */
     @Override
-    public void modalResponse(@Observes(notifyObserver= Reception.IF_EXISTS) ModalCallback callback) {
-         /**
-         * invokerName is used for identifying purposes as ModalCallback event
-         * can be observed by various managed beans.
-         * also receive= Reception.IF_EXISTS can do this job
-         * and has the advantage that the bean constructor is not called 
-         */
-        if(callback.getInvokerName() != null && callback.getInvokerName().equals(ConstantUtils.Invoker.PERSON_STATELESS_BEAN)){
-            if (getEntity().getFriends() == null) {
-                getEntity().setFriends(new ArrayList<Person>());
-            }
-            List<Person> selectedPerson = (List<Person>) callback.getResult();
-            for (Person person : selectedPerson) {
+    public void afterModalResponse() {
+        if (getEntity().getFriends() == null) {
+            getEntity().setFriends(new ArrayList<Person>());
+        }
+        List<Person> selectedPerson = (List<Person>) getModalResponse();
+        for (Person person : selectedPerson) {
             addFriend(person);
-            }
         }
     }
 
     public void initPersonSelectionModal() {
-        Map<String,Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("age", getEntity().getAge().toString());
         parameters.put("ignoreId", getEntity().getId());
-        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
+        super.initModal(parameters);
     }
 
     public void backEdit() {
         setBeanState(CrudState.UPDATE);
     }
-   
-    public void back(){
-         setBeanState(CrudState.FIND);
+
+    public void back() {
+        setBeanState(CrudState.FIND);
     }
-   
+
     @Override
-   public void removeFromList() {
+    public void removeFromList() {
         if (this.getFriends() == null) {
             return;
         }
@@ -185,16 +171,15 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
 
     /**
      * attach detached Person to hibernate Session
+     *
      * @param friends
-     * @return 
+     * @return
      */
     private List<Person> attachPersons(List<Person> friends) {
         List<Person> attachedPersons = new ArrayList<Person>();
         for (Person person : friends) {
             attachedPersons.add(getStatelessPersonService().load(person.getId()));
         }
-        return attachedPersons;        
+        return attachedPersons;
     }
 }
-
- 

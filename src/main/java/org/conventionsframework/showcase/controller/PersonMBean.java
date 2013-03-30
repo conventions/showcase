@@ -6,13 +6,10 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.BaseMBean;
-import org.conventionsframework.bean.modal.ModalObserver;
 import org.conventionsframework.bean.state.CrudState;
-import org.conventionsframework.event.ModalCallback;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
 import org.conventionsframework.showcase.service.PersonService;
-import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.util.MessagesController;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,8 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.exception.BusinessException;
@@ -32,27 +27,26 @@ import org.conventionsframework.exception.BusinessException;
  */
 @ViewAccessScoped
 @Named("personMBean")
-public class PersonMBean extends BaseMBean<Person> implements Serializable,ModalObserver {
-    
+public class PersonMBean extends BaseMBean<Person> implements Serializable {
 
-  /**
-     * this method is REQUIRED (or use the @Service annotation) to tell the framework how to 'crud' the managed bean's entity
+    /**
+     * this method is REQUIRED (or use the
+     *
+     * @Service annotation) to tell the framework how to 'crud' the managed
+     * bean's entity
      * @param personService
      */
 //    @Inject
 //    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
 //        super.setBaseService(personService);
 //    }
-    
     @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }
-    
 
-    
-    public PersonService getPersonService(){
-        return (PersonService)super.getBaseService();
+    public PersonService getPersonService() {
+        return (PersonService) super.getBaseService();
     }
 
     @Override
@@ -70,15 +64,13 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
     public void store() {
         super.store();
     }
- 
+
     public boolean isFriendState() {
         return ShowcaseState.FRIEND.equals(getBeanState());
     }
 
-
     /**
-     * called after 'addButton' is clicked  
-     * to decide the navigation
+     * called after 'addButton' is clicked to decide the navigation
      */
     @Override
     public String afterPrepareInsert() {
@@ -86,15 +78,12 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
     }
 
     /**
-     * called after 'editButton' is clicked  
-     * to decide the navigation
+     * called after 'editButton' is clicked to decide the navigation
      */
     @Override
     public String afterPrepareUpdate() {
         return null;
     }
-
-    
 
     /**
      * called when 'filterButton' is clicked
@@ -108,73 +97,68 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable,Modal
     }
 
     /**
-     * ModalCallback event is fired by modal popup
-     * and is observed by ModalObserver ManagedBeans
-     * to retrieve data from popup(acts like lov pattern)
-     * @param callback 
+     * ModalCallback event is fired by modal popup and is observed by
+     * ModalObserver ManagedBeans to retrieve data from popup(acts like lov
+     * pattern)
+     *
+     * @param callback
      */
     @Override
-    public void modalResponse(@Observes(notifyObserver= Reception.IF_EXISTS) ModalCallback callback) {
-        /**
-         * invokerName is used for identifying purposes as ModalCallback event
-         * can be observed by various managed beans.
-         * also receive= Reception.IF_EXISTS can do this job
-         */
-        if(callback.getInvokerName() != null && callback.getInvokerName().equals(ConstantUtils.Invoker.PERSON_BEAN)){
+    public void afterModalResponse() {
             if (getEntity().getFriends() == null) {
                 getEntity().setFriends(new ArrayList<Person>());
             }
-            List<Person> selectedPerson = (List<Person>) callback.getResult();
+            //modalResponse in populated through CDI event and afterModalResponse
+            // is called when a modal fires a modalCallbackEvent @see ModalMBean#invokeModalCallback()
+            // invokeModalCallback is fired by modalButton component and is used to retrieve listOfValues
+            List<Person> selectedPerson = (List<Person>) getModalResponse();
+            //as you can see modalResponse is an object and should be cast accoardingly
+            //also you may need instaceof cause this bean can receive events from multiple modal
+            //which can return a variety of responses
             for (Person person : selectedPerson) {
                 if (!getEntity().hasFriend(person.getId())) {
                     getEntity().getFriends().add(getPersonService().load(person.getId()));
                 }
             }
-        }
     }
 
     public void initPersonSelectionModal() {
-        Map<String,Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("age", getEntity().getAge().toString());
         parameters.put("ignoreId", getEntity().getId());
-        super.initModal(PersonSelectionModalMBean.MODAL_NAME, parameters);
+        super.initModal(parameters);
     }
 
     public void backEdit() {
         setBeanState(CrudState.UPDATE);
     }
-   
-    public void back(){
-         setBeanState(CrudState.FIND);
+
+    public void back() {
+        setBeanState(CrudState.FIND);
     }
-    
-    public void saveAndRollback(){
+
+    public void saveAndRollback() {
         getPersonService().setRollbackTest(true);
         getPersonService().store(getEntity());
     }
-    
-                
-    public void removeSelected(){
-        if(getEntityAuxList() != null && getEntityAuxList().length > 0){
+
+    public void removeSelected() {
+        if (getEntityAuxList() != null && getEntityAuxList().length > 0) {
             for (Person p : getEntityAuxList()) {
-                 getEntity().removeFriend(p.getId());
+                getEntity().removeFriend(p.getId());
             }
-        }
-        else{
-            throw new BusinessException("No friends selected","personCrudForm:friendsTable:bt-rm-all");
+            MessagesController.addInfo("Friends removed from list");
+            throw new BusinessException("No friends selected", "personCrudForm:friendsTable:bt-rm-all");
         }
         setEntityAuxList(null);
     }
-    
-   
+
     @Override
     public void removeFromList() {
         if (getEntity().getFriends() == null) {
             return;
         }
-          getEntity().removeFriend(getEntityAux().getId());
-          MessagesController.addInfo("Friend removed from list");
+        getEntity().removeFriend(getEntityAux().getId());
+        MessagesController.addInfo("Friend removed from list");
     }
 }
-
- 
