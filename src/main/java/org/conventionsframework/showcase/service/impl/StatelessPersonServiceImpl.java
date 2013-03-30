@@ -1,27 +1,19 @@
 package org.conventionsframework.showcase.service.impl;
 
 import org.conventionsframework.exception.BusinessException;
-import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.StatelessPersonService;
 import java.lang.Long;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.loader.custom.ScalarReturn;
-import org.hibernate.type.LongType;
-import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -34,11 +26,8 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService<Person
     
 
     @Override
-    public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
+    public DetachedCriteria configFindPaginated(Map filters, Map externalFilter) {
          DetachedCriteria dc = getDao().getDetachedCriteria();
-        if(sortField == null || "".equals(sortField)){
-            sortField = "name";
-        }
         if (externalFilter != null && !externalFilter.isEmpty()) {
             String name = (String) externalFilter.get("name");
             if (name != null) {
@@ -70,7 +59,7 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService<Person
                 dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
             }
         }
-        return getDao().findPaginated(first, pageSize, sortField, sortOrder, dc);
+        return dc;
     }
 
     @Override

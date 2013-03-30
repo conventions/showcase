@@ -10,22 +10,19 @@ and open the template in the editor.
 package org.conventionsframework.showcase.service.impl;
 
 import org.conventionsframework.exception.BusinessException;
-import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.StatelessPersonService;
 import java.lang.Long;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Named;
+import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.loader.custom.ScalarReturn;
-import org.hibernate.type.LongType;
-import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -35,13 +32,11 @@ import org.primefaces.model.SortOrder;
 public class StatelessPersonServiceImpl extends StatelessHibernateService&lt;Person, Long&gt; implements
         StatelessPersonService {
 
+    
 
     @Override
-    public WrappedData&lt;Person&gt; configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
+    public DetachedCriteria configFindPaginated(Map filters, Map externalFilter) {
          DetachedCriteria dc = getDao().getDetachedCriteria();
-        if(sortField == null || "".equals(sortField)){
-            sortField = "name";
-        }
         if (externalFilter != null &amp;&amp; !externalFilter.isEmpty()) {
             String name = (String) externalFilter.get("name");
             if (name != null) {
@@ -73,7 +68,7 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService&lt;Per
                 dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
             }
         }
-        return getDao().findPaginated(first, pageSize, sortField, sortOrder, dc);
+        return dc;
     }
 
     @Override
@@ -98,12 +93,19 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService&lt;Per
     @Override
     public List&lt;Person&gt; findFriends(final Long personID) {
        String query = "select p.friends_id from person_person p where p.person_id = :id";
-       Map params = new HashMap(){{put("id",personID);}};
-       List&lt;Long&gt; friendsId = super.dao.findByNativeQuery(query, params,null,null,new ScalarReturn(LongType.INSTANCE, "friends_id")); 
+       Query q = getEntityManager().createNativeQuery(query);
+       q.setParameter("id", personID);
+       List friendsId = q.getResultList(); 
        if(friendsId != null &amp;&amp; !friendsId.isEmpty()){
+           List&lt;Long&gt; ids = new ArrayList&lt;Long&gt;();
+           for (Object id : friendsId) {
+              //dependending on the database the native query returns a list of Long or BigInteger
+              //if we had an intermediate table like PersonFriend there was no need for the navive
+              ids.add(new Long(id.toString()));
+           }
            DetachedCriteria dc = getDetachedCriteria();
-           dc.add(Restrictions.in("id", friendsId));
-           return super.dao.findByCriteria(dc);
+           dc.add(Restrictions.in("id", ids));
+           return getDao().findByCriteria(dc);
        }
 
        return null;
@@ -112,4 +114,5 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService&lt;Per
 }
 
 
-    </ui:composition>
+
+    &lt;/ui:composition&gt;

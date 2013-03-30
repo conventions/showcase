@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.conventionsframework.entitymanager.EntityManagerProvider;
-import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;
@@ -18,21 +17,18 @@ import org.conventionsframework.showcase.service.AdvancedFilterService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
-import org.primefaces.model.SortOrder;
-
-
 
 /**
- * 
+ *
  * @author Rafael M. Pestano
  * @Date Jun 18, 2012
- * 
+ *
  */
 @Named("advancedFilterService")
-public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> implements AdvancedFilterService{
+public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> implements AdvancedFilterService {
 
-
-    @Inject @Named("myProvider")
+    @Inject
+    @Named("myProvider")
     private EntityManagerProvider entityManagerProvider;//example of created EntityManagerProvider instead of using built in
 
     @Override
@@ -46,76 +42,79 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> imp
 
     }
 
-    
-    
     /**
-     * configure filtering and sort for lazy datatable, this method is called 
-     * everytime datatable is updated, you need to override it when you need complex
-     * filtering/sort or if you want to change the default filters behavior
-     * @see StatelessHibernateService#addBasicFilterRestrictions(org.hibernate.criterion.DetachedCriteria, java.util.Map) 
-     * 
+     * configure filtering and sort for lazy datatable, this method is called
+     * everytime datatable is updated, you need to override it when you need
+     * complex filtering/sort or if you want to change the default filters
+     * behavior
+     *
+     * @see
+     * StatelessHibernateService#addBasicFilterRestrictions(org.hibernate.criterion.DetachedCriteria,
+     * java.util.Map)
+     *
      */
     @Override
-    public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters) {
-        
+    public DetachedCriteria configFindPaginated(Map<String, String> columnFilters, Map<String, Object> externalFilters) {
+
         DetachedCriteria dc = getDetachedCriteria();
         boolean alreadyJoinedPhone = false;
-        
-        
+
+
         /**
-         * keep basic restrictions, conventions will infer restrictions with reflections
-         * and add a database 'ilike' for String properties, 'eq' for Integer/Long and 'greater than' for 
-         * date/calendar properties on top of the entity being paged(Person), 
-         * when you override configFindPaginated basicFilterRestrictions is not applied
-         * so if you want to keep this behavior you need to explicit call addBasicFilterRestrictions
-         * @see BaseHibernateDaoImpl#configFindPaginated((int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters)
+         * keep basic restrictions, conventions will infer restrictions with
+         * reflections and add a database 'ilike' for String properties, 'eq'
+         * for Integer/Long and 'greater than' for date/calendar properties on
+         * top of the entity being paged(Person), when you override
+         * configFindPaginated basicFilterRestrictions is not applied so if you
+         * want to keep this behavior you need to explicit call
+         * addBasicFilterRestrictions
+         *
+         * @see BaseHibernateDaoImpl#configFindPaginated((int first, int
+         * pageSize, String sortField, SortOrder sortOrder, Map<String, String>
+         * columnFilters, Map<String, Object> externalFilters)
          */
-        if(columnFilters != null && !columnFilters.isEmpty()){
+        if (columnFilters != null && !columnFilters.isEmpty()) {
             getDao().addBasicFilterRestrictions(dc, columnFilters);
         }
-        if(externalFilters != null && !externalFilters.isEmpty()){
+        if (externalFilters != null && !externalFilters.isEmpty()) {
             getDao().addBasicFilterRestrictions(dc, externalFilters);
             String phone = (String) externalFilters.get("phone");
-            if(phone != null && !"".endsWith(phone)){
+            if (phone != null && !"".endsWith(phone)) {
                 //create join with Phone table
-                if(!alreadyJoinedPhone){
-                    dc.createAlias("telephones", "telephones",JoinType.LEFT_OUTER_JOIN);
-                     alreadyJoinedPhone = true;
+                if (!alreadyJoinedPhone) {
+                    dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                    alreadyJoinedPhone = true;
                 }
                 dc.add(Restrictions.eq("telephones.number", phone));
             }
             PhoneType type = (PhoneType) externalFilters.get("type");
-            if(type != null){
-                if(!alreadyJoinedPhone){
+            if (type != null) {
+                if (!alreadyJoinedPhone) {
                     //if join was not created yet just create it
-                    dc.createAlias("telephones", "telephones",JoinType.LEFT_OUTER_JOIN);
+                    dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
                     alreadyJoinedPhone = true;
                 }
                 dc.add(Restrictions.eq("telephones.type", type));
             }
-            
+
             Boolean activateBetweenAgesRestriction = (Boolean) externalFilters.get("activateBetween");
-            if(activateBetweenAgesRestriction != null && activateBetweenAgesRestriction){
+            if (activateBetweenAgesRestriction != null && activateBetweenAgesRestriction) {
                 dc.add(Restrictions.between("age", 1, 10));
             }
             List<String> numberList = (List<String>) externalFilters.get("numberList");
-            if(numberList != null){
-                if(!alreadyJoinedPhone){
-                     alreadyJoinedPhone = true;
+            if (numberList != null) {
+                if (!alreadyJoinedPhone) {
+                    alreadyJoinedPhone = true;
                     //if alias was not created yet
-                     dc.createAlias("telephones", "telephones",JoinType.LEFT_OUTER_JOIN);
-                     dc.add(Restrictions.in("telephones.number", numberList));
+                    dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                    dc.add(Restrictions.in("telephones.number", numberList));
                 }
             }
         }
-        if(sortField != null && sortField.equals("telephones.number")){
-               if(!alreadyJoinedPhone){
-                //create join to sort by phone number
-                dc.createAlias("telephones", "telephones");
-               }
-       }
-        return super.findPaginated(first, pageSize, sortField, sortOrder, dc);
+        if (!alreadyJoinedPhone) {
+            //create join to sort by phone number
+            dc.createAlias("telephones", "telephones");
+        }
+        return dc;
     }
-    
-    
 }

@@ -1,7 +1,6 @@
 package org.conventionsframework.showcase.service.impl;
 
 import org.conventionsframework.exception.BusinessException;
-import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.service.impl.CustomHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.CustomPersonService;
@@ -16,7 +15,6 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.loader.custom.ScalarReturn;
 import org.hibernate.type.LongType;
-import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -29,11 +27,9 @@ public class CustomPersonServiceImpl extends CustomHibernateService<Person, Long
 
 
     @Override
-    public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
-         DetachedCriteria dc = getDao().getDetachedCriteria();
-        if(sortField == null || "".equals(sortField)){
-            sortField = "name";
-        }
+    public DetachedCriteria configFindPaginated(Map filters, Map externalFilter) {
+        DetachedCriteria dc = getDao().getDetachedCriteria();
+        
         if (externalFilter != null && !externalFilter.isEmpty()) {
             String name = (String) externalFilter.get("name");
             if (name != null) {
@@ -65,7 +61,7 @@ public class CustomPersonServiceImpl extends CustomHibernateService<Person, Long
                 dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
             }
         }
-        return getDao().findPaginated(first, pageSize, sortField, sortOrder, dc);
+        return dc;
     }
 
     @Override

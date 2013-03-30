@@ -1,14 +1,10 @@
 package org.conventionsframework.showcase.service.impl;
 
-import java.rmi.RemoteException;
-import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.ejb.EJBException;
-import javax.ejb.SessionSynchronization;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -21,7 +17,6 @@ import org.conventionsframework.service.impl.StatefulHibernateService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -57,12 +52,9 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
  
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public WrappedData<Person> configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
+    public DetachedCriteria configFindPaginated(Map filters, Map externalFilter) {
         
         DetachedCriteria dc = getDao().getDetachedCriteria();
-        if (sortField == null || "".equals(sortField)) {
-            sortField = "name";
-        }
         if (externalFilter != null && !externalFilter.isEmpty()) {
             String name = (String) externalFilter.get("name");
             if (name != null) {
@@ -96,7 +88,7 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
                 dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
             }
         }
-        return getDao().findPaginated(first, pageSize, sortField, sortOrder, dc);
+        return dc;
     }
 
     @Override

@@ -9,23 +9,23 @@ and open the template in the editor.
     xmlns:ui="http://java.sun.com/jsf/facelets">
 package org.conventionsframework.showcase.service.impl;
 
-import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.util.Map;
-import javax.ejb.SessionSynchronization;
+import java.util.logging.Logger;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.conventionsframework.exception.BusinessException;
+import org.conventionsframework.qualifier.Log;
 import org.conventionsframework.service.impl.StatefulHibernateService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -41,6 +41,8 @@ import org.primefaces.model.SortOrder;
 public class PersonServiceImpl extends StatefulHibernateService&lt;Person, Long&gt; implements PersonService {
     
     private boolean rollbackTest;
+    @Inject @Log
+    private transient Logger log;
     
     //you can also change service entityManager but remember to set a valid
     //PersistenceContext, for example if your service extends StatelessHibernateService
@@ -56,15 +58,12 @@ public class PersonServiceImpl extends StatefulHibernateService&lt;Person, Long&
         getEntityManagerProvider().setEntityManager(entityManager);
     }
     */
-    
+ 
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public WrappedData&lt;Person&gt; configFindPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters, Map externalFilter) {
-
+    public DetachedCriteria configFindPaginated(Map filters, Map externalFilter) {
+        
         DetachedCriteria dc = getDao().getDetachedCriteria();
-        if (sortField == null || "".equals(sortField)) {
-            sortField = "name";
-        }
         if (externalFilter != null &amp;&amp; !externalFilter.isEmpty()) {
             String name = (String) externalFilter.get("name");
             if (name != null) {
@@ -98,7 +97,7 @@ public class PersonServiceImpl extends StatefulHibernateService&lt;Person, Long&
                 dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
             }
         }
-        return getDao().findPaginated(first, pageSize, sortField, sortOrder, dc);
+        return dc;
     }
 
     @Override
