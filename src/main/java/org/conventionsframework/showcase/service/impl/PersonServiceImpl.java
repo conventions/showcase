@@ -1,5 +1,6 @@
 package org.conventionsframework.showcase.service.impl;
 
+import java.util.List;
 import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
@@ -11,12 +12,15 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.lang3.StringUtils;
+import org.conventionsframework.entitymanager.EntityManagerProvider;
 import org.conventionsframework.exception.BusinessException;
+import org.conventionsframework.model.WrappedData;
 import org.conventionsframework.qualifier.Log;
 import org.conventionsframework.service.impl.StatefulHibernateService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -35,6 +39,7 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
     @Inject @Log
     private transient Logger log;
     
+    
     //you can also change service entityManager but remember to set a valid
     //PersistenceContext, for example if your service extends StatelessHibernateService
     //only type= PersistenceContextType.TRANSACTION is allowed cause the service has
@@ -43,13 +48,46 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
     /*
     @PersistenceContext(type= PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
-    
     @PostConstruct
     public void initEntityManager(){
-        getEntityManagerProvider().setEntityManager(entityManager);
+    getEntityManagerProvider().setEntityManager(entityManager);
     }
-    */
+     */
+    
+    /*
+     * you can also override getEntityManagerProvider and return your own impl 
+     */
+//    @Override
+//    public EntityManagerProvider getEntityManagerProvider() {
+//        return super.getEntityManagerProvider(); //To change body of generated methods, choose Tools | Templates.
+//    }
+
+    
+    /*NOTE this method is called before configFindPaginated
+     override it ONLY if you need to access the page returned or 
+     configure sort(eg:table comes pre-sorted by a field) */
+    @Override
+    public WrappedData<Person> findPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters) {
+       
+        if(sortField == null){
+            //table comes pre sorted so if no sort is applied sort by name
+            sortField = "name";
+        }
+        //note that when you call findPaginaed -> configFindPaginated will be called
+        WrappedData<Person> wrappedData =  super.findPaginated(first, pageSize, sortField, sortOrder, columnFilters, externalFilters); 
+        //here you access the page
+        List<Person> page = wrappedData.getData();
+         /*you can modify the page if want, eg: set a transient field in you entity 
+         depenending on some business logic*/
+        wrappedData.setData(page);
+        /* note that if you remove/add a record to the page 
+         make sure you subtract/add rowCount */
+        wrappedData.setRowCount(wrappedData.getRowCount());//you can also access rowCount
+        return wrappedData;
+    }
  
+    
+    
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public DetachedCriteria configFindPaginated(Map filters, Map externalFilter) {
@@ -88,6 +126,9 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
                 dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
             }
         }
+        //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
+        //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
+        // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
         return dc;
     }
 

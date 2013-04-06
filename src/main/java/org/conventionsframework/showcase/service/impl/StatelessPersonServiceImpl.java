@@ -26,8 +26,9 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService<Person
     
 
     @Override
-    public DetachedCriteria configFindPaginated(Map filters, Map externalFilter) {
+    public DetachedCriteria configFindPaginated(Map columnFilters, Map externalFilter) {
          DetachedCriteria dc = getDao().getDetachedCriteria();
+         
         if (externalFilter != null && !externalFilter.isEmpty()) {
             String name = (String) externalFilter.get("name");
             if (name != null) {
@@ -47,18 +48,22 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService<Person
             }
         }
         /* config prime datatable filter columns */
-        if (filters != null && !filters.isEmpty()) {
-            if (filters.get("name") != null) {
-                dc.add(Restrictions.ilike("name", (String) filters.get("name"), MatchMode.ANYWHERE));
+        if (columnFilters != null && !columnFilters.isEmpty()) {
+            if (columnFilters.get("name") != null) {
+                dc.add(Restrictions.ilike("name", (String) columnFilters.get("name"), MatchMode.ANYWHERE));
             }
-            if (filters.get("lastname") != null) {
-                dc.add(Restrictions.ilike("lastname", (String) filters.get("lastname"), MatchMode.ANYWHERE));
+            if (columnFilters.get("lastname") != null) {
+                dc.add(Restrictions.ilike("lastname", (String) columnFilters.get("lastname"), MatchMode.ANYWHERE));
             }
 
-            if (filters.get("age") != null) {
-                dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
+            if (columnFilters.get("age") != null) {
+                dc.add(Restrictions.eq("age", new Integer((String) columnFilters.get("age"))));
             }
         }
+        
+        //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
+        //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
+        // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
         return dc;
     }
 

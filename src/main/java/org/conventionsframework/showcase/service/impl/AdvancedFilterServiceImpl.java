@@ -13,6 +13,7 @@ import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.PhoneType;
+import org.conventionsframework.showcase.provider.MyEntityManagerProvider;
 import org.conventionsframework.showcase.service.AdvancedFilterService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -31,6 +32,10 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> imp
     @Named("myProvider")
     private EntityManagerProvider entityManagerProvider;//example of created EntityManagerProvider instead of using built in
 
+    //also works
+//    @Inject
+//    private MyEntityManagerProvider entityManagerProvider;
+    
     @Override
     public EntityManagerProvider getEntityManagerProvider() {
         return entityManagerProvider;
@@ -58,26 +63,7 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> imp
 
         DetachedCriteria dc = getDetachedCriteria();
         boolean alreadyJoinedPhone = false;
-
-
-        /**
-         * keep basic restrictions, conventions will infer restrictions with
-         * reflections and add a database 'ilike' for String properties, 'eq'
-         * for Integer/Long and 'greater than' for date/calendar properties on
-         * top of the entity being paged(Person), when you override
-         * configFindPaginated basicFilterRestrictions is not applied so if you
-         * want to keep this behavior you need to explicit call
-         * addBasicFilterRestrictions
-         *
-         * @see BaseHibernateDaoImpl#configFindPaginated((int first, int
-         * pageSize, String sortField, SortOrder sortOrder, Map<String, String>
-         * columnFilters, Map<String, Object> externalFilters)
-         */
-        if (columnFilters != null && !columnFilters.isEmpty()) {
-            getDao().addBasicFilterRestrictions(dc, columnFilters);
-        }
         if (externalFilters != null && !externalFilters.isEmpty()) {
-            getDao().addBasicFilterRestrictions(dc, externalFilters);
             String phone = (String) externalFilters.get("phone");
             if (phone != null && !"".endsWith(phone)) {
                 //create join with Phone table
@@ -115,6 +101,10 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> imp
             //create join to sort by phone number
             dc.createAlias("telephones", "telephones");
         }
-        return dc;
+         //NOTE Conventions will infer restrictions via reflection for basic fields like above(not relationships)
+         //and will do a ilike for String fields and eq for long,integer/date fields
+         // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
+        //otherwise just return your criteria return dc;
+        return super.configFindPaginated(columnFilters, externalFilters, dc);
     }
 }

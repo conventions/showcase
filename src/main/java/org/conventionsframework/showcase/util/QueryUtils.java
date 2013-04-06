@@ -7,13 +7,10 @@ package org.conventionsframework.showcase.util;
 
 import java.io.Serializable;
 import java.util.List;
-import org.conventionsframework.entitymanager.StatelessEntityManagerProvider;
-import org.conventionsframework.qualifier.ConventionsEntityManager;
 import org.conventionsframework.qualifier.Query;
 import org.conventionsframework.qualifier.QueryParam;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.Phone;
-import org.conventionsframework.showcase.provider.ShowcaseEntityManagerProvider;
 import org.conventionsframework.showcase.service.CustomPersonService;
 import org.conventionsframework.showcase.service.StatelessPersonService;
 

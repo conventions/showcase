@@ -8,9 +8,10 @@ import org.conventionsframework.bean.ModalMBean;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import java.io.Serializable;
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
+import org.conventionsframework.bean.BaseMBean;
 import org.primefaces.event.CloseEvent;
 
  /**
@@ -28,7 +29,7 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
      * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
      * @param personService
      */
-    @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
+    @Inject //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }

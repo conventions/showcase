@@ -87,11 +87,11 @@ public class CustomPersonServiceImpl extends CustomHibernateService<Person, Long
     public List<Person> findFriends(final Long personID) {
        String query = "select p.friends_id from person_person p where p.person_id = :id";
        Map params = new HashMap(){{put("id",personID);}};
-       List<Long> friendsId = super.dao.findByNativeQuery(query, params,null,null,new ScalarReturn(LongType.INSTANCE, "friends_id")); 
+       List<Long> friendsId = getDao().findByNativeQuery(query, params,null,null,new ScalarReturn(LongType.INSTANCE, "friends_id")); 
        if(friendsId != null && !friendsId.isEmpty()){
            DetachedCriteria dc = getDetachedCriteria();
            dc.add(Restrictions.in("id", friendsId));
-           return super.dao.findByCriteria(dc);
+           return getDao().findByCriteria(dc);
        }
 
        return null;

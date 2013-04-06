@@ -8,64 +8,42 @@ and open the template in the editor.
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets">
     
-package org.conventionsframework.showcase.controller;
+package org.conventionsframework.showcase.util;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.Query;
+import org.conventionsframework.qualifier.QueryParam;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.Phone;
-import org.conventionsframework.showcase.util.QueryUtils;
+import org.conventionsframework.showcase.service.CustomPersonService;
+import org.conventionsframework.showcase.service.StatelessPersonService;
 
 /**
  *
- * @author Rafaem M. Pestano - Sep 8, 2012 9:19:57 PM
+ * @author Rafaem M. Pestano - Sep 8, 2012 6:46:58 PM
+ * 
+ * Example of QueryUtils using Query interceptor to execute simple annotatation based queries
  */
-@ViewAccessScoped
-@Named
-public class QueryMBean implements Serializable{
-    @Inject
-    private QueryUtils queryUtils;
+public class QueryUtils implements Serializable{
 
-    private List&lt;Person&gt; query1;
-    private List&lt;Phone&gt; query2;
-    private List&lt;Person&gt; query3;
     
-    @PostConstruct
-    public void init(){
-        query1 = queryUtils.findPersonByAge();
-        query2 = queryUtils.findPhones();
-        query3 = queryUtils.findPersonByOne();
-    }
-
-    public List&lt;Person&gt; getQuery1() {
-        return query1;
-    }
-
-    public void setQuery1(List&lt;Person&gt; query1) {
-        this.query1 = query1;
-    }
-
-    public List&lt;Phone&gt; getQuery2() {
-        return query2;
-    }
-
-    public void setQuery2(List&lt;Phone&gt; query2) {
-        this.query2 = query2;
-    }
-
-    public List&lt;Person&gt; getQuery3() {
-        return query3;
-    }
-
-    public void setQuery3(List&lt;Person&gt; query3) {
-        this.query3 = query3;
-    }
+    @Query(service= StatelessPersonService.class,sql="select p from Person p")
+    public List&lt;Person&gt; findAllPerson(){return null;}//the return is made by the framework query interceptor
     
+    @Query(service= StatelessPersonService.class,namedQuery="Phone.findByNumber")
+    @QueryParam(name="number",value="11111111")
+    public List&lt;Phone&gt; findPhones(){return null;}
+    
+    @Query(namedQuery="Person.One",service= CustomPersonService.class)
+    public List&lt;Person&gt; findPersonByOne(){return null;}
+    
+    @Query(namedQuery="Person.findByAge")//uses default service which is statelessHibernateService
+    @QueryParam(name="age",intValue=10)
+    public List&lt;Person&gt; findPersonByAge(){return null;}
+   
 }
+
 
 
 </ui:composition>
