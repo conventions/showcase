@@ -11,7 +11,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.qualifier.SecurityMethod;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.Phone;
 import org.conventionsframework.showcase.util.QueryUtils;
