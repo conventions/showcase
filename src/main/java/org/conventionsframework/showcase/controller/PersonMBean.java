@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
+import javax.ejb.EJB;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.exception.BusinessException;
@@ -40,7 +40,7 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable {
 //    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
 //        super.setBaseService(personService);
 //    }
-    @Inject //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
+    @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }

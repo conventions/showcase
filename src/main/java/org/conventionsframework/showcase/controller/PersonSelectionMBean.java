@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.paginator.Paginator;
 import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.qualifier.Type;
 import org.conventionsframework.service.BaseService;
@@ -34,9 +33,9 @@ public class PersonSelectionMBean extends BaseMBean<Person>  implements Serializ
     @PostConstruct
     @Override
     public void init() {
+        super.init();
         Person p = new Person();
         p.setAge(100);
-        setPaginator(new Paginator());
         this.setList(getPersonService().findByExample(p));
     }
 

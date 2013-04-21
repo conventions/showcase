@@ -43,9 +43,9 @@ public class PersonSelectionMBean extends BaseMBean&lt;Person&gt;  implements Se
     @PostConstruct
     @Override
     public void init() {
+        super.init();
         Person p = new Person();
         p.setAge(100);
-        setPaginator(new Paginator());
         this.setList(getPersonService().findByExample(p));
     }
 
