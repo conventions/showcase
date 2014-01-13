@@ -12,8 +12,11 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +27,16 @@ import java.util.Map;
  *
  */
 @Named("advancedFilterService")
-@Stateless
+@Stateful
 public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> implements AdvancedFilterService {
 
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    EntityManager em;
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
 
     @Override
     public Class<Person> getPersistentClass() {
