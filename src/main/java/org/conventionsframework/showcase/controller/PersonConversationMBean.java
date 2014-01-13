@@ -5,9 +5,9 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.ConversationalMBean;
-import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
+import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.util.MessagesController;
 
 import javax.enterprise.context.ConversationScoped;
@@ -33,7 +33,7 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
      * @param personService
      */
     @Inject
-    public void setPersonService(@Service BaseService<Person,Long> personService) {
+    public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }
 
