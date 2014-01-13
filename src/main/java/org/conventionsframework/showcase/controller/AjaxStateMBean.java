@@ -4,22 +4,25 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.bean.StateMBean;
 import org.conventionsframework.bean.state.State;
 import org.conventionsframework.qualifier.BeanState;
 import org.conventionsframework.qualifier.BeanStates;
 import org.conventionsframework.qualifier.PersistentClass;
+import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
+import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
+
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.qualifier.Service;
 
 /**
  *
@@ -31,19 +34,16 @@ import org.conventionsframework.qualifier.Service;
 @BeanStates({
     //if this managed bean is in "find state", a breadCrumb link with title "Search Person" will be generated in the page(if stateItens component is present),
     //also when you click the link it will execute the callback "#{ajaxStateMBean.setFindState}" and will update ":historyForm:pageControl"
-    @BeanState(beanState = ConstantUtils.State.FIND_STATE, title = "Search Person", callback = "#{ajaxStateMBean.setFindState}", update = ":historyForm:pageControl"),
-    @BeanState(beanState = ConstantUtils.State.INSERT_STATE, title = "Create Person", callback = "#{ajaxStateMBean.setInsertState}", update = ":historyForm:pageControl"),
-    @BeanState(beanState = ConstantUtils.State.UPDATE_STATE, title = "Edit Person", callback = "#{ajaxStateMBean.setUpdateState}", update = ":historyForm:pageControl"),
-    @BeanState(beanState = ConstantUtils.State.FRIEND_STATE, title = "Manage Friends", callback = "#{ajaxStateMBean.setFriendState}", update = ":historyForm:pageControl"),
-    @BeanState(beanState = "init", title = "Ajax StateMBean", callback = "#{ajaxStateMBean.setInitState}", update = ":historyForm:pageControl")
+    @BeanState(beanState = ConstantUtils.State.FIND_STATE, value = "Search Person", callback = "#{ajaxStateMBean.setFindState}", update = ":historyForm:pageControl"),
+    @BeanState(beanState = ConstantUtils.State.INSERT_STATE, value = "Create Person", callback = "#{ajaxStateMBean.setInsertState}", update = ":historyForm:pageControl"),
+    @BeanState(beanState = ConstantUtils.State.UPDATE_STATE, value = "Edit Person", callback = "#{ajaxStateMBean.setUpdateState}", update = ":historyForm:pageControl"),
+    @BeanState(beanState = ConstantUtils.State.FRIEND_STATE, value = "Manage Friends", callback = "#{ajaxStateMBean.setFriendState}", update = ":historyForm:pageControl"),
+    @BeanState(beanState = "init", value = "Ajax StateMBean", callback = "#{ajaxStateMBean.setInitState}", update = ":historyForm:pageControl")
 })
-@Service(name = Service.STATEFUL, entity = Person.class)//same as commented method below 
+@Service(PersonService.class)
 public class AjaxStateMBean extends StateMBean<Person> {
 
-//    @Inject
-//    public void initService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService service){
-//        super.setBaseService(service);
-//    }
+
     public boolean isFriendState() {
         return ShowcaseState.isFriendState(getBeanState());
     }
@@ -78,10 +78,10 @@ public class AjaxStateMBean extends StateMBean<Person> {
         if (getEntity().getFriends() == null) {
             getEntity().setFriends(new ArrayList<Person>());
         }
-        Person[] selectedPerson = (Person[]) getModalResponse();
+        List<Person> selectedPerson = (List<Person>) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add((Person) getBaseService().load(person.getId()));
+                getEntity().getFriends().add((Person) getBaseService().getDao().load(person.getId()));
             }
         }
     }
@@ -93,7 +93,6 @@ public class AjaxStateMBean extends StateMBean<Person> {
         super.initModal(parameters);
     }
 
-    @Override
     public void removeFromList() {
         if (getEntity().getFriends() == null) {
             return;
@@ -109,12 +108,12 @@ public class AjaxStateMBean extends StateMBean<Person> {
      * case super.store set state to update
      */
     @Override
-    public void store() {
+    public void save() {
         if (isFriendState()) {
             getBaseService().store(getEntity());
             MessagesController.addInfo(getUpdateMessage());
         } else {
-            super.store();
+            super.save();
         }
 
     }

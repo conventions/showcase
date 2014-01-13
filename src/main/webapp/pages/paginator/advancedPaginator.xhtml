@@ -39,7 +39,7 @@
                                         <pe:tooltip for="paginatorForm:bt-adv" value="find persons with age between 1 and 10 with phoneNumber IN 11111111, 22222222 and 333333333 (you also can use above filters)" showEffect="fadeIn" hideEffect="fadeIn"  atPosition="top center"/>  
                                         <p:commandButton onclick="tableVar.getPaginator().setPage(0);" id="bt-adv" value="Advanced Search" action="#{paginatorMBean.advancedSearch}" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 150px"/>
                                         <p:commandButton   onclick="tableVar.getPaginator().setPage(0);" value="Clear Filters" action="#{paginatorMBean.resetFilters}" update="@form" oncomplete="updateAdvRowCount();" style="width: 120px">
-                                            <pe:resetInput for="@form"/>
+                                            <p:resetInput target="@form"/>
                                         </p:commandButton>
                                     </center>
                                 </p:column>
@@ -56,9 +56,7 @@
                                  paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  rowsPerPageTemplate="5,10,15,20,30" >
 
-                        <p:ajax event="page" onstart="block('div[id$=advTable]','paging...');" oncomplete="unblock('div[id$=advTable]')" />
-                        <p:ajax event="sort" onstart="block('div[id$=advTable]','sorting...');" oncomplete="jQuery('div[id$=advTable]').unblock({ message: null  })"/>
-                        <p:ajax event="filter" process="@this" onstart="block('div[id$=advTable]','filtering...');" oncomplete="jQuery('div[id$=advTable]').unblock({ message: null  });updateAdvRowCount();" />
+                        <p:ajax event="filter" process="@this" onstart="block('div[id$=advTable]','filtering...');" oncomplete="updateAdvRowCount();" />
                         <p:column sortBy="#{row.name}" filterBy="#{row.name}" >
                             <f:facet name="header">
                                 Name

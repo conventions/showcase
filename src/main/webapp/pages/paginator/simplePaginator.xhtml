@@ -23,9 +23,7 @@
                                  paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  rowsPerPageTemplate="5,10,15,20,30" >
 
-                        <p:ajax event="page" onstart="block('div[id$=table]','paging...');" oncomplete="unblock('div[id$=table]')" />
-                        <p:ajax event="sort" onstart="block('div[id$=table]','sorting...');" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/>
-                        <p:ajax event="filter" process="@this" onstart="block('div[id$=table]','filtering...');" oncomplete="jQuery('div[id$=table]').unblock({ message: null  });updateRowCount();" />
+                        <p:ajax event="filter"  oncomplete="updateRowCount();" />
                         <f:facet name="header">
                             <center>
                                 <p:commandButton value="Load Data" action="#{paginatorMBean.initPaginator}" disabled="#{not empty paginatorMBean.paginator}" process="@this" update="@form" oncomplete="updateRowCount();" />

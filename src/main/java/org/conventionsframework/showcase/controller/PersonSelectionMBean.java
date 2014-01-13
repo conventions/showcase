@@ -4,18 +4,18 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.bean.BaseMBean;
+import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
+import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.util.MessagesController;
-import java.io.Serializable;
-import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.qualifier.Service;
-import org.conventionsframework.qualifier.Type;
-import org.conventionsframework.service.BaseService;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -36,7 +36,7 @@ public class PersonSelectionMBean extends BaseMBean<Person>  implements Serializ
         super.init();
         Person p = new Person();
         p.setAge(100);
-        this.setList(getPersonService().findByExample(p));
+        this.setList(getPersonService().getDao().findByExample(p));
     }
 
     /**
@@ -46,18 +46,17 @@ public class PersonSelectionMBean extends BaseMBean<Person>  implements Serializ
      * @param personService
      */
     @Inject
-    public void setPersonService(@Service(type = Type.STATEFUL, entity = Person.class) BaseService personService) {
+    public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }
 
     public BaseService getPersonService() {
-        return (BaseService) super.getBaseService();
+        return (BaseService<Person,Long>) super.getBaseService();
     }
 
     /**
      * removeFromList is called by removeButton with persistentRemove="false"
      */
-    @Override
     public void removeFromList() {
         if (getList().contains(getEntityAux())) {
             getList().remove(getEntityAux());

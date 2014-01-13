@@ -75,7 +75,7 @@ and open the template in the editor.
                                         update=":personCrudForm:panelFriend"
                                         appendToBody="true"
                                         oncomplete="hideMsg(args);"
-                                        persistentRemove="false"
+                                        removeAction="removeFromList"
                                         id="removeFriendModal"
                                         widgetVar="removeFriendModal">
                     <p:inputText value="#{statelessPersonMBean.entityAux.name}" disabled="true"/>                    

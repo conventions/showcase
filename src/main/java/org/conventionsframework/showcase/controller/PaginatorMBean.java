@@ -4,20 +4,21 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.paginator.Paginator;
+import org.conventionsframework.qualifier.PaginatorService;
 import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
+import org.conventionsframework.showcase.model.PhoneType;
+import org.conventionsframework.showcase.service.AdvancedFilterService;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.paginator.Paginator;
-import org.conventionsframework.qualifier.PaginatorService;
-import org.conventionsframework.qualifier.Type;
-import org.conventionsframework.showcase.model.PhoneType;
 
 /**
  * 
@@ -35,13 +36,16 @@ public class PaginatorMBean implements Serializable {
     private Paginator paginator;
     
     @Inject
-    @PaginatorService(name = "advancedFilterService")
-    private Paginator advancedPaginator;
+    @PaginatorService(AdvancedFilterService.class)
+    private Paginator<Person>advancedPaginator;
     
     @Inject
-    @Service(type= Type.STATELESS,entity = Person.class)
-    private BaseService baseService;
+    @Service
+    private BaseService<Person,Long> baseService;
 
+    /**
+     * called by load data button
+     */
     public void initPaginator() {
         // paginator needs a service to access DB and perform
         // true pagination, sort and filtering over a collection

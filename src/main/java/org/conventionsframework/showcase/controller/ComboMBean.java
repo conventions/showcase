@@ -4,16 +4,17 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.util.MessagesController;
-import java.io.Serializable;
-import java.util.List;
+
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.qualifier.Service;
-import org.conventionsframework.qualifier.Type;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -38,13 +39,16 @@ public class ComboMBean implements Serializable {
         this.selectedItem = selectedItem;
     }
     
-    
     @Inject
-    public void initList(@Service(type= Type.CUSTOM,entity=Person.class) BaseService service){
+    @Service
+    BaseService<Person,Long> service;
+
+    @PostConstruct
+    public void initList(){
         Person p = new Person(); 
         p.setName("1");
         p.setAge(1);
-        personList = service.findByExample(p,5);
+        personList = service.getDao().findByExample(p,5);
         selectedPerson2 = personList.get(2);
     }
 

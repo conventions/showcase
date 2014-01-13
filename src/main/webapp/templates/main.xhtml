@@ -14,6 +14,9 @@
         <ui:param name="leftHeader" value="Examples"/>
         <ui:param name="keepLayoutState" value="#{true}"/>
         <ui:param name="locale" value="#{true}"/>
+        <ui:param name="showAjaxStatus" value="#{true}"/>
+
+
         
         <ui:define name="head">
             <link type="text/css" rel="stylesheet" href="#{request.contextPath}/syntaxhighlighter/styles/syntaxhighlighter.css" />
@@ -45,20 +48,17 @@
 	 
         <ui:define name="headerForm">
             <p:growl id="growl" life="3000"/>
-            <p:remoteCommand name="onload"  rendered="#{not databaseHelper.aplicattionInitialized}" 
+            <p:remoteCommand name="onload" rendered="#{not databaseHelper.aplicattionInitialized}"
                              global="false" action="#{databaseHelper.initDatabase()}" 
-                             onstart="jQuery.blockUI();"
-                             oncomplete="jQuery.unblockUI();"
                              />
             <!-- just to avoid javascript error: 'initDatabase is not defined' when aplicattionInitialized = true -->
             <p:remoteCommand name="onload" rendered="#{databaseHelper.aplicattionInitialized}" 
                              /> 
-            <p:remoteCommand name="resetNorthSize" oncomplete=" mainLayout.sizePane('north',125);"/>
-            <p:remoteCommand name="historyNorthSize" oncomplete=" mainLayout.sizePane('north',155);"/>
-             <pe:ajaxErrorHandler  button="#{msg['timeout.reload']}" title="#{msg['timeout.header']}" body="#{msg['timeout.message']}"/>  
+            <p:remoteCommand name="resetNorthSize" />
+            <p:remoteCommand name="historyNorthSize" />
         </ui:define>
         <ui:define name="topLeftMenu">
-                <p:commandLink  value="Showcase Home" style="margin-left: 10px;font-size: 18px!important" action="/home.faces?faces-redirect=true" actionListener="#{stateController.clearState}" ajax="false"  />
+                <p:commandLink value="Showcase Home" style="margin-left: 10px;font-size: 18px!important" action="/home.faces?faces-redirect=true" actionListener="#{stateController.clearState}" ajax="false"  />
                 <p:spacer width="20px"/> 
                 <h:outputLink target="_blank" style="font-size: 18px!important;" value="http://conventions.github.com/docs">
                        Online Documentation

@@ -4,19 +4,18 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
 import org.conventionsframework.bean.ModalMBean;
-import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import org.conventionsframework.showcase.model.Person;
-import java.util.List;
+import org.conventionsframework.showcase.service.PersonService;
+
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
-import org.conventionsframework.qualifier.Service;
-import org.conventionsframework.qualifier.Type;
-import org.conventionsframework.service.BaseService;
+import java.io.Serializable;
+import java.util.List;
 
- /**
+/**
  * 
  * @author rmpestano
  */
@@ -37,12 +36,12 @@ public class PersonSelectionModalMBean2 extends ModalMBean<Person> implements Se
      * @param personService
      */
     @Inject
-    public void setPersonService(@Service(type=Type.STATEFUL,entity=Person.class)BaseService personService) {
+    public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }
 
-    public BaseService getPersonService(){
-        return super.getBaseService();
+    public PersonService getPersonService(){
+        return (PersonService)super.getBaseService();
     }
     
     @PostConstruct
@@ -50,7 +49,7 @@ public class PersonSelectionModalMBean2 extends ModalMBean<Person> implements Se
     public void init(){
         Person p = new Person();
         p.setAge(20);
-        list = getPersonService().findByExample(p);
+        list = getPersonService().getDao().findByExample(p);
     }
 
     public List<Person> getSelectedPeople() {

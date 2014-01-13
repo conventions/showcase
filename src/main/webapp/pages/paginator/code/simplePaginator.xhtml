@@ -33,9 +33,7 @@ and open the template in the editor.
                              paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                              rowsPerPageTemplate="5,10,15,20,30" &gt;
                                  
-                    &lt;p:ajax event="page" onstart="block('div[id$=table]','paging...');" oncomplete="unblock('div[id$=table]')" /&gt;
-                    &lt;p:ajax event="sort" onstart="block('div[id$=table]','sorting...');" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/&gt;
-                    &lt;p:ajax event="filter" process="@this" onstart="block('div[id$=table]','filtering...');" oncomplete="jQuery('div[id$=table]').unblock({ message: null  });updateRowCount();" /&gt;
+                    &lt;p:ajax event="filter" process="@this" oncomplete="updateRowCount();" /&gt;
                     &lt;f:facet name="header"&gt;
                         &lt;center&gt;
                             &lt;p:commandButton value="Load Data" action="\#{paginatorMBean.initPaginator}" disabled="\#{not empty paginatorMBean.paginator}" process="@this" update="@form" oncomplete="updateRowCount();" /&gt;

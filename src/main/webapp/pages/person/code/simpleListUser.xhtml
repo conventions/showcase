@@ -36,7 +36,7 @@ and open the template in the editor.
                     &lt;/h:panelGrid&gt;
                     &lt;h:panelGrid columns="2" &gt;
                         &lt;framework:filterButton mbean="\#{simpleMBean}" id="filter-bt" tableWidgetVar="tableVar" onclick="tableVar.getPaginator().setPage(0);" update=":simpleCrudForm:tablePanel" process=":simpleCrudForm:panelFilter"
-                                                oncomplete="unblock('\#simpleCrudForm\\:table')" onstart="block('\#simpleCrudForm\\:table','filtering...')"/&gt;
+                                                /&gt;
                         &lt;p:commandButton value="Hide Filters" update="inplace"/&gt;
                     &lt;/h:panelGrid&gt;
                 &lt;/center&gt;

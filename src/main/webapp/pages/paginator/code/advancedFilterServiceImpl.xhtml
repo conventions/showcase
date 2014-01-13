@@ -7,27 +7,25 @@ and open the template in the editor.
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets">
-    
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package org.conventionsframework.showcase.service.impl;
 
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.conventionsframework.entitymanager.EntityManagerProvider;
 import org.conventionsframework.service.impl.BaseServiceImpl;
-import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.PhoneType;
-import org.conventionsframework.showcase.provider.MyEntityManagerProvider;
 import org.conventionsframework.showcase.service.AdvancedFilterService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+
+import javax.ejb.Stateless;
+import javax.inject.Named;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -36,20 +34,10 @@ import org.hibernate.sql.JoinType;
  *
  */
 @Named("advancedFilterService")
+@Stateless
 public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&gt; implements AdvancedFilterService {
 
-    @Inject
-    @Named("myProvider")
-    private EntityManagerProvider entityManagerProvider;//example of created EntityManagerProvider instead of using built in
 
-    //also works
-//    @Inject
-//    private MyEntityManagerProvider entityManagerProvider;
-    
-    @Override
-    public EntityManagerProvider getEntityManagerProvider() {
-        return entityManagerProvider;
-    }
 
     @Override
     public Class&lt;Person&gt; getPersistentClass() {

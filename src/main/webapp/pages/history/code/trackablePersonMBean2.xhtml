@@ -47,10 +47,10 @@ import org.conventionsframework.service.BaseService;
     //as some people asked me, translating:
     //if this managed bean is in "find state", a breadCrumb link with title "Search ManagedBean2" will be generated in the page(if historyStackLinks component is present),
     //also when you click the link it will execute an action with return = "Pages.History.LIST_PAGE+ConstantUtils.FACES_REDIRECT"
-    @BeanState(beanState=ConstantUtils.State.FIND_STATE,page=Pages.History2.LIST_PAGE+ConstantUtils.FACES_REDIRECT,title="Search ManagedBean2"),
-    @BeanState(beanState=ConstantUtils.State.INSERT_STATE,page=Pages.History2.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Create ManagedBean2"),
-    @BeanState(beanState=ConstantUtils.State.UPDATE_STATE,page=Pages.History2.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Edit ManagedBean2"),
-    @BeanState(beanState=ConstantUtils.State.FRIEND_STATE,page=Pages.History2.FRIEND_PAGE+ConstantUtils.FACES_REDIRECT,title="Friends of ManagedBean2")
+    @BeanState(beanState=ConstantUtils.State.FIND_STATE,outcome=Pages.History2.LIST_PAGE+ConstantUtils.FACES_REDIRECT,value="Search ManagedBean2"),
+    @BeanState(beanState=ConstantUtils.State.INSERT_STATE,outcome=Pages.History2.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,value="Create ManagedBean2"),
+    @BeanState(beanState=ConstantUtils.State.UPDATE_STATE,outcome=Pages.History2.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,value="Edit ManagedBean2"),
+    @BeanState(beanState=ConstantUtils.State.FRIEND_STATE,outcome=Pages.History2.FRIEND_PAGE+ConstantUtils.FACES_REDIRECT,value="Friends of ManagedBean2")
 })
 @PersistentClass(Person.class)
 public class TrackablePersonMBean2 extends StateMBean&lt;Person&gt; implements Serializable {

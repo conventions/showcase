@@ -13,9 +13,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mojarra.version>2.1.7</mojarra.version>
         <myfaces.version>2.1.7</myfaces.version>
-        <myfaces.codi.version>1.0.5</myfaces.codi.version>
-        <primefaces.version>3.5</primefaces.version>
-        <primefaces-ext.version>0.6.3</primefaces-ext.version>
+        <codi.version>1.0.5</codi.version>
+        <primefaces.version>4.0</primefaces.version>
+        <primefaces-ext.version>1.2.1</primefaces-ext.version>
         <primefaces.theme.version>1.0.8</primefaces.theme.version>
         <conventions.version>1.0.0-SNAPSHOT</conventions.version>
         <openwebbeans.version>1.1.5</openwebbeans.version>
@@ -53,22 +53,47 @@
         <dependency>
             <groupId>org.conventionsframework</groupId>
             <artifactId>conventions-core</artifactId>
+            <version>${conventions.version}</version>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
+            <version>${primefaces.version}</version>
         </dependency>
         <dependency>
             <groupId>org.primefaces.extensions</groupId>
             <artifactId>primefaces-extensions</artifactId>
+            <version>${primefaces-ext.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.myfaces.extensions.cdi.bundles</groupId>
-            <artifactId>myfaces-extcdi-bundle-jsf20</artifactId>
+            <groupId>org.apache.myfaces.extensions.cdi.core</groupId>
+            <artifactId>myfaces-extcdi-core-api</artifactId>
+            <version>${codi.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.primefaces.extensions</groupId>
+            <groupId>org.apache.myfaces.extensions.cdi.core</groupId>
+            <artifactId>myfaces-extcdi-core-impl</artifactId>
+            <version>${codi.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.myfaces.extensions.cdi.modules</groupId>
+            <artifactId>myfaces-extcdi-jsf20-module-api</artifactId>
+            <version>${codi.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.myfaces.extensions.cdi.modules</groupId>
+            <artifactId>myfaces-extcdi-jsf20-module-impl</artifactId>
+            <version>${codi.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces.themes</groupId>
             <artifactId>all-themes</artifactId>
+            <version>1.0.10</version>
         </dependency>
 
     </dependencies>
@@ -86,9 +111,11 @@
     <profiles>
         <profile>
             <id>Glassfish</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <properties>
+                <datasource>
+                    jdbc/__default
+                </datasource>
+            </properties>
             <dependencies>
                   <!-- hibernate --> 
                <dependency>
@@ -134,6 +161,14 @@
         </profile>
         <profile>
             <id>JBoss</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <datasource>
+                    java:jboss/datasources/ExampleDS
+                </datasource>
+            </properties>
             <dependencies>
                  <dependency>
                     <groupId>org.hibernate</groupId>
@@ -201,7 +236,8 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
-        </resources>     
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -292,7 +328,7 @@
 
             </plugin>-->
         </plugins>
-        <finalName>conventions-showcase</finalName>
+        <finalName>showcase</finalName>
     </build>
     <repositories> 
 <!--        <repository>

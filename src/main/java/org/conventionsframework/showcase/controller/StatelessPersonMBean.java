@@ -5,20 +5,21 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.state.CrudState;
-import java.io.Serializable;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
 import org.conventionsframework.showcase.service.StatelessPersonService;
 import org.conventionsframework.util.MessagesController;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 
 /**
  *
@@ -34,7 +35,7 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
      * this method is REQUIRED to tell the framework how to 'crud' the managed
      * bean's entity
      *
-     * @param personService
+     * @param statelessPersonService
      */
     @Inject
     public void setStatelessPersonService(StatelessPersonService statelessPersonService) {
@@ -71,10 +72,10 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
     }
 
     @Override
-    public void store() {
+    public void save() {
         getEntity().setFriends(this.attachPersons(getFriends()));
 
-        super.store();
+        super.save();
     }
 
     /**
@@ -82,7 +83,7 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
      */
     @Override
     public void delete() {
-        setEntityAux(getStatelessPersonService().get(getEntityAux().getId()));//attach person to session - again -
+        setEntityAux(getStatelessPersonService().getDao().get(getEntityAux().getId()));//attach person to session - again -
         super.delete();
     }
 
@@ -130,7 +131,6 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
      * ModalObserver ManagedBeans to retrieve data from popup(acts like lov
      * pattern)
      *
-     * @param callback
      */
     @Override
     public void afterModalResponse() {
@@ -158,7 +158,6 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
         setBeanState(CrudState.FIND);
     }
 
-    @Override
     public void removeFromList() {
         if (this.getFriends() == null) {
             return;
@@ -178,7 +177,7 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
     private List<Person> attachPersons(List<Person> friends) {
         List<Person> attachedPersons = new ArrayList<Person>();
         for (Person person : friends) {
-            attachedPersons.add(getStatelessPersonService().load(person.getId()));
+            attachedPersons.add(getStatelessPersonService().getDao().load(person.getId()));
         }
         return attachedPersons;
     }

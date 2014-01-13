@@ -40,11 +40,11 @@ import org.conventionsframework.service.BaseService;
 @Named("securityMBean")
 @ViewAccessScoped
 @BeanStates({
-    @BeanState(beanState=ConstantUtils.State.FIND_STATE,page=Pages.Security.LIST_PAGE+ConstantUtils.FACES_REDIRECT,title="Search Person"),
-    @BeanState(beanState=ConstantUtils.State.INSERT_STATE,page=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Create Person"),
-    @BeanState(beanState=ConstantUtils.State.UPDATE_STATE,page=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Edit Person"),
-    @BeanState(beanState="init",page=Pages.Security.HOME_PAGE+ConstantUtils.FACES_REDIRECT,title="Security Home"),
-    @BeanState(beanState="secret",page=Pages.Security.SECRET_PAGE+ConstantUtils.FACES_REDIRECT,title="Secret Area")
+    @BeanState(beanState=ConstantUtils.State.FIND_STATE,outcome=Pages.Security.LIST_PAGE+ConstantUtils.FACES_REDIRECT,value="Search Person"),
+    @BeanState(beanState=ConstantUtils.State.INSERT_STATE,outcome=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,value="Create Person"),
+    @BeanState(beanState=ConstantUtils.State.UPDATE_STATE,outcome=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,value="Edit Person"),
+    @BeanState(beanState="init",outcome=Pages.Security.HOME_PAGE+ConstantUtils.FACES_REDIRECT,value="Security Home"),
+    @BeanState(beanState="secret",outcome=Pages.Security.SECRET_PAGE+ConstantUtils.FACES_REDIRECT,value="Secret Area")
 })
 @PersistentClass(value=Person.class)
 public class SecurityMBean extends StateMBean&lt;Person&gt; implements Serializable{

@@ -4,20 +4,18 @@
  */
 package org.conventionsframework.showcase.service.impl;
 
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.conventionsframework.entitymanager.EntityManagerProvider;
 import org.conventionsframework.service.impl.BaseServiceImpl;
-import org.conventionsframework.service.impl.StatelessHibernateService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.PhoneType;
-import org.conventionsframework.showcase.provider.MyEntityManagerProvider;
 import org.conventionsframework.showcase.service.AdvancedFilterService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+
+import javax.ejb.Stateless;
+import javax.inject.Named;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -26,20 +24,9 @@ import org.hibernate.sql.JoinType;
  *
  */
 @Named("advancedFilterService")
+@Stateless
 public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> implements AdvancedFilterService {
 
-    @Inject
-    @Named("myProvider")
-    private EntityManagerProvider entityManagerProvider;//example of created EntityManagerProvider instead of using built in
-
-    //also works
-//    @Inject
-//    private MyEntityManagerProvider entityManagerProvider;
-    
-    @Override
-    public EntityManagerProvider getEntityManagerProvider() {
-        return entityManagerProvider;
-    }
 
     @Override
     public Class<Person> getPersistentClass() {
@@ -53,9 +40,6 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> imp
      * complex filtering/sort or if you want to change the default filters
      * behavior
      *
-     * @see
-     * StatelessHibernateService#addBasicFilterRestrictions(org.hibernate.criterion.DetachedCriteria,
-     * java.util.Map)
      *
      */
     @Override

@@ -4,10 +4,11 @@
  */
 package org.conventionsframework.showcase.security;
 
-import org.conventionsframework.security.SecurityMethodInterceptor;
 import org.conventionsframework.qualifier.SecurityMethod;
-import java.util.List;
-import javax.faces.context.FacesContext;
+import org.conventionsframework.security.BaseSecurityInterceptor;
+import org.conventionsframework.security.SecurityContext;
+
+import javax.inject.Inject;
 import javax.interceptor.Interceptor;
 
 /**
@@ -17,7 +18,10 @@ import javax.interceptor.Interceptor;
 
 @SecurityMethod
 @Interceptor
-public class ShowcaseSecurityInterceptor extends SecurityMethodInterceptor{
+public class ShowcaseSecurityInterceptor extends BaseSecurityInterceptor{
+
+    @Inject
+    SecurityContext securityContext;
 
     /**
      * this method is responsible for deciding if current user has permission 
@@ -28,18 +32,7 @@ public class ShowcaseSecurityInterceptor extends SecurityMethodInterceptor{
      */
     @Override
     public boolean checkUserPermissions(String[] rolesAllowed) {
-        //user role(s) should be extracted from current logged user
-        //we just put the role in the session for testing purposes
-        List<String> userRoles = (List<String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userRoles");
-        if(userRoles == null || userRoles.isEmpty()){
-            return false;
-        }
-        for (String role : rolesAllowed) {
-            if(userRoles.contains(role)){
-                return true;
-            }
-        }
-        return false;
+        return securityContext.hasAnyRole(rolesAllowed);
     }
     
 }

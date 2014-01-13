@@ -1,26 +1,26 @@
 package org.conventionsframework.showcase.service.impl;
 
-import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.conventionsframework.exception.BusinessException;
+import org.conventionsframework.qualifier.Log;
 import org.conventionsframework.qualifier.PersistentClass;
+import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
-import java.util.Map;
-import java.util.logging.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.commons.lang3.StringUtils;
-import org.conventionsframework.entitymanager.EntityManagerProvider;
-import org.conventionsframework.exception.BusinessException;
-import org.conventionsframework.model.WrappedData;
-import org.conventionsframework.qualifier.Log;
-import org.conventionsframework.service.impl.StatefulHibernateService;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
-import org.primefaces.model.SortOrder;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,39 +33,27 @@ import org.primefaces.model.SortOrder;
 @Stateful
 @Named(value = "personService")
 @PersistentClass(Person.class)
-public class PersonServiceImpl extends StatefulHibernateService<Person, Long> implements PersonService {
+public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements PersonService {
     
     private boolean rollbackTest;
+
     @Inject @Log
     private transient Logger log;
-    
-    
-    //you can also change service entityManager but remember to set a valid
-    //PersistenceContext, for example if your service extends StatelessHibernateService
-    //only type= PersistenceContextType.TRANSACTION is allowed cause the service has
-    //a Stateless EntityManagerProvider
-    // just uncomment the block below
-    /*
-    @PersistenceContext(type= PersistenceContextType.TRANSACTION)
-    private EntityManager entityManager;
-    @PostConstruct
-    public void initEntityManager(){
-    getEntityManagerProvider().setEntityManager(entityManager);
-    }
-     */
-    
-    /*
-     * you can also override getEntityManagerProvider and return your own impl 
-     */
-//    @Override
-//    public EntityManagerProvider getEntityManagerProvider() {
-//        return super.getEntityManagerProvider(); //To change body of generated methods, choose Tools | Templates.
-//    }
 
-    
-    /*NOTE this method is called before configFindPaginated
-     override it ONLY if you need to access the page returned or 
-     configure sort(eg:table comes pre-sorted by a field) */
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    EntityManager em;
+
+
+
+    //override default entityManager which is type = TRANSACTION
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
+
+
+    /**
+    example of how to access each page returned by pagination
     @Override
     public WrappedData<Person> findPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters) {
        
@@ -77,20 +65,18 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
         WrappedData<Person> wrappedData =  super.findPaginated(first, pageSize, sortField, sortOrder, columnFilters, externalFilters); 
         //here you access the page
         List<Person> page = wrappedData.getData();
-         /*you can modify the page if want, eg: set a transient field in you entity 
-         depenending on some business logic*/
+         //you can modify the page if want, eg: set a transient field in you entity  depenending on some business logic
         wrappedData.setData(page);
-        /* note that if you remove/add a record to the page 
-         make sure you subtract/add rowCount */
+      //note that if you remove/add a record to the page here make sure you subtract/add rowCount
         wrappedData.setRowCount(wrappedData.getRowCount());//you can also access rowCount
         return wrappedData;
-    }
+    }      */
  
     
     
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public DetachedCriteria configFindPaginated(Map filters, Map externalFilter) {
+    public DetachedCriteria configFindPaginated(Map<String, String> columnFilters, Map<String, Object> externalFilter) {
         
         DetachedCriteria dc = getDao().getDetachedCriteria();
         if (externalFilter != null && !externalFilter.isEmpty()) {
@@ -114,16 +100,16 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
         /*
          * config prime datatable filter columns
          */
-        if (filters != null && !filters.isEmpty()) {
-            if (filters.get("name") != null) {
-                dc.add(Restrictions.ilike("name", (String) filters.get("name"), MatchMode.ANYWHERE));
+        if (columnFilters != null && !columnFilters.isEmpty()) {
+            if (columnFilters.get("name") != null) {
+                dc.add(Restrictions.ilike("name", (String) columnFilters.get("name"), MatchMode.ANYWHERE));
             }
-            if (filters.get("lastname") != null) {
-                dc.add(Restrictions.ilike("lastname", (String) filters.get("lastname"), MatchMode.ANYWHERE));
+            if (columnFilters.get("lastname") != null) {
+                dc.add(Restrictions.ilike("lastname", (String) columnFilters.get("lastname"), MatchMode.ANYWHERE));
             }
 
-            if (filters.get("age") != null) {
-                dc.add(Restrictions.eq("age", new Integer((String) filters.get("age"))));
+            if (columnFilters.get("age") != null) {
+                dc.add(Restrictions.eq("age", new Integer((String) columnFilters.get("age"))));
             }
         }
         //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
@@ -133,6 +119,7 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public boolean alowDeletePerson(Person entity) {
         if (entity.getAge() > 60) {
             return false;
@@ -156,6 +143,7 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
     
     
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public void afterStore(Person entity) {
           //override to perform logic after storing an entity
           if(rollbackTest){
@@ -166,6 +154,7 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
     }
     
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public void beforeRemove(Person entity) {
           //override to perform logic before removing an entity
         if (this.alowDeletePerson(entity)) {
@@ -179,13 +168,14 @@ public class PersonServiceImpl extends StatefulHibernateService<Person, Long> im
     }
     
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public void afterRemove(Person entity) {
         //override to perform logic after removing an entity
         super.afterRemove(entity);
     }
-    
 
 
+    @TransactionAttribute(TransactionAttributeType.NEVER)
     public void setRollbackTest(boolean rollbackTest) {
         this.rollbackTest = rollbackTest;
     }

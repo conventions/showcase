@@ -82,7 +82,7 @@
 
                 <framework:modalRemoval mbean="#{personSelectionMBean}"
                                         update=":personSelectionForm:pageControl :personSelectionForm:msg"
-                                        persistentRemove="false"
+                                        removeAction="removeFromList"
                                         oncomplete="hideMsg(args);"
                                         appendToBody="true"
                                         widgetVar="removeGridPersonModal">

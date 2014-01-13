@@ -5,21 +5,22 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.state.CrudState;
+import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
 import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.util.MessagesController;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.EJB;
-import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.exception.BusinessException;
 
 /**
  *
@@ -36,11 +37,7 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable {
      * bean's entity
      * @param personService
      */
-//    @Inject
-//    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
-//        super.setBaseService(personService);
-//    }
-    @EJB //@Inject //glassfish and JBoss bug, the former works only with @EJB and the later with @Inject. They should work with both.
+    @Inject
     public void setPersonService(PersonService personService) {
         super.setBaseService(personService);
     }
@@ -61,8 +58,8 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable {
      * called by saveButton
      */
     @Override
-    public void store() {
-        super.store();
+    public void save() {
+        super.save();
     }
 
     public boolean isFriendState() {
@@ -101,7 +98,6 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable {
      * ModalObserver ManagedBeans to retrieve data from popup(acts like lov
      * pattern)
      *
-     * @param callback
      */
     @Override
     public void afterModalResponse() {
@@ -117,7 +113,7 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable {
             //which can return a variety of responses
             for (Person person : selectedPerson) {
                 if (!getEntity().hasFriend(person.getId())) {
-                    getEntity().getFriends().add(getPersonService().load(person.getId()));
+                    getEntity().getFriends().add(getPersonService().getDao().load(person.getId()));
                 }
             }
     }
@@ -153,7 +149,6 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable {
         setEntityAuxList(null);
     }
 
-    @Override
     public void removeFromList() {
         if (getEntity().getFriends() == null) {
             return;

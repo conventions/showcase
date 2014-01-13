@@ -4,27 +4,26 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.bean.StateMBean;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.qualifier.BeanState;
 import org.conventionsframework.qualifier.BeanStates;
 import org.conventionsframework.qualifier.PersistentClass;
-import java.io.Serializable;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
+import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.qualifier.Service;
-import org.conventionsframework.qualifier.Type;
-import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -36,37 +35,33 @@ import org.conventionsframework.service.BaseService;
     //as some people asked me, translating:
     //if this managed bean is in "find state", a breadCrumb link with title "Search ManagedBean1" will be generated in the page(if historyStackLinks component is present),
     //also when you click the link it will execute an action with return = "Pages.History.LIST_PAGE+ConstantUtils.FACES_REDIRECT"
-    @BeanState(beanState = ConstantUtils.State.FIND_STATE, page = Pages.History.LIST_PAGE + ConstantUtils.FACES_REDIRECT, title = "Search ManagedBean1"),
-    @BeanState(beanState = ConstantUtils.State.INSERT_STATE, page = Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT, title = "Create ManagedBean1"),
-    @BeanState(beanState = ConstantUtils.State.UPDATE_STATE, page = Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT, title = "Edit ManagedBean1"),
-    @BeanState(beanState = ConstantUtils.State.FRIEND_STATE, page = Pages.History.FRIEND_PAGE + ConstantUtils.FACES_REDIRECT, title = "Friends of ManagedBean1")
+    @BeanState(beanState = ConstantUtils.State.FIND_STATE, outcome = Pages.History.LIST_PAGE + ConstantUtils.FACES_REDIRECT, value = "Search ManagedBean1"),
+    @BeanState(beanState = ConstantUtils.State.INSERT_STATE, outcome = Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT, value = "Create ManagedBean1"),
+    @BeanState(beanState = ConstantUtils.State.UPDATE_STATE, outcome = Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT, value = "Edit ManagedBean1"),
+    @BeanState(beanState = ConstantUtils.State.FRIEND_STATE, outcome = Pages.History.FRIEND_PAGE + ConstantUtils.FACES_REDIRECT, value = "Friends of ManagedBean1")
 })
 @PersistentClass(Person.class)
 public class TrackablePersonMBean extends StateMBean<Person> implements Serializable {
 
-    public TrackablePersonMBean() {
-    }
+    @Inject
+    PersonService personService;
+
 
     /**
      * this method is REQUIRED (or use the
      *
      * @Service annotation) to tell the framework how to 'crud' the managed
      * bean's entity
-     * @param personService
      */
     @Inject
-    public void setPersonService(@Service(type = Type.STATEFUL, entity = Person.class) BaseService personService) {
+    public void setPersonService() {
         super.setBaseService(personService);
     }
 
-    public BaseService getPersonService() {
-        return super.getBaseService();
+    public PersonService getPersonService() {
+        return (PersonService)super.getBaseService();
     }
 
-    @Override
-    public void store() {
-        super.store();
-    }
 
     public boolean isFriendState() {
         return ShowcaseState.isFriendState(getBeanState());
@@ -100,7 +95,7 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
         List<Person> selectedPerson = (List<Person>) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add((Person) getPersonService().load(person.getId()));
+                getEntity().getFriends().add((Person) getPersonService().getDao().load(person.getId()));
             }
         }
     }
@@ -117,7 +112,6 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
         return Pages.History.LIST_PAGE + ConstantUtils.FACES_REDIRECT;
     }
 
-    @Override
     public void removeFromList() {
         if (getEntity().getFriends() == null) {
             return;

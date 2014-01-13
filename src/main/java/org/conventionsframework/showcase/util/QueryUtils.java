@@ -5,14 +5,16 @@
 
 package org.conventionsframework.showcase.util;
 
-import java.io.Serializable;
-import java.util.List;
 import org.conventionsframework.qualifier.Query;
 import org.conventionsframework.qualifier.QueryParam;
+import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.Phone;
-import org.conventionsframework.showcase.service.CustomPersonService;
+import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.showcase.service.StatelessPersonService;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -30,10 +32,10 @@ public class QueryUtils implements Serializable{
     @QueryParam(name="number",value="11111111")
     public List<Phone> findPhones(){return null;}
     
-    @Query(namedQuery="Person.One",service= CustomPersonService.class)
+    @Query(namedQuery="Person.One",service= PersonService.class)
     public List<Person> findPersonByOne(){return null;}
     
-    @Query(namedQuery="Person.findByAge")//uses default service which is statelessHibernateService
+    @Query(namedQuery="Person.findByAge",service = BaseService.class)//uses default service which is statelessHibernateService
     @QueryParam(name="age",intValue=10)
     public List<Person> findPersonByAge(){return null;}
    

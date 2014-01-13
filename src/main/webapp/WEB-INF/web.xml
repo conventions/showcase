@@ -14,6 +14,15 @@
         <param-value>true</param-value>
     </context-param>
     <context-param>
+        <param-name>ERROR_PAGE</param-name>
+        <param-value>error.faces</param-value>
+    </context-param>
+    <context-param>
+        <param-name>INITIAL_PAGE</param-name>
+        <param-value>home.faces</param-value>
+    </context-param>
+
+    <context-param>
         <param-name>BUNDLE_BASE_NAME</param-name>
         <param-value>/org/conventionsframework/showcase/bundle/messages</param-value>
     </context-param>

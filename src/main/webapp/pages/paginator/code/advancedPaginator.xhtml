@@ -64,9 +64,7 @@ and open the template in the editor.
                                  paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  rowsPerPageTemplate="5,10,15,20,30" &gt;
 
-                        &lt;p:ajax event="page" onstart="block('div[id$=advTable]','paging...');" oncomplete="unblock('div[id$=advTable]')" /&gt;
-                        &lt;p:ajax event="sort" onstart="block('div[id$=advTable]','sorting...');" oncomplete="jQuery('div[id$=advTable]').unblock({ message: null  })"/&gt;
-                        &lt;p:ajax event="filter" process="@this" onstart="block('div[id$=advTable]','filtering...');" oncomplete="jQuery('div[id$=advTable]').unblock({ message: null  });updateAdvRowCount();" /&gt;
+                        &lt;p:ajax event="filter" process="@this" oncomplete="updateAdvRowCount();" /&gt;
                         &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}" &gt;
                             &lt;f:facet name="header"&gt;
                                 Name

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web>
-  <context-root>/conventions</context-root>
+  <context-root>/showcase</context-root>
 </jboss-web>

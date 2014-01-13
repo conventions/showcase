@@ -31,16 +31,19 @@ import org.conventionsframework.service.BaseService;
 @Named("securityMBean")
 @ViewAccessScoped
 @BeanStates({
-    @BeanState(beanState=ConstantUtils.State.FIND_STATE,page=Pages.Security.LIST_PAGE+ConstantUtils.FACES_REDIRECT,title="Search Person"),
-    @BeanState(beanState=ConstantUtils.State.INSERT_STATE,page=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Create Person"),
-    @BeanState(beanState=ConstantUtils.State.UPDATE_STATE,page=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,title="Edit Person"),
-    @BeanState(beanState="init",page=Pages.Security.HOME_PAGE+ConstantUtils.FACES_REDIRECT,title="Security Home"),
-    @BeanState(beanState="secret",page=Pages.Security.SECRET_PAGE+ConstantUtils.FACES_REDIRECT,title="Secret Area")
+    @BeanState(beanState=ConstantUtils.State.FIND_STATE,outcome=Pages.Security.LIST_PAGE+ConstantUtils.FACES_REDIRECT,value="Search Person"),
+    @BeanState(beanState=ConstantUtils.State.INSERT_STATE,outcome=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,value="Create Person"),
+    @BeanState(beanState=ConstantUtils.State.UPDATE_STATE,outcome=Pages.Security.EDIT_PAGE+ConstantUtils.FACES_REDIRECT,value="Edit Person"),
+    @BeanState(beanState="init",outcome=Pages.Security.HOME_PAGE+ConstantUtils.FACES_REDIRECT,value="Security Home"),
+    @BeanState(beanState="secret",outcome=Pages.Security.SECRET_PAGE+ConstantUtils.FACES_REDIRECT,value="Secret Area")
 })
 @PersistentClass(value=Person.class)
 public class SecurityMBean extends StateMBean<Person> implements Serializable{
     
     private String currentRole = "";
+
+     @Inject
+     PersonService personService;
  
     public SecurityMBean() {
         List<String> currentRoles = (ArrayList<String>)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userRoles");
@@ -49,14 +52,14 @@ public class SecurityMBean extends StateMBean<Person> implements Serializable{
         }
         
     }
-    
+
     @Inject
-    public void setPersonService(@Service(type= Type.STATEFUL,entity=Person.class)BaseService personService) {
+    public void setPersonService() {
         super.setBaseService(personService);
     }
     
     public PersonService getPersonService(){
-        return (PersonService)super.getBaseService();
+        return personService;
     }
   
     /**
@@ -64,8 +67,8 @@ public class SecurityMBean extends StateMBean<Person> implements Serializable{
     */  
     @Override
     @SecurityMethod(rolesAllowed=ConstantUtils.Role.ROLE_ADMIN)
-    public void store() {
-        super.store();
+    public void save() {
+        super.save();
     }    
    
     /**
@@ -112,7 +115,12 @@ public class SecurityMBean extends StateMBean<Person> implements Serializable{
         
     }
 
-    
+
+    /**
+     * securityMethod is better suited for business methods so you should use it in your services
+     * in this case we are using a generic service BaseService<Person,Long> hence we are using the annotation here
+     * @return
+     */
     @SecurityMethod(rolesAllowed={ConstantUtils.Role.ROLE_ADMIN,ConstantUtils.Role.ROLE_GUEST} ,message="securityGoList")
     public String goList(){
         setBeanState(CrudState.FIND);

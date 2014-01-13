@@ -1,31 +1,34 @@
 package org.conventionsframework.showcase.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.conventionsframework.exception.BusinessException;
-import org.conventionsframework.service.impl.StatelessHibernateService;
+import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.StatelessPersonService;
-import java.lang.Long;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Named;
-import javax.persistence.Query;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Rafael M. Pestano Mar 21, 2011 4:35:41 PM
  */
-@Named(value="hibernateStatelessPersonService")
-public class StatelessPersonServiceImpl extends StatelessHibernateService<Person, Long> implements
+@Stateless
+public class StatelessPersonServiceImpl extends BaseServiceImpl<Person, Long> implements
         StatelessPersonService {
 
     
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NEVER)
     public DetachedCriteria configFindPaginated(Map columnFilters, Map externalFilter) {
          DetachedCriteria dc = getDao().getDetachedCriteria();
          
@@ -68,6 +71,7 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService<Person
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NEVER)
     public boolean alowDeletePerson(Person p) {
         if (p.getAge() > 60) {
             return false;
@@ -87,6 +91,7 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService<Person
     
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<Person> findFriends(final Long personID) {
        String query = "select p.friends_id from person_person p where p.person_id = :id";
        Query q = getEntityManager().createNativeQuery(query);
@@ -106,5 +111,6 @@ public class StatelessPersonServiceImpl extends StatelessHibernateService<Person
 
        return null;
     }
-     
+
+
 }

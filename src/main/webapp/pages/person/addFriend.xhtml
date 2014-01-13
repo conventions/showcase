@@ -79,7 +79,7 @@ and open the template in the editor.
                 </p:panel>
                 <framework:modalRemoval mbean="#{personMBean}"
                                         update=":personCrudForm:panelFriend"
-                                        persistentRemove="false"
+                                        removeAction="removeFromList"
                                         appendToBody="true"
                                         widgetVar="removeFriendModal">
                     <p:inputText value="#{personMBean.entityAux.name}" disabled="true"/>                    

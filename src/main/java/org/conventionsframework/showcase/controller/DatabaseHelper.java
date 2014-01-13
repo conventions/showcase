@@ -4,19 +4,19 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
+import org.conventionsframework.showcase.model.Phone;
+import org.conventionsframework.showcase.model.PhoneType;
 import org.conventionsframework.util.BeanManagerController;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.conventionsframework.qualifier.Service;
-import org.conventionsframework.qualifier.Type;
-import org.conventionsframework.showcase.model.Phone;
-import org.conventionsframework.showcase.model.PhoneType;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -26,8 +26,9 @@ import org.conventionsframework.showcase.model.PhoneType;
 @SessionScoped
 public class DatabaseHelper implements Serializable{
     
-    @Inject @Service(type= Type.STATELESS,entity=Person.class)
-    private BaseService hibernatePersonService;
+    @Inject
+    @Service
+    private BaseService<Person,Long> baseService;
     
     private boolean aplicattionInitialized;
     
@@ -35,14 +36,14 @@ public class DatabaseHelper implements Serializable{
          /* populate database */
         try{
             
-        if (hibernatePersonService.countAll() == 0) {
+        if (baseService.getDao().countAll() == 0) {
             for (int i = 0; i < 1000; i++) {
                 Person p = new Person("Person " + i, "Lastname " + i, i % 100);
                 p.setTelephones(generateTelephones(i));
-                hibernatePersonService.save(p);
+                baseService.store(p);
             }
         }
-        AccessCountMBean countBean = (AccessCountMBean) BeanManagerController.getBeanByName("accessCountMBean");
+        AccessCountMBean countBean =  BeanManagerController.getBeanByType(AccessCountMBean.class);
         countBean.increment();
         }finally{
              aplicattionInitialized = true;

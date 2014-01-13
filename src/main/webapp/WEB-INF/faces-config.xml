@@ -6,9 +6,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
-         <application>
-            <action-listener>org.conventionsframework.exception.ConventionsActionListenerImpl</action-listener>
-        </application>      
+    <factory>
+        <exception-handler-factory>
+            org.conventionsframework.exception.ConventionsExceptionHandlerFactory
+        </exception-handler-factory>
+    </factory>
       
     <navigation-rule>
         <from-view-id>*</from-view-id>

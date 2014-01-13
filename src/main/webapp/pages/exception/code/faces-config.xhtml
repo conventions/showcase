@@ -7,7 +7,12 @@ and open the template in the editor.
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets">
-    
+
+    &lt;factory&gt;
+        &lt;exception-handler-factory&gt;
+            org.conventionsframework.exception.ConventionsExceptionHandlerFactory
+        &lt;/exception-handler-factory&gt;
+    &lt;/factory&gt;
    
          &lt;application&gt;
             &lt;action-listener&gt;org.conventionsframework.exception.ConventionsActionListenerImpl&lt;/action-listener&gt;

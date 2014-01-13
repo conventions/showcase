@@ -5,18 +5,18 @@
 package org.conventionsframework.showcase.controller;
 
 import org.conventionsframework.bean.ConversationalMBean;
+import org.conventionsframework.qualifier.Service;
+import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.util.MessagesController;
+
+import javax.enterprise.context.ConversationScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.enterprise.context.ConversationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.conventionsframework.qualifier.Service;
-import org.conventionsframework.qualifier.Type;
-import org.conventionsframework.service.BaseService;
 
 /**
  *
@@ -33,7 +33,7 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
      * @param personService
      */
     @Inject
-    public void setPersonService(@Service(type = Type.STATEFUL, entity = Person.class) BaseService personService) {
+    public void setPersonService(@Service BaseService<Person,Long> personService) {
         super.setBaseService(personService);
     }
 
@@ -47,15 +47,14 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
      * override it
      */
     @Override
-    public void store() {
+    public void save() {
 
-        super.store();
+        super.save();
     }
 
     /**
      * removeFromList is called by removeButton with persistentRemove="false"
      */
-    @Override
     public void removeFromList() {
         if (getEntity().getFriends() == null) {
             return;
@@ -122,7 +121,7 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
         Person[] selectedPerson = (Person[]) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add((Person) getPersonService().load(person.getId()));
+                getEntity().getFriends().add((Person) getPersonService().getDao().load(person.getId()));
             }
         }
     }
