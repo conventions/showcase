@@ -20,10 +20,7 @@ and open the template in the editor.
                                          rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
                                          paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                          rowsPerPageTemplate="5,10,15,20,30"&gt;
-                                &lt;p:ajax event="page"  onstart="block('div[id$=table]','paging...')" oncomplete="unblock('div[id$=table]')"/&gt;
-                                &lt;p:ajax event="sort"  onstart="block('div[id$=table]','sorting...')" oncomplete="jQuery('div[id$=table]').unblock({ message: null  })"/&gt;
-                                &lt;p:ajax event="filter" onstart="block('div[id$=table]','filtering...')" oncomplete="unblock('div[id$=table]')"/&gt;
-                               
+
                                 &lt;p:column  sortBy="\#{row.name}" filterBy="\#{row.name}" filterEvent="enter"&gt;
                                     &lt;f:facet name="header"&gt;
                                         Name

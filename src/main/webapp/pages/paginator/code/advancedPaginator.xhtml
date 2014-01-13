@@ -48,7 +48,8 @@ and open the template in the editor.
                                         &lt;p:spacer width="5px"/&gt;
                                         &lt;pe:tooltip for="paginatorForm:bt-adv" value="find persons with age between 1 and 10 with phoneNumber IN 11111111, 22222222 and 333333333 (you also can use above filters)" showEffect="fadeIn" hideEffect="fadeIn" position="top center"/&gt;  
                                         &lt;p:commandButton id="bt-adv" value="Advanced Search" action="\#{paginatorMBean.advancedSearch}" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 150px"/&gt;
-                                        &lt;p:commandButton  value="Clear Filters" action="\#{paginatorMBean.resetFilters}" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 120px"/&gt;
+                                        &lt;p:commandButton onclick="tableVar.getPaginator().setPage(0);" value="Clear Filters" action="\#{paginatorMBean.resetFilters}" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 120px"
+    /&gt;                                         &lt;p:resetInput target="@form"/&gt;
                                     &lt;/center&gt;
                                 &lt;/p:column&gt;
                             &lt;/p:row&gt;
