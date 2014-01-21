@@ -36,7 +36,7 @@ import java.util.Map;
     //if this managed bean is in "find state", a breadCrumb link with title "Search ManagedBean1" will be generated in the page(if historyStackLinks component is present),
     //also when you click the link it will execute an action with return = "Pages.History.LIST_PAGE+ConstantUtils.FACES_REDIRECT"
     @BeanState(beanState = ConstantUtils.State.FIND_STATE, outcome = Pages.History.LIST_PAGE + ConstantUtils.FACES_REDIRECT, value = "Search ManagedBean1"),
-    @BeanState(beanState = ConstantUtils.State.INSERT_STATE, outcome = Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT, value = "Create ManagedBean1"),
+    @BeanState(beanState = ConstantUtils.State.INSERT_STATE, outcome = Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT, value = "Create ManagedBean1",callback = "#{trackablePersonMBean.setUpdateState}"),
     @BeanState(beanState = ConstantUtils.State.UPDATE_STATE, outcome = Pages.History.EDIT_PAGE + ConstantUtils.FACES_REDIRECT, value = "Edit ManagedBean1"),
     @BeanState(beanState = ConstantUtils.State.FRIEND_STATE, outcome = Pages.History.FRIEND_PAGE + ConstantUtils.FACES_REDIRECT, value = "Friends of ManagedBean1")
 })

@@ -6,7 +6,6 @@ package org.conventionsframework.showcase.controller;
 
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.bean.BaseMBean;
-import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.util.MessagesController;
@@ -27,36 +26,21 @@ public class PersonSelectionMBean extends BaseMBean<Person>  implements Serializ
 
     private List<Person> list;
 
-    public PersonSelectionMBean() {
-    }
+    @Inject
+    PersonService personService;
+
 
     @PostConstruct
     @Override
     public void init() {
+        setBaseService(personService);
         super.init();
         Person p = new Person();
         p.setAge(100);
-        this.setList(getPersonService().getDao().findByExample(p));
+        this.setList(personService.getDao().findByExample(p));
     }
 
-    /**
-     * this method is REQUIRED to tell the framework how to 'crud' the managed
-     * bean's entity
-     *
-     * @param personService
-     */
-    @Inject
-    public void setPersonService(PersonService personService) {
-        super.setBaseService(personService);
-    }
 
-    public BaseService getPersonService() {
-        return (BaseService<Person,Long>) super.getBaseService();
-    }
-
-    /**
-     * removeFromList is called by removeButton with persistentRemove="false"
-     */
     public void removeFromList() {
         if (getList().contains(getEntityAux())) {
             getList().remove(getEntityAux());
@@ -73,17 +57,17 @@ public class PersonSelectionMBean extends BaseMBean<Person>  implements Serializ
     }
 
     /**
-     * modalResponse is populated via CDI event so in 
+     * modalResponse is populated via CDI event so in
      * afterModalResponse you can access modalResponse value
-     * 
-     * 
+     *
+     *
      * @see PersonSelectionModalMBean#modalCallback()
      */
     @Override
     public void afterModalResponse() {
         //note that modalResponse is an object and must be casted accordingly
-        // your bean can get response from multiple modals so you may need instanceof 
-        
+        // your bean can get response from multiple modals so you may need instanceof
+
         List<Person> selectedPerson = (List<Person>) getModalResponse();
         for (Person person : selectedPerson) {
             if (getList() != null && !getList().contains(person)) {

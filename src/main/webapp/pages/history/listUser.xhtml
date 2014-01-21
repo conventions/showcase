@@ -15,7 +15,7 @@ and open the template in the editor.
     template="historyStackHome.xhtml">
        <!-- push this managed bean in history stack with findState when page is rendered, 
        this is the clientSide way to push a bean in the historyStack --> 
-       <framework:statePusher mbean="#{trackablePersonMBean}" state="#{findState}"/>
+    <framework:statePusher mbean="#{trackablePersonMBean}" state="#{findState}" />
     <h1 class="title ui-widget-header ui-corner-all">Trackable MBean1</h1>
                     <center>
                         <p:panel id="trackablePanel" style="overflow: auto;margin-top: 50px">

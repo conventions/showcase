@@ -21,28 +21,34 @@ import javax.inject.Named;
 @Named("simpleMBean")
 @ViewAccessScoped
 @PersistentClass(Person.class)//managed bean entity, you can use create() method instead
-@Service(value = BaseService.class, entity = Person.class)//same as commented setService() method
-//@Service(type = Type.STATEFUL,entity = Person.class)//also same as commented setService() method
-//both @Service will Inject a generic service with an extended PersistenceContext to CRUD Person entity
-//@Service(PersonService.class) //inject service by type, in this case you dont need entity attribute 
-//cause PersonService is not generic, it is specialized in Person entity 
+@Service(value = BaseService.class, entity = Person.class)//same as commented setService()
+/**
+ * as BaseService is generic you have to pass 'entity' attribute
+ * if you use an existent service you don't need entity attr
+ * eg; @Service(PersonService.class)
+ */
 public class SimpleMBean extends BaseMBean<Person> {
 
+    @Override
+    public void delete() {
+        super.delete(); //To change body of generated methods, choose Tools | Templates.
+    }
 
-     /**
+    /**
      * this method is REQUIRED to tell the framework how to 'crud' the managed bean's entity
-     * or use @Service annotation to provide the name,type or value of an existing service
+     * or use @Service annotation passing the type of an existent service
      * @param baseService
      */
-//    @Inject
-//    public void setService(@Service BaseService<Person,Long> service){
-//        super.setBaseService(service);
-//    }
-
-
-//    @Override
-//    public Person create() {
-//        return new Person();
-//    }
+    //    @Inject
+    //    public void setService(@Service BaseService<Person,Long> service){
+    //        super.setBaseService(service);
+    //    }
+    //    @Override
+    //    public Person create() {
+    //        return new Person();
+    //    }
+    
+     
+    
     
 }

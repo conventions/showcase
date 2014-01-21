@@ -13,6 +13,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.conventionsframework.model.BaseEntity;
 import org.conventionsframework.util.VersionUtils;
 
 /**
@@ -21,7 +22,7 @@ import org.conventionsframework.util.VersionUtils;
  */
 @Named
 @ViewAccessScoped
-public class SimpleI18nMBean extends BaseMBean<AbstractBaseEntity> implements Serializable{
+public class SimpleI18nMBean extends BaseMBean<BaseEntity> implements Serializable{
 
     private String selectedLocale;
 

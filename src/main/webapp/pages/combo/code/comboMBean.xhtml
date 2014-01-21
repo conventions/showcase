@@ -37,6 +37,10 @@ public class ComboMBean implements Serializable {
     private Person selectedPersonRadio;
     private int selectedItem;
 
+    @Inject
+    @Service
+    BaseService&lt;Person,Long&gt; service;
+
     public int getSelectedItem() {
         return selectedItem;
     }
@@ -46,8 +50,8 @@ public class ComboMBean implements Serializable {
     }
     
     
-    @Inject
-    public void initList(@Service(type= Type.CUSTOM,entity=Person.class) BaseService service){
+    @PostContruct
+    public void initList(){
         Person p = new Person(); 
         p.setName("1");
         p.setAge(1);

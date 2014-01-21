@@ -16,6 +16,7 @@ and open the template in the editor.
         <!-- push this managed bean in history stack with insertState or updateState when page is rendered,
           this is the clientSide way to push a bean in the historyStack -->  
         <framework:statePusher mbean="#{trackablePersonMBean}" state="#{(empty trackablePersonMBean.entity or empty trackablePersonMBean.entity.id) ? insertState:updateState}"/>
+
         <h1 class="title ui-widget-header ui-corner-all">#{trackablePersonMBean.insertState ? 'Create':'Edit'}  Person</h1>
                 <center>
                     <p:panel id="panelAdd" style="width: 300px;min-height:200px" header="#{trackablePersonMBean.insertState ? 'Create Person': 'Edit Person' }">

@@ -47,6 +47,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements 
 
     //override default entityManager which is type = TRANSACTION
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public EntityManager getEntityManager() {
         return em;
     }
@@ -136,6 +137,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements 
       */
     
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public void beforeStore(Person entity) {
         //override to perform logic before storing an entity
         super.beforeStore(entity);
@@ -160,8 +162,8 @@ public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements 
         if (this.alowDeletePerson(entity)) {
              super.beforeRemove(entity);
         } else {
-              //BusinessException is ApplicationException so no rollback will be performed
-              //only FacesMessage error will be queued
+              //BusinessException is ApplicationException so rollback will be performed
+              //and FacesMessage error will be queued
             throw new BusinessException("Not allowed to remove person above 60 year old.");
         }
        

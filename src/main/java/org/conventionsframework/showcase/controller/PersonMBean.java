@@ -9,12 +9,12 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.exception.BusinessException;
+import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.ShowcaseState;
 import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.util.MessagesController;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,19 +28,9 @@ import java.util.Map;
  */
 @ViewAccessScoped
 @Named("personMBean")
+@Service(PersonService.class)
 public class PersonMBean extends BaseMBean<Person> implements Serializable {
 
-    /**
-     * this method is REQUIRED (or use the
-     *
-     * @Service annotation) to tell the framework how to 'crud' the managed
-     * bean's entity
-     * @param personService
-     */
-    @Inject
-    public void setPersonService(PersonService personService) {
-        super.setBaseService(personService);
-    }
 
     public PersonService getPersonService() {
         return (PersonService) super.getBaseService();
