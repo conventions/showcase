@@ -29,7 +29,9 @@ public class Person extends VersionatedEntityLong implements Serializable{
     private String name;
     private String lastname;
     private Integer age;
+    @ManyToMany
     private List<Person> friends;
+    @OneToMany(cascade= CascadeType.ALL)
     private List<Phone> telephones;
 
     public Person() {
@@ -69,7 +71,6 @@ public class Person extends VersionatedEntityLong implements Serializable{
         this.lastname = sobrenome;
     }
 
-    @ManyToMany
     public List<Person> getFriends() {
         return friends;
     }
@@ -78,7 +79,6 @@ public class Person extends VersionatedEntityLong implements Serializable{
         this.friends = friends;
     }
 
-    @OneToMany(cascade= CascadeType.ALL)
     public List<Phone> getTelephones() {
         return telephones;
     }
