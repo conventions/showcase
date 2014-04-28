@@ -5,7 +5,7 @@
     <persistence-unit name="conventionsPU" transaction-type="JTA">
         <description>Conventions Persistence Unit</description>
         <!-- hibernate 4.2 or below <provider>org.hibernate.ejb.HibernatePersistence</provider>-->
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <provider>${hibernate.provider}</provider>
         <jta-data-source>${datasource}</jta-data-source>
         <!--<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>-->
         <exclude-unlisted-classes>false</exclude-unlisted-classes>

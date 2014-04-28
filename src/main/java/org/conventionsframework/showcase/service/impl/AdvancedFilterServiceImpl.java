@@ -4,6 +4,7 @@
  */
 package org.conventionsframework.showcase.service.impl;
 
+import org.conventionsframework.model.SearchModel;
 import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.PhoneType;
@@ -53,35 +54,17 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> imp
      *
      */
     @Override
-    public DetachedCriteria configFindPaginated(Map<String, String> columnFilters, Map<String, Object> externalFilters) {
-
+    public DetachedCriteria configPagination(SearchModel<Person> searchModel) {
+        Map<String,Object> filter = searchModel.getFilter();
         DetachedCriteria dc = getDetachedCriteria();
+        Person searchEntity = searchModel.getEntity();
         boolean alreadyJoinedPhone = false;
-        if (externalFilters != null && !externalFilters.isEmpty()) {
-            String phone = (String) externalFilters.get("phone");
-            if (phone != null && !"".endsWith(phone)) {
-                //create join with Phone table
-                if (!alreadyJoinedPhone) {
-                    dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
-                    alreadyJoinedPhone = true;
-                }
-                dc.add(Restrictions.eq("telephones.number", phone));
-            }
-            PhoneType type = (PhoneType) externalFilters.get("type");
-            if (type != null) {
-                if (!alreadyJoinedPhone) {
-                    //if join was not created yet just create it
-                    dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
-                    alreadyJoinedPhone = true;
-                }
-                dc.add(Restrictions.eq("telephones.type", type));
-            }
-
-            Boolean activateBetweenAgesRestriction = (Boolean) externalFilters.get("activateBetween");
+        if (filter != null && !filter.isEmpty()) {
+            Boolean activateBetweenAgesRestriction = (Boolean) filter.get("activateBetween");
             if (activateBetweenAgesRestriction != null && activateBetweenAgesRestriction) {
                 dc.add(Restrictions.between("age", 1, 10));
             }
-            List<String> numberList = (List<String>) externalFilters.get("numberList");
+            List<String> numberList = (List<String>) filter.get("numberList");
             if (numberList != null) {
                 if (!alreadyJoinedPhone) {
                     alreadyJoinedPhone = true;
@@ -91,6 +74,26 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> imp
                 }
             }
         }
+        String phone = searchEntity.getPhoneNumber();
+        if (phone != null && !"".endsWith(phone)) {
+            //create join with Phone table
+            if (!alreadyJoinedPhone) {
+                dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                alreadyJoinedPhone = true;
+            }
+            dc.add(Restrictions.eq("telephones.number", phone));
+        }
+
+        PhoneType type = searchEntity.getPhoneType();
+        if (type != null) {
+            if (!alreadyJoinedPhone) {
+                //if join was not created yet just create it
+                dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                alreadyJoinedPhone = true;
+            }
+            dc.add(Restrictions.eq("telephones.type", type));
+        }
+
         if (!alreadyJoinedPhone) {
             //create join to sort by phone number
             dc.createAlias("telephones", "telephones");
@@ -99,6 +102,6 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> imp
          //and will do a ilike for String fields and eq for long,integer/date fields
          // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
         //otherwise just return your criteria return dc;
-        return super.configFindPaginated(columnFilters, externalFilters, dc);
+        return super.configPagination(searchModel, dc);
     }
 }

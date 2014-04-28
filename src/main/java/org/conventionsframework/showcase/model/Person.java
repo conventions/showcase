@@ -33,6 +33,11 @@ public class Person extends VersionatedEntityLong implements Serializable{
     private List<Person> friends;
     @OneToMany(cascade= CascadeType.ALL)
     private List<Phone> telephones;
+    @Transient
+    private PhoneType phoneType;
+    @Transient
+    private String phoneNumber;
+
 
     public Person() {
     }
@@ -86,8 +91,24 @@ public class Person extends VersionatedEntityLong implements Serializable{
     public void setTelephones(List<Phone> telephones) {
         this.telephones = telephones;
     }
-    
-    
+
+
+    public PhoneType getPhoneType() {
+        return phoneType;
+    }
+
+    public void setPhoneType(PhoneType phoneType) {
+        this.phoneType = phoneType;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Transient
     public Integer getNumFriends(){
         if(friends != null){

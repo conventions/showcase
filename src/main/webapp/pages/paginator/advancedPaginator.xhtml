@@ -18,8 +18,7 @@
                                     <h:outputText value="Phone number:" />
                                 </p:column>
                                 <p:column>
-                                    <!-- bind the chosen number to a key called 'phone' in the filter map to be accessed in configFindPaginated -->
-                                    <p:inputText value="#{paginatorMBean.advancedPaginator.filter.phone}" maxlength="8"/>
+                                    <p:inputText value="#{paginatorMBean.advancedPaginator.searchModel.entity.phoneNumber}" maxlength="8"/>
                                 </p:column>
                             </p:row>
                                 <p:row>
@@ -27,8 +26,7 @@
                                         <h:outputText value="Phone Type:"/>
                                     </p:column>
                                     <p:column>
-                                        <!-- bind the chosen phoneType to a key called 'type' in the filter map to be accessed in configFindPaginated -->
-                                        <framework:combo value="#{paginatorMBean.advancedPaginator.filter.type}" list="#{paginatorMBean.phoneTypes}" />
+                                        <framework:combo value="#{paginatorMBean.advancedPaginator.searchModel.entity.phoneType}" list="#{paginatorMBean.phoneTypes}" />
                                     </p:column>
                                 </p:row>
                             <p:row>
@@ -37,7 +35,7 @@
                                         <p:commandButton onclick="tableVar.getPaginator().setPage(0);" value="Search..."  update="paginatorForm:advTable" oncomplete="updateAdvRowCount()" style="width: 120px"/>
                                         <p:spacer width="5px"/>
                                         <pe:tooltip for="paginatorForm:bt-adv" value="find persons with age between 1 and 10 with phoneNumber IN 11111111, 22222222 and 333333333 (you also can use above filters)" showEffect="fadeIn" hideEffect="fadeIn"  atPosition="top center"/>  
-                                        <p:commandButton onclick="tableVar.getPaginator().setPage(0);" id="bt-adv" value="Advanced Search" action="#{paginatorMBean.advancedSearch}" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 150px"/>
+                                        <p:commandButton onclick="tableVar.getPaginator().setPage(0);" id="bt-adv" value="Advanced Search" action="#{paginatorMBean.advancedSearch}" process="@this" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 150px"/>
                                         <p:commandButton   onclick="tableVar.getPaginator().setPage(0);" value="Clear Filters" action="#{paginatorMBean.resetFilters}" update="@form" oncomplete="updateAdvRowCount();" style="width: 120px">
                                             <p:resetInput target="@form"/>
                                         </p:commandButton>
@@ -51,12 +49,12 @@
                     </p:outputPanel>
                     <p:dataTable value="#{paginatorMBean.advancedPaginator.dataModel}" widgetVar="tableVar" id="advTable" var="row" emptyMessage="No person found" 
                                  rowIndexVar="rowIndex"
-                                 lazy="true" filteredValue="#{paginatorMBean.advancedPaginator.filteredValue}"
+                                 lazy="true" filteredValue="#{paginatorMBean.advancedPaginator.searchModel.filteredValue}"
                                  rowStyleClass="#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
                                  paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  rowsPerPageTemplate="5,10,15,20,30" >
 
-                        <p:ajax event="filter" process="@this" onstart="block('div[id$=advTable]','filtering...');" oncomplete="updateAdvRowCount();" />
+                        <p:ajax event="filter" process="@this"  oncomplete="updateAdvRowCount();" />
                         <p:column sortBy="#{row.name}" filterBy="#{row.name}" >
                             <f:facet name="header">
                                 Name

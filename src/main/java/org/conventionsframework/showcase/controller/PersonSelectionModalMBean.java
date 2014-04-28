@@ -43,7 +43,7 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
 
     @Override
     public Object modalCallback() {
-       return getPaginator().getSelection();
+       return getPaginator().getSearchModel().getSelection();
     }
 
     /**
@@ -65,7 +65,7 @@ public class PersonSelectionModalMBean extends ModalMBean<Person> implements Ser
     }
   
     public void clearSelection(CloseEvent event){
-        getPaginator().setSelection(null);
+        getPaginator().getSearchModel().setSelection(null);
     }
     
 }

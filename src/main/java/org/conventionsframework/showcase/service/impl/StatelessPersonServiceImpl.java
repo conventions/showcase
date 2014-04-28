@@ -2,6 +2,7 @@ package org.conventionsframework.showcase.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.conventionsframework.exception.BusinessException;
+import org.conventionsframework.model.SearchModel;
 import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.StatelessPersonService;
@@ -29,41 +30,29 @@ public class StatelessPersonServiceImpl extends BaseServiceImpl<Person, Long> im
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public DetachedCriteria configFindPaginated(Map columnFilters, Map externalFilter) {
-         DetachedCriteria dc = getDao().getDetachedCriteria();
-         
-        if (externalFilter != null && !externalFilter.isEmpty()) {
-            String name = (String) externalFilter.get("name");
+    public DetachedCriteria configPagination(SearchModel<Person> searchModel) {
+        DetachedCriteria dc = getDao().getDetachedCriteria();
+
+        Map<String,Object> filter = searchModel.getFilter();
+        if (filter != null && !filter.isEmpty()) {
+            String name = (String) filter.get("name");
             if (name != null) {
                 dc.add(Restrictions.ilike("name", name, MatchMode.ANYWHERE));
             }
-            String lastname = (String) externalFilter.get("lastname");
+            String lastname = (String) filter.get("lastname");
             if (lastname != null) {
                 dc.add(Restrictions.ilike("lastname", lastname, MatchMode.ANYWHERE));
             }
-            String age = (String) externalFilter.get("age");
+            String age = (String) filter.get("age");
             if(age != null && !StringUtils.isBlank(age)){
                 dc.add(Restrictions.eq("age", new Integer(age)));
             }
-            Long ignoreId = (Long) externalFilter.get("ignoreId");
+            Long ignoreId = (Long) filter.get("ignoreId");
             if(ignoreId != null){
                 dc.add(Restrictions.ne("id", ignoreId));
             }
         }
-        /* config prime datatable filter columns */
-        if (columnFilters != null && !columnFilters.isEmpty()) {
-            if (columnFilters.get("name") != null) {
-                dc.add(Restrictions.ilike("name", (String) columnFilters.get("name"), MatchMode.ANYWHERE));
-            }
-            if (columnFilters.get("lastname") != null) {
-                dc.add(Restrictions.ilike("lastname", (String) columnFilters.get("lastname"), MatchMode.ANYWHERE));
-            }
 
-            if (columnFilters.get("age") != null) {
-                dc.add(Restrictions.eq("age", new Integer((String) columnFilters.get("age"))));
-            }
-        }
-        
         //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
         //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
         // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);

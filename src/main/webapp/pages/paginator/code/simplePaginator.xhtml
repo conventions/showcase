@@ -28,7 +28,7 @@ and open the template in the editor.
                 &lt;/p:outputPanel&gt;
                 &lt;p:dataTable value="\#{paginatorMBean.paginator.dataModel}" widgetVar="tableVar" id="table" var="row" emptyMessage="No person found" 
                              rowIndexVar="rowIndex"
-                             lazy="true" filteredValue="\#{paginatorMBean.paginator.filteredValue}"
+                             lazy="true" filteredValue="\#{paginatorMBean.paginator.searchModel.filteredValue}"
                              rowStyleClass="\#{empty rowIndex or rowIndex mod 2 ne 0 ? 'even-row' : ''}" rows="5" paginatorPosition="bottom"
                              paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                              rowsPerPageTemplate="5,10,15,20,30" &gt;
