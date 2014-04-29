@@ -16,6 +16,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -118,7 +119,7 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
         if (getEntity().getFriends() == null) {
             getEntity().setFriends(new ArrayList<Person>());
         }
-        Person[] selectedPerson = (Person[]) getModalResponse();
+        List<Person> selectedPerson = (List<Person>) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
                 getEntity().getFriends().add((Person) getPersonService().getDao().load(person.getId()));

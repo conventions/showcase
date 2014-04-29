@@ -79,7 +79,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements 
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public DetachedCriteria configPagination(SearchModel<Person> searchModel) {
-        Map<String,Object> filter = searchModel.getFilter();
+        Map<String,Object> filter = searchModel.getDatatableFilter();
         DetachedCriteria dc = getDao().getDetachedCriteria();
         if (filter != null && !filter.isEmpty()) {
             String name = (String) filter.get("name");
@@ -102,7 +102,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements 
         //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
         //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
         // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
-        return dc;
+        return configPagination(searchModel,dc);
     }
 
     @Override
