@@ -12,6 +12,6 @@ import org.conventionsframework.showcase.model.Person;
  * @author Rafael M. Pestano
  * @Date Jun 18, 2012
  */
-public interface AdvancedFilterService extends BaseService<Person, Long> {
+public interface AdvancedFilterService extends BaseService<Person> {
     
 }

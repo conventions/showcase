@@ -118,7 +118,7 @@ public class SecurityMBean extends StateMBean<Person> implements Serializable{
 
     /**
      * securityMethod is better suited for business methods so you should use it in your services
-     * in this case we are using a generic service BaseService<Person,Long> hence we are using the annotation here
+     * in this case we are using a generic service BaseService<Person> hence we are using the annotation here
      * @return
      */
     @SecurityMethod(rolesAllowed={ConstantUtils.Role.ROLE_ADMIN,ConstantUtils.Role.ROLE_GUEST} ,message="securityGoList")

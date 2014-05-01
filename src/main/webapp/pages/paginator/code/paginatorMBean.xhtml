@@ -41,7 +41,7 @@ public class PaginatorMBean implements Serializable {
     private Paginator paginator;
     
     @Inject
-    @PaginatorService(name = "advancedFilterService")
+    @PaginatorService(AdvancedFilterService.class)
     private Paginator advancedPaginator;
     
     @Inject

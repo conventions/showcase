@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Rafael M. Pestano Mar 21, 2011 4:33:35 PM
  */
-public interface StatelessPersonService extends BaseService<Person, Long>{
+public interface StatelessPersonService extends BaseService<Person>{
 
     boolean alowDeletePerson(Person entity);
 

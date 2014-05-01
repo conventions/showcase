@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @Named("advancedFilterService")
 @Stateful
-public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> implements AdvancedFilterService {
+public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person> implements AdvancedFilterService {
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     EntityManager em;
@@ -39,11 +39,6 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person, Long> imp
         return em;
     }
 
-    @Override
-    public Class<Person> getPersistentClass() {
-        return Person.class;
-
-    }
 
     /**
      * configure filtering and sort for lazy datatable, this method is called

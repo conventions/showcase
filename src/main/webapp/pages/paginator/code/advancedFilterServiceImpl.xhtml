@@ -14,6 +14,7 @@ and open the template in the editor.
  */
 package org.conventionsframework.showcase.service.impl;
 
+import org.conventionsframework.model.SearchModel;
 import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.PhoneType;
@@ -22,8 +23,11 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import java.util.List;
 import java.util.Map;
 
@@ -34,10 +38,16 @@ import java.util.Map;
  *
  */
 @Named("advancedFilterService")
-@Stateless
+@Stateful
 public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&gt; implements AdvancedFilterService {
 
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    EntityManager em;
 
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
 
     @Override
     public Class&lt;Person&gt; getPersistentClass() {
@@ -51,41 +61,20 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&g
      * complex filtering/sort or if you want to change the default filters
      * behavior
      *
-     * @see
-     * StatelessHibernateService#addBasicFilterRestrictions(org.hibernate.criterion.DetachedCriteria,
-     * java.util.Map)
      *
      */
     @Override
-    public DetachedCriteria configFindPaginated(Map&lt;String, String&gt; columnFilters, Map&lt;String, Object&gt; externalFilters) {
-
+    public DetachedCriteria configPagination(SearchModel&lt;Person&gt; searchModel) {
+        Map&lt;String,Object&gt; filter = searchModel.getFilter();
         DetachedCriteria dc = getDetachedCriteria();
+        Person searchEntity = searchModel.getEntity();
         boolean alreadyJoinedPhone = false;
-        if (externalFilters != null &amp;&amp; !externalFilters.isEmpty()) {
-            String phone = (String) externalFilters.get("phone");
-            if (phone != null &amp;&amp; !"".endsWith(phone)) {
-                //create join with Phone table
-                if (!alreadyJoinedPhone) {
-                    dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
-                    alreadyJoinedPhone = true;
-                }
-                dc.add(Restrictions.eq("telephones.number", phone));
-            }
-            PhoneType type = (PhoneType) externalFilters.get("type");
-            if (type != null) {
-                if (!alreadyJoinedPhone) {
-                    //if join was not created yet just create it
-                    dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
-                    alreadyJoinedPhone = true;
-                }
-                dc.add(Restrictions.eq("telephones.type", type));
-            }
-
-            Boolean activateBetweenAgesRestriction = (Boolean) externalFilters.get("activateBetween");
+        if (filter != null &amp;&amp; !filter.isEmpty()) {
+            Boolean activateBetweenAgesRestriction = (Boolean) filter.get("activateBetween");
             if (activateBetweenAgesRestriction != null &amp;&amp; activateBetweenAgesRestriction) {
                 dc.add(Restrictions.between("age", 1, 10));
             }
-            List&lt;String&gt; numberList = (List&lt;String&gt;) externalFilters.get("numberList");
+            List&lt;String&gt; numberList = (List&lt;String&gt;) filter.get("numberList");
             if (numberList != null) {
                 if (!alreadyJoinedPhone) {
                     alreadyJoinedPhone = true;
@@ -95,6 +84,26 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&g
                 }
             }
         }
+        String phone = searchEntity.getPhoneNumber();
+        if (phone != null &amp;&amp; !"".endsWith(phone)) {
+            //create join with Phone table
+            if (!alreadyJoinedPhone) {
+                dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                alreadyJoinedPhone = true;
+            }
+            dc.add(Restrictions.eq("telephones.number", phone));
+        }
+
+        PhoneType type = searchEntity.getPhoneType();
+        if (type != null) {
+            if (!alreadyJoinedPhone) {
+                //if join was not created yet just create it
+                dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                alreadyJoinedPhone = true;
+            }
+            dc.add(Restrictions.eq("telephones.type", type));
+        }
+
         if (!alreadyJoinedPhone) {
             //create join to sort by phone number
             dc.createAlias("telephones", "telephones");
@@ -103,9 +112,10 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&g
          //and will do a ilike for String fields and eq for long,integer/date fields
          // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
         //otherwise just return your criteria return dc;
-        return super.configFindPaginated(columnFilters, externalFilters, dc);
+        return super.configPagination(searchModel, dc);
     }
 }
+
 
 
 

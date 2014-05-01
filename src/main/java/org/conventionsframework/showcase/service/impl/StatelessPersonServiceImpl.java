@@ -23,7 +23,7 @@ import java.util.Map;
  * @author Rafael M. Pestano Mar 21, 2011 4:35:41 PM
  */
 @Stateless
-public class StatelessPersonServiceImpl extends BaseServiceImpl<Person, Long> implements
+public class StatelessPersonServiceImpl extends BaseServiceImpl<Person> implements
         StatelessPersonService {
 
     
@@ -56,7 +56,7 @@ public class StatelessPersonServiceImpl extends BaseServiceImpl<Person, Long> im
         //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
         //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
         // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
-        return dc;
+        return super.configPagination(searchModel,dc);
     }
 
     @Override

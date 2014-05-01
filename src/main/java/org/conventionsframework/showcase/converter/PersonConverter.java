@@ -22,7 +22,7 @@ import javax.inject.Inject;
 public class PersonConverter extends AbstractBaseConverter {
     
     @Inject
-    public void setPersonService(@Service BaseService<Person,Long> personService) {
+    public void setPersonService(@Service BaseService<Person> personService) {
         super.setBaseService(personService);
     }
 	

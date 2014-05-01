@@ -41,7 +41,7 @@ public class ComboMBean implements Serializable {
     
     @Inject
     @Service
-    BaseService<Person,Long> service;
+    BaseService<Person> service;
 
     @PostConstruct
     public void initList(){

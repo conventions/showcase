@@ -28,7 +28,7 @@ public class DatabaseHelper implements Serializable{
     
     @Inject
     @Service
-    private BaseService<Person,Long> baseService;
+    private BaseService<Person> baseService;
     
     private boolean aplicattionInitialized;
     

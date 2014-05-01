@@ -6,7 +6,6 @@ package org.conventionsframework.showcase.controller;
 
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
 import org.conventionsframework.paginator.Paginator;
-import org.conventionsframework.qualifier.PaginatorService;
 import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
@@ -29,19 +28,15 @@ import java.util.List;
 @ViewAccessScoped
 public class PaginatorMBean implements Serializable {
 
-//    injection of paginator is also supported, you can inform the service at injection point
-//    so you dont need to instantiate the Paginator and pass the service in the contructor like in initPaginator method    
-//    @Inject @PaginatorService(name="personService") //uses the PersonServiceImpl as service, just uncomment 
-//    @Inject @PaginatorService(name=Service.STATELESS,entity=Person.class) //also works, uses the BaseService as service, just uncomment 
-    private Paginator paginator;
+    private Paginator<Person> paginator;
     
     @Inject
-    @PaginatorService(AdvancedFilterService.class)
+    @Service(AdvancedFilterService.class)
     private Paginator<Person>advancedPaginator;
     
     @Inject
     @Service
-    private BaseService<Person,Long> baseService;
+    private BaseService<Person> baseService;
 
     /**
      * called by load data button

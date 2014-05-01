@@ -7,7 +7,7 @@ import org.conventionsframework.showcase.model.Person;
  *
  * @author Rafael M. Pestano Mar 21, 2011 4:33:35 PM
  */
-public interface PersonService extends BaseService<Person, Long>{
+public interface PersonService extends BaseService<Person>{
 
      boolean alowDeletePerson(Person entity);
      void setRollbackTest(boolean rollbackTest);

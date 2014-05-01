@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 @Stateful
 @Named(value = "personService")
 @PersistentClass(Person.class)
-public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements PersonService {
+public class PersonServiceImpl extends BaseServiceImpl<Person> implements PersonService {
     
     private boolean rollbackTest;
 
@@ -54,33 +54,32 @@ public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements 
     }
 
 
-    /**
-    example of how to access each page returned by pagination
+
+  /*  example of how to access each page returned by pagination
     @Override
-    public WrappedData<Person> findPaginated(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> columnFilters, Map<String, Object> externalFilters) {
-       
-        if(sortField == null){
+    public PaginationResult&lt;Person&gt; executePagination(SearchModel&lt;Person&gt; searchModel, DetachedCriteria dc) {
+        if(searchModel.getSortField() == null){
             //table comes pre sorted so if no sort is applied sort by name
-            sortField = "name";
+            searchModel.setSortField("name");
         }
-        //note that when you call findPaginaed -> configFindPaginated will be called
-        WrappedData<Person> wrappedData =  super.findPaginated(first, pageSize, sortField, sortOrder, columnFilters, externalFilters); 
-        //here you access the page
-        List<Person> page = wrappedData.getData();
-         //you can modify the page if want, eg: set a transient field in you entity  depenending on some business logic
-        wrappedData.setData(page);
-      //note that if you remove/add a record to the page here make sure you subtract/add rowCount
-        wrappedData.setRowCount(wrappedData.getRowCount());//you can also access rowCount
-        return wrappedData;
-    }      */
- 
-    
-    
+        PaginationResult&lt;Person&gt; paginationResult = super.executePagination(searchModel,dc);
+        List&lt;Person&gt; modifiedPage = paginationResult.getPage();
+        //you can modify the page if want, eg: set a transient field in your entity depending on some business logic
+        modifiedPage.remove(0);
+        paginationResult.setPage(modifiedPage);
+        //note that if you remove/add a record from/to the page here make sure you subtract/add rowCount
+        int modifiedRowCount = paginationResult.getRowCount() -1;
+        paginationResult.setRowCount(modifiedRowCount);//you can also access rowCount
+        return paginationResult;//feed lazy primrfaces datatable with modified page
+    }
+    */
+
+
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public DetachedCriteria configPagination(SearchModel<Person> searchModel) {
         Map<String,Object> filter = searchModel.getDatatableFilter();
-        DetachedCriteria dc = getDao().getDetachedCriteria();
+        DetachedCriteria dc = getDetachedCriteria();
         if (filter != null && !filter.isEmpty()) {
             String name = (String) filter.get("name");
             if (name != null) {
@@ -101,7 +100,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements 
         }
         //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
         //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
-        // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
+        // if you want to use this behavior just return super.configPagination(searchModel,dc);
         return configPagination(searchModel,dc);
     }
 
@@ -119,9 +118,8 @@ public class PersonServiceImpl extends BaseServiceImpl<Person, Long> implements 
       * after/before store/remove will run within an EJB transaction
       * so throwing an runtime exception will make the transaction 
       * to be rolled back. Also note that BusinessExcetions are 
-      * ApplictionException so rollback will NOT be performed when they are thrown
+      * ApplictionException(rollback=true) so rollback will also be performed when they are thrown
       */
-    
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public void beforeStore(Person entity) {
