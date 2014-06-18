@@ -7,7 +7,6 @@ package org.conventionsframework.showcase.util;
 
 import org.conventionsframework.qualifier.Query;
 import org.conventionsframework.qualifier.QueryParam;
-import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.Phone;
 import org.conventionsframework.showcase.service.PersonService;
@@ -35,7 +34,7 @@ public class QueryUtils implements Serializable{
     @Query(namedQuery="Person.One",service= PersonService.class)
     public List<Person> findPersonByOne(){return null;}
     
-    @Query(namedQuery="Person.findByAge",service = BaseService.class)//uses default service which is statelessHibernateService
+    @Query(namedQuery="Person.findByAge",service = PersonService.class)
     @QueryParam(name="age",intValue=10)
     public List<Person> findPersonByAge(){return null;}
    

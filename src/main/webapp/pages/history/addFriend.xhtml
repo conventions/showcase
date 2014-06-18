@@ -33,7 +33,7 @@ and open the template in the editor.
                              <p:commandButton value="Add Friends"
                                              action="#{trackablePersonMBean.initPersonSelectionModal}"
                                              update=":findFriendDlg:findFriendDlg_panel"
-                                             oncomplete="findFriendDlg.show()"/>
+                                             oncomplete="PF('findFriendDlg').show()"/>
                         </f:facet>
                         <p:column sortBy="#{row.name}" filterBy="#{row.name}" filterMatchMode="contains">
                             <f:facet name="header">
@@ -73,7 +73,7 @@ and open the template in the editor.
                 <framework:modalRemoval mbean="#{trackablePersonMBean}"
                                         update=":historyForm:removeFriendModal:msgRemove :historyForm:table"
                                         removeAction="removeFromList"
-                                        appendToBody="true"
+                                        appendTo="@(body)"
                                         id="removeFriendModal"
                                         height="200"
                                         widgetVar="removeFriendModal">

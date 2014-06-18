@@ -83,7 +83,7 @@ and open the template in the editor.
                     </center>
         </div>
         
-        <framework:modalRemoval widgetVar="securityRemoval" appendToBody="true" mbean="#{securityMBean}" update=":securityForm:listPanel" header="Remove Person">
+        <framework:modalRemoval widgetVar="securityRemoval" appendTo="@(body)" mbean="#{securityMBean}" update=":securityForm:listPanel" header="Remove Person">
             <h:outputText value="Name:"/>
             <framework:inputText  value="#{securityMBean.entityAux.name}" disabled="true"/>
         </framework:modalRemoval>

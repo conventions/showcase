@@ -6,7 +6,7 @@ import org.conventionsframework.model.SearchModel;
 import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.StatelessPersonService;
-import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
@@ -30,33 +30,33 @@ public class StatelessPersonServiceImpl extends BaseServiceImpl<Person> implemen
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public DetachedCriteria configPagination(SearchModel<Person> searchModel) {
-        DetachedCriteria dc = getDao().getDetachedCriteria();
+    public Criteria configPagination(SearchModel<Person> searchModel) {
+        Criteria crit = getCriteria();
 
         Map<String,Object> filter = searchModel.getFilter();
         if (filter != null && !filter.isEmpty()) {
             String name = (String) filter.get("name");
             if (name != null) {
-                dc.add(Restrictions.ilike("name", name, MatchMode.ANYWHERE));
+                crit.add(Restrictions.ilike("name", name, MatchMode.ANYWHERE));
             }
             String lastname = (String) filter.get("lastname");
             if (lastname != null) {
-                dc.add(Restrictions.ilike("lastname", lastname, MatchMode.ANYWHERE));
+                crit.add(Restrictions.ilike("lastname", lastname, MatchMode.ANYWHERE));
             }
             String age = (String) filter.get("age");
             if(age != null && !StringUtils.isBlank(age)){
-                dc.add(Restrictions.eq("age", new Integer(age)));
+                crit.add(Restrictions.eq("age", new Integer(age)));
             }
             Long ignoreId = (Long) filter.get("ignoreId");
             if(ignoreId != null){
-                dc.add(Restrictions.ne("id", ignoreId));
+                crit.add(Restrictions.ne("id", ignoreId));
             }
         }
 
         //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
         //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
-        // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
-        return super.configPagination(searchModel,dc);
+        // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, crit);
+        return super.configPagination(searchModel,crit);
     }
 
     @Override
@@ -70,12 +70,16 @@ public class StatelessPersonServiceImpl extends BaseServiceImpl<Person> implemen
     
     @Override
     public void remove(Person entity) {
-        if(this.alowDeletePerson(entity)){
-            super.remove(entity);
-        }
-        else{
+        //override to perform logic before removing an entity
+
+        if(!this.alowDeletePerson(entity)) {
+            //BusinessException is ApplicationException so rollback will be performed
+            //and FacesMessage error will be queued
             throw new BusinessException("Not allowed to remove person above 60 year old.");
         }
+        /* same as if above:
+        Assert.isTrue(this.alowDeletePerson(entity),"Not allowed to remove person above 60 year old.");
+        */
     }
     
 
@@ -93,9 +97,9 @@ public class StatelessPersonServiceImpl extends BaseServiceImpl<Person> implemen
               //if we had an intermediate table like PersonFriend there was no need for the navive
               ids.add(new Long(id.toString()));
            }
-           DetachedCriteria dc = getDetachedCriteria();
-           dc.add(Restrictions.in("id", ids));
-           return getDao().findByCriteria(dc);
+           Criteria crit = getCriteria();
+           crit.add(Restrictions.in("id", ids));
+           return crud.criteria(crit).list();
        }
 
        return null;

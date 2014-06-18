@@ -1,5 +1,6 @@
 package org.conventionsframework.showcase.controller;
 
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.bean.StateMBean;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.bean.state.State;
@@ -12,16 +13,14 @@ import org.conventionsframework.showcase.service.PersonService;
 import org.conventionsframework.showcase.util.ConstantUtils;
 import org.conventionsframework.showcase.util.Pages;
 import org.conventionsframework.util.MessagesController;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.qualifier.*;
-import org.conventionsframework.service.BaseService;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 

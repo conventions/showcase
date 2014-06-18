@@ -4,7 +4,7 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.paginator.Paginator;
 import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.service.BaseService;

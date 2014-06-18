@@ -13,11 +13,11 @@
         <mojarra.version>2.1.7</mojarra.version>
         <myfaces.version>2.1.7</myfaces.version>
         <codi.version>1.0.6</codi.version>
-        <primefaces.version>4.0</primefaces.version>
+        <primefaces.version>5.0</primefaces.version>
         <primefaces-ext.version>1.2.1</primefaces-ext.version>
-        <conventions.version>1.0.1</conventions.version>
+        <conventions.version>1.2.1</conventions.version>
         <openwebbeans.version>1.1.5</openwebbeans.version>
-        <hibernate.version>4.3.4.Final</hibernate.version>
+        <hibernate.version>4.3.5.Final</hibernate.version>
     </properties>
 
 
@@ -54,7 +54,6 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>org.primefaces.extensions</groupId>
@@ -62,8 +61,12 @@
             <version>${primefaces-ext.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.myfaces.extensions.cdi.bundles</groupId>
-            <artifactId>myfaces-extcdi-bundle-jsf20</artifactId>
+            <groupId>org.apache.deltaspike.core</groupId>
+            <artifactId>deltaspike-core-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-jsf-module-impl</artifactId>
         </dependency>
         <dependency>
             <groupId>org.primefaces.themes</groupId>

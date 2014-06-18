@@ -1,119 +1,172 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets">
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.conventionsframework.showcase.service.impl;
 
+import org.conventionsframework.crud.CriteriaBuilder;
+import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.model.SearchModel;
+import org.conventionsframework.qualifier.Log;
 import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.showcase.model.Person;
-import org.conventionsframework.showcase.model.PhoneType;
-import org.conventionsframework.showcase.service.AdvancedFilterService;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
+import org.conventionsframework.showcase.service.PersonService;
+import org.conventionsframework.util.Assert;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
- * @author Rafael M. Pestano
- * @Date Jun 18, 2012
- *
+ * @author Rafael M. Pestano Mar 21, 2011 4:35:41 PM
  */
-@Named("advancedFilterService")
+//Turning your service into an EJB will make your methods(the transactionAttribute ones)
+// to run within an EJB transaction and auto flush of hibernate session. Note that Conventions will 
+//flush hibernate session after Insert,remove or update so your service will still work if its not an EJB
+//&lt;code&gt;@see org.conventionsframework.service.impl.BaseServiceImpl&lt;/code&gt; to see which methods are Transactional
 @Stateful
-public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&gt; implements AdvancedFilterService {
+@Named(value = "personService")
+public class PersonServiceImpl extends BaseServiceImpl&lt;Person&gt; implements PersonService {
+    
+    private boolean rollbackTest;
+
+    @Inject @Log
+    private transient Logger log;
+
+    @Inject
+    CriteriaBuilder&lt;Person&gt; builder;
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     EntityManager em;
 
+
+
+    //override default entityManager which is type = TRANSACTION
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public EntityManager getEntityManager() {
         return em;
     }
 
-    @Override
-    public Class&lt;Person&gt; getPersistentClass() {
-        return Person.class;
 
+
+  /*  example of how to access each page returned by pagination
+    @Override
+    public PaginationResult&lt;Person&gt; executePagination(SearchModel&lt;Person&gt; searchModel, Criteria criteria) {
+        if(searchModel.getSortField() == null){
+            //table comes pre sorted so if no sort is applied sort by name
+            searchModel.setSortField("name");
+        }
+        PaginationResult&lt;Person&gt; paginationResult = super.executePagination(searchModel,criteria);
+        List&lt;Person&gt; modifiedPage = paginationResult.getPage();
+        //you can modify the page if want, eg: set a transient field in your entity depending on some business logic
+        modifiedPage.remove(0);
+        paginationResult.setPage(modifiedPage);
+        //note that if you remove/add a record from/to the page here make sure you subtract/add rowCount
+        int modifiedRowCount = paginationResult.getRowCount() -1;
+        paginationResult.setRowCount(modifiedRowCount);//you can also access rowCount
+        return paginationResult;//feed lazy primrfaces datatable with modified page
     }
+    */
 
-    /**
-     * configure filtering and sort for lazy datatable, this method is called
-     * everytime datatable is updated, you need to override it when you need
-     * complex filtering/sort or if you want to change the default filters
-     * behavior
-     *
-     *
-     */
+
     @Override
-    public DetachedCriteria configPagination(SearchModel&lt;Person&gt; searchModel) {
-        Map&lt;String,Object&gt; filter = searchModel.getFilter();
-        DetachedCriteria dc = getDetachedCriteria();
-        Person searchEntity = searchModel.getEntity();
-        boolean alreadyJoinedPhone = false;
+    @TransactionAttribute(TransactionAttributeType.NEVER)
+    public Criteria configPagination(SearchModel&lt;Person&gt; searchModel) {
+        Map&lt;String,Object&gt; filter = searchModel.getDatatableFilter();
         if (filter != null &amp;&amp; !filter.isEmpty()) {
-            Boolean activateBetweenAgesRestriction = (Boolean) filter.get("activateBetween");
-            if (activateBetweenAgesRestriction != null &amp;&amp; activateBetweenAgesRestriction) {
-                dc.add(Restrictions.between("age", 1, 10));
+            String name = (String) filter.get("name");
+            builder.ilike("name", name, MatchMode.ANYWHERE);
+            String lastname = (String) filter.get("lastname");
+            builder.ilike("lastname", lastname, MatchMode.ANYWHERE);
+            String age = (String) filter.get("age");
+            if(Assert.hasText(age)){
+                builder.eq("age", new Integer(age));
             }
-            List&lt;String&gt; numberList = (List&lt;String&gt;) filter.get("numberList");
-            if (numberList != null) {
-                if (!alreadyJoinedPhone) {
-                    alreadyJoinedPhone = true;
-                    //if alias was not created yet
-                    dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
-                    dc.add(Restrictions.in("telephones.number", numberList));
-                }
-            }
+            Long ignoreId = (Long) filter.get("ignoreId");
+            builder.ne("id", ignoreId);
         }
-        String phone = searchEntity.getPhoneNumber();
-        if (phone != null &amp;&amp; !"".endsWith(phone)) {
-            //create join with Phone table
-            if (!alreadyJoinedPhone) {
-                dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
-                alreadyJoinedPhone = true;
-            }
-            dc.add(Restrictions.eq("telephones.number", phone));
-        }
-
-        PhoneType type = searchEntity.getPhoneType();
-        if (type != null) {
-            if (!alreadyJoinedPhone) {
-                //if join was not created yet just create it
-                dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
-                alreadyJoinedPhone = true;
-            }
-            dc.add(Restrictions.eq("telephones.type", type));
-        }
-
-        if (!alreadyJoinedPhone) {
-            //create join to sort by phone number
-            dc.createAlias("telephones", "telephones");
-        }
-         //NOTE Conventions will infer restrictions via reflection for basic fields like above(not relationships)
-         //and will do a ilike for String fields and eq for long,integer/date fields
-         // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
-        //otherwise just return your criteria return dc;
-        return super.configPagination(searchModel, dc);
+        //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
+        //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
+        // if you want to use this behavior just return super.configPagination(searchModel,criteria);
+        return configPagination(searchModel,builder.buildCriteria(crud.getSession()));
     }
-}
 
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public boolean alowDeletePerson(Person entity) {
+        if (entity.getAge() &gt; 60) {
+            return false;
+        }
+        return true;
+    }
+    
+     /**
+      * IF your Service is an EJB the methods
+      * after/before store/remove will run within an EJB transaction
+      * so throwing an runtime exception will make the transaction 
+      * to be rolled back. Also note that BusinessExcetions are 
+      * ApplictionException(rollback=true) so rollback will also be performed when they are thrown
+      */
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public void beforeStore(Person entity) {
+        //override to perform logic before storing an entity
+        super.beforeStore(entity);
+    }
+    
+    
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public void afterStore(Person entity) {
+          //override to perform logic after storing an entity
+          if(rollbackTest){
+            // runtime will make the transaction rollback and user will be redirected to error page 
+            throw new RuntimeException("Rolling back the transaction, all changes will be lost and your EJB instance will be lost.");
+        }
+       
+    }
+    
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public void beforeRemove(Person entity) {
+          //override to perform logic before removing an entity
+
+        if(!this.alowDeletePerson(entity)) {
+              //BusinessException is ApplicationException so rollback will be performed
+              //and FacesMessage error will be queued
+            throw new BusinessException("Not allowed to remove person above 60 year old.");
+        }
+        /* same as if above:
+        Assert.isTrue(this.alowDeletePerson(entity),"Not allowed to remove person above 60 year old.");
+        */
+    }
+    
+    @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public void afterRemove(Person entity) {
+        //override to perform logic after removing an entity
+        super.afterRemove(entity);
+    }
+
+
+    @TransactionAttribute(TransactionAttributeType.NEVER)
+    public void setRollbackTest(boolean rollbackTest) {
+        this.rollbackTest = rollbackTest;
+    }
+
+}
 </ui:composition>

@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
--->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<ui:composition
+--&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+&lt;ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:ui="http://java.sun.com/jsf/facelets"&gt;
 
 /*
  * To change this template, choose Tools | Templates
@@ -19,7 +19,7 @@ import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.PhoneType;
 import org.conventionsframework.showcase.service.AdvancedFilterService;
-import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 
@@ -39,7 +39,7 @@ import java.util.Map;
  */
 @Named("advancedFilterService")
 @Stateful
-public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&gt; implements AdvancedFilterService {
+public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person&gt; implements AdvancedFilterService {
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     EntityManager em;
@@ -49,11 +49,6 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&g
         return em;
     }
 
-    @Override
-    public Class&lt;Person&gt; getPersistentClass() {
-        return Person.class;
-
-    }
 
     /**
      * configure filtering and sort for lazy datatable, this method is called
@@ -64,23 +59,23 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&g
      *
      */
     @Override
-    public DetachedCriteria configPagination(SearchModel&lt;Person&gt; searchModel) {
+    public Criteria configPagination(SearchModel&lt;Person&gt; searchModel) {
         Map&lt;String,Object&gt; filter = searchModel.getFilter();
-        DetachedCriteria dc = getDetachedCriteria();
+        Criteria Criteria = getCriteria();
         Person searchEntity = searchModel.getEntity();
         boolean alreadyJoinedPhone = false;
         if (filter != null &amp;&amp; !filter.isEmpty()) {
             Boolean activateBetweenAgesRestriction = (Boolean) filter.get("activateBetween");
             if (activateBetweenAgesRestriction != null &amp;&amp; activateBetweenAgesRestriction) {
-                dc.add(Restrictions.between("age", 1, 10));
+                Criteria.add(Restrictions.between("age", 1, 10));
             }
             List&lt;String&gt; numberList = (List&lt;String&gt;) filter.get("numberList");
             if (numberList != null) {
                 if (!alreadyJoinedPhone) {
                     alreadyJoinedPhone = true;
                     //if alias was not created yet
-                    dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
-                    dc.add(Restrictions.in("telephones.number", numberList));
+                    Criteria.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                    Criteria.add(Restrictions.in("telephones.number", numberList));
                 }
             }
         }
@@ -88,35 +83,33 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl&lt;Person, Long&g
         if (phone != null &amp;&amp; !"".endsWith(phone)) {
             //create join with Phone table
             if (!alreadyJoinedPhone) {
-                dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                Criteria.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
                 alreadyJoinedPhone = true;
             }
-            dc.add(Restrictions.eq("telephones.number", phone));
+            Criteria.add(Restrictions.eq("telephones.number", phone));
         }
 
         PhoneType type = searchEntity.getPhoneType();
         if (type != null) {
             if (!alreadyJoinedPhone) {
                 //if join was not created yet just create it
-                dc.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                Criteria.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
                 alreadyJoinedPhone = true;
             }
-            dc.add(Restrictions.eq("telephones.type", type));
+            Criteria.add(Restrictions.eq("telephones.type", type));
         }
 
         if (!alreadyJoinedPhone) {
             //create join to sort by phone number
-            dc.createAlias("telephones", "telephones");
+            Criteria.createAlias("telephones", "telephones");
         }
          //NOTE Conventions will infer restrictions via reflection for basic fields like above(not relationships)
          //and will do a ilike for String fields and eq for long,integer/date fields
-         // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, dc);
-        //otherwise just return your criteria return dc;
-        return super.configPagination(searchModel, dc);
+         // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, Criteria);
+        //otherwise just return your criteria return Criteria;
+        return super.configPagination(searchModel, Criteria);
     }
 }
 
 
-
-
-</ui:composition>
+&lt;/ui:composition&gt;

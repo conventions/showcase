@@ -5,14 +5,15 @@
 
 package org.conventionsframework.showcase.controller;
 
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.qualifier.PropertyFile;
 import org.conventionsframework.qualifier.PropertyKey;
 import org.conventionsframework.util.MessagesController;
-import java.io.Serializable;
-import java.util.Properties;
+
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import java.io.Serializable;
+import java.util.Properties;
 
 /**
  *

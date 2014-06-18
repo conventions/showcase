@@ -5,7 +5,7 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.exception.BusinessException;
@@ -103,7 +103,7 @@ public class PersonMBean extends BaseMBean<Person> implements Serializable {
             //which can return a variety of responses
             for (Person person : selectedPerson) {
                 if (!getEntity().hasFriend(person.getId())) {
-                    getEntity().getFriends().add(getPersonService().getDao().load(person.getId()));
+                    getEntity().getFriends().add(getPersonService().crud().load(person.getId()));
                 }
             }
     }

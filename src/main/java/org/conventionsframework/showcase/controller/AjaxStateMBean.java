@@ -4,7 +4,7 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.bean.StateMBean;
 import org.conventionsframework.bean.state.State;
 import org.conventionsframework.qualifier.BeanState;
@@ -81,7 +81,7 @@ public class AjaxStateMBean extends StateMBean<Person> {
         List<Person> selectedPerson = (List<Person>) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add((Person) getBaseService().getDao().load(person.getId()));
+                getEntity().getFriends().add((Person) getBaseService().crud().load(person.getId()));
             }
         }
     }

@@ -35,7 +35,7 @@ and open the template in the editor.
                         &lt;framework:inputText numeric="true" value="\#{simpleMBean.paginator.filter.age}"/&gt;
                     &lt;/h:panelGrid&gt;
                     &lt;h:panelGrid columns="2" &gt;
-                        &lt;framework:filterButton mbean="\#{simpleMBean}" id="filter-bt" tableWidgetVar="tableVar" onclick="tableVar.getPaginator().setPage(0);" update=":simpleCrudForm:tablePanel" process=":simpleCrudForm:panelFilter"
+                        &lt;framework:filterButton mbean="\#{simpleMBean}" id="filter-bt" tableWidgetVar="tableVar" onclick="PF('tableVar').getPaginator().setPage(0);" update=":simpleCrudForm:tablePanel" process=":simpleCrudForm:panelFilter"
                                                 /&gt;
                         &lt;p:commandButton value="Hide Filters" update="inplace"/&gt;
                     &lt;/h:panelGrid&gt;
@@ -47,7 +47,7 @@ and open the template in the editor.
             &lt;p:remoteCommand name="updateRowCount" process="@none" update="simpleCrudForm:table:table_table:tableFooter"/&gt;    
             &lt;framework:datatable paginator="\#{simpleMBean.paginator}" id="table" emptyMessage="No person found" onFilter="updateRowCount()"&gt;
                 &lt;f:facet name="header"&gt;
-                    &lt;p:commandButton value="Show External Filters" onclick="inplace.show()"/&gt;
+                    &lt;p:commandButton value="Show External Filters" onclick="PF('inplace').show()"/&gt;
                 &lt;/f:facet&gt;
                 &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}"&gt;
                     &lt;f:facet name="header"&gt;
@@ -109,7 +109,7 @@ and open the template in the editor.
     &lt;framework:modalRemoval  mbean="\#{simpleMBean}"
                              update=":simpleCrudForm:removePersonModal:msgRemove :simpleCrudForm:tablePanel"
                              header="Remove Person"
-                             appendToBody="true"
+                             appendTo="@(body)"
                              id="removePersonModal"
                              widgetVar="removePersonModal"&gt;
         &lt;p:inputText value="\#{simpleMBean.entityAux.name}" disabled="true"/&gt;        

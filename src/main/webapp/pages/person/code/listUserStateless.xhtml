@@ -20,7 +20,7 @@ and open the template in the editor.
                         &lt;framework:inputText numeric="true" value="\#{statelessPersonMBean.paginator.filter.age}"/&gt;
                     &lt;/h:panelGrid&gt;
                     &lt;h:panelGrid columns="2" &gt;
-                        &lt;framework:filterButton mbean="\#{statelessPersonMBean}" id="filter-bt" onclick="tableVar.getPaginator().setPage(0);" update=":personCrudForm:tablePanel" process=":personCrudForm:panelFilter"
+                        &lt;framework:filterButton mbean="\#{statelessPersonMBean}" id="filter-bt" onclick="PF('tableVar').getPaginator().setPage(0);" update=":personCrudForm:tablePanel" process=":personCrudForm:panelFilter"
                                                 /&gt;
                         &lt;p:commandButton value="Hide Filters" update="inplace"/&gt;
                         &lt;framework:uiBlocker message="Filtering...." source="button[id$=filter-bt]" target="div[id$=table]"/&gt;   
@@ -32,7 +32,7 @@ and open the template in the editor.
         &lt;p:panel id="tablePanel" style="overflow: auto;"&gt;
             &lt;framework:datatable paginator="\#{statelessPersonMBean.paginator}"  emptyMessage="No person found"&gt;
                 &lt;f:facet name="header"&gt;
-                    &lt;p:commandButton value="Show External Filters" onclick="inplace.show()"/&gt;
+                    &lt;p:commandButton value="Show External Filters" onclick="PF('inplace').show()"/&gt;
                 &lt;/f:facet&gt;
                 &lt;p:column sortBy="\#{row.name}" filterBy="\#{row.name}"  &gt;
                     &lt;f:facet name="header"&gt;
@@ -90,7 +90,7 @@ and open the template in the editor.
                                     update=":personCrudForm:removePersonModal:msgRemove :personCrudForm:tablePanel"
                                     header="Remove Person"
                                     id="removePersonModal"
-                                    appendToBody="true"
+                                    appendTo="@(body)"
                                     widgetVar="removePersonModal"&gt;
                   &lt;p:inputText value="\#{statelessPersonMBean.entityAux.name}" disabled="true"/&gt;        
     &lt;/framework:modalRemoval&gt;

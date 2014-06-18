@@ -4,7 +4,7 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
@@ -37,7 +37,7 @@ public class PersonSelectionMBean extends BaseMBean<Person>  implements Serializ
         super.init();
         Person p = new Person();
         p.setAge(100);
-        this.setList(personService.getDao().findByExample(p));
+        this.setList(personService.crud().listByExample(p));
     }
 
 

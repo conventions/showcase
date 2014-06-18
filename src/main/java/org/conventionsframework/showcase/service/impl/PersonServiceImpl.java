@@ -1,16 +1,15 @@
 package org.conventionsframework.showcase.service.impl;
 
-import org.apache.commons.lang3.StringUtils;
+import org.conventionsframework.crud.CriteriaBuilder;
 import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.model.SearchModel;
 import org.conventionsframework.qualifier.Log;
-import org.conventionsframework.qualifier.PersistentClass;
 import org.conventionsframework.service.impl.BaseServiceImpl;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
-import org.hibernate.criterion.DetachedCriteria;
+import org.conventionsframework.util.Assert;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
 
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -33,13 +32,15 @@ import java.util.logging.Logger;
 //<code>@see org.conventionsframework.service.impl.BaseServiceImpl</code> to see which methods are Transactional
 @Stateful
 @Named(value = "personService")
-@PersistentClass(Person.class)
 public class PersonServiceImpl extends BaseServiceImpl<Person> implements PersonService {
     
     private boolean rollbackTest;
 
     @Inject @Log
     private transient Logger log;
+
+    @Inject
+    CriteriaBuilder<Person> builder;
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     EntityManager em;
@@ -57,12 +58,12 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
 
   /*  example of how to access each page returned by pagination
     @Override
-    public PaginationResult&lt;Person&gt; executePagination(SearchModel&lt;Person&gt; searchModel, DetachedCriteria dc) {
+    public PaginationResult&lt;Person&gt; executePagination(SearchModel&lt;Person&gt; searchModel, Criteria criteria) {
         if(searchModel.getSortField() == null){
             //table comes pre sorted so if no sort is applied sort by name
             searchModel.setSortField("name");
         }
-        PaginationResult&lt;Person&gt; paginationResult = super.executePagination(searchModel,dc);
+        PaginationResult&lt;Person&gt; paginationResult = super.executePagination(searchModel,criteria);
         List&lt;Person&gt; modifiedPage = paginationResult.getPage();
         //you can modify the page if want, eg: set a transient field in your entity depending on some business logic
         modifiedPage.remove(0);
@@ -77,31 +78,24 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public DetachedCriteria configPagination(SearchModel<Person> searchModel) {
+    public Criteria configPagination(SearchModel<Person> searchModel) {
         Map<String,Object> filter = searchModel.getDatatableFilter();
-        DetachedCriteria dc = getDetachedCriteria();
         if (filter != null && !filter.isEmpty()) {
             String name = (String) filter.get("name");
-            if (name != null) {
-                dc.add(Restrictions.ilike("name", name, MatchMode.ANYWHERE));
-            }
+            builder.ilike("name", name, MatchMode.ANYWHERE);
             String lastname = (String) filter.get("lastname");
-            if (lastname != null) {
-                dc.add(Restrictions.ilike("lastname", lastname, MatchMode.ANYWHERE));
-            }
+            builder.ilike("lastname", lastname, MatchMode.ANYWHERE);
             String age = (String) filter.get("age");
-            if (age != null && !StringUtils.isBlank(age)) {
-                dc.add(Restrictions.eq("age", new Integer(age)));
+            if(Assert.hasText(age)){
+                builder.eq("age", new Integer(age));
             }
             Long ignoreId = (Long) filter.get("ignoreId");
-            if (ignoreId != null) {
-                dc.add(Restrictions.ne("id", ignoreId));
-            }
+            builder.ne("id", ignoreId);
         }
         //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
         //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
-        // if you want to use this behavior just return super.configPagination(searchModel,dc);
-        return configPagination(searchModel,dc);
+        // if you want to use this behavior just return super.configPagination(searchModel,criteria);
+        return configPagination(searchModel,builder.buildCriteria(crud.getSession()));
     }
 
     @Override
@@ -143,14 +137,15 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public void beforeRemove(Person entity) {
           //override to perform logic before removing an entity
-        if (this.alowDeletePerson(entity)) {
-             super.beforeRemove(entity);
-        } else {
+
+        if(!this.alowDeletePerson(entity)) {
               //BusinessException is ApplicationException so rollback will be performed
               //and FacesMessage error will be queued
             throw new BusinessException("Not allowed to remove person above 60 year old.");
         }
-       
+        /* same as if above:
+        Assert.isTrue(this.alowDeletePerson(entity),"Not allowed to remove person above 60 year old.");
+        */
     }
     
     @Override

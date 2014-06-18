@@ -4,11 +4,12 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import java.io.Serializable;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.inject.Named;
 import javax.validation.constraints.Size;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.hibernate.validator.constraints.NotEmpty;
+import java.io.Serializable;
  
 /**
  *

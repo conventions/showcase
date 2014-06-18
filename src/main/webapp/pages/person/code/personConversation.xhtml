@@ -52,7 +52,7 @@ and open the template in the editor.
                                     &lt;/h:panelGrid&gt;
                                     &lt;h:panelGrid columns="2" &gt;
                                             &lt;framework:filterButton id="filter-bt" mbean="\#{personConversationMBean}" update=":personConversationForm:tablePanel" process=":personConversationForm:panelFilter"
-                                                                    onclick="tableVar.getPaginator().setPage(0);" /&gt;  
+                                                                    onclick="PF('tableVar').getPaginator().setPage(0);" /&gt;
                                             &lt;p:commandButton value="Hide Filters" global="false" update="inplace" &gt;
                                                 &lt;p:effect event="click" for="panelFilter" type="explode"/&gt;
                                             &lt;/p:commandButton&gt;
@@ -126,7 +126,7 @@ and open the template in the editor.
                 &lt;framework:modalRemoval id="removePersonModal" mbean="\#{personConversationMBean}"
                                         update=":personConversationForm:tablePanel :personConversationForm:removePersonModal:msgRemove"
                                         header="Remove Person"
-                                        appendToBody="true"
+                                        appendTo="@(body)"
                                         widgetVar="removePersonModal"
                                         height="215"
                                         &gt;

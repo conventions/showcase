@@ -4,7 +4,7 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.qualifier.Service;
 import org.conventionsframework.service.BaseService;
 import org.conventionsframework.showcase.model.Person;
@@ -48,7 +48,7 @@ public class ComboMBean implements Serializable {
         Person p = new Person(); 
         p.setName("1");
         p.setAge(1);
-        personList = service.getDao().findByExample(p,5);
+        personList = service.crud().maxResult(5).listByExample(p);
         selectedPerson2 = personList.get(2);
     }
 

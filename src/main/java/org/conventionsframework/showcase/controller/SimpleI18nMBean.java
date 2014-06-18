@@ -4,17 +4,16 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.event.LocaleChangeEvent;
-import org.conventionsframework.model.AbstractBaseEntity;
-import java.io.Serializable;
+import org.conventionsframework.model.BaseEntity;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
-import org.conventionsframework.model.BaseEntity;
-import org.conventionsframework.util.VersionUtils;
+import java.io.Serializable;
 
 /**
  *
@@ -25,6 +24,10 @@ import org.conventionsframework.util.VersionUtils;
 public class SimpleI18nMBean extends BaseMBean<BaseEntity> implements Serializable{
 
     private String selectedLocale;
+
+    @Inject
+    @Named("conventionsVersion")
+    String conventionsVersion;
 
     @PostConstruct
     public void initLocale () {
@@ -41,7 +44,7 @@ public class SimpleI18nMBean extends BaseMBean<BaseEntity> implements Serializab
     
     public String getParametrizedHello(){
          
-        return getResourceBundle().getString("parametrizedHello","Conventions ",VersionUtils.INSTANCE.getCoreVersion().getVersion());
+        return getResourceBundle().getString("parametrizedHello","Conventions ",conventionsVersion);
     }
 
 

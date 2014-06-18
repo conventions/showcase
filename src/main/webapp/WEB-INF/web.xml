@@ -24,7 +24,7 @@
 
     <context-param>
         <param-name>BUNDLE_BASE_NAME</param-name>
-        <param-value>/org/conventionsframework/showcase/bundle/messages</param-value>
+        <param-value>org.conventionsframework.showcase.bundle.messages</param-value>
     </context-param>
     <context-param>
         <param-name>DEFAULT_PROPERTIES_PATH</param-name>

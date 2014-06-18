@@ -26,7 +26,7 @@ and open the template in the editor.
                         <framework:inputText numeric="true" value="#{simpleMBean.paginator.filter.age}"/>
                     </h:panelGrid>
                     <h:panelGrid columns="2" >
-                        <framework:filterButton mbean="#{simpleMBean}" id="filter-bt"  onclick="tableVar.getPaginator().setPage(0);" update=":simpleCrudForm:tablePanel" process=":simpleCrudForm:panelFilter"
+                        <framework:filterButton mbean="#{simpleMBean}" id="filter-bt"  onclick="PF('tableVar').getPaginator().setPage(0);" update=":simpleCrudForm:tablePanel" process=":simpleCrudForm:panelFilter"
                                                />
                         <p:commandButton value="Hide Filters" update="inplace"/>
                     </h:panelGrid>
@@ -100,7 +100,7 @@ and open the template in the editor.
     <framework:modalRemoval  mbean="#{simpleMBean}"
                              update=":simpleCrudForm:removePersonModal:msgRemove :simpleCrudForm:tablePanel"
                              header="Remove Person"
-                             appendToBody="true"
+                             appendTo="@(body)"
                              id="removePersonModal"
                              widgetVar="removePersonModal">
         <p:inputText value="#{simpleMBean.entityAux.name}" disabled="true"/>        

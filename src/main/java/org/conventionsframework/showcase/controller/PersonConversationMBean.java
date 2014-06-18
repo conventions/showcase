@@ -122,7 +122,7 @@ public class PersonConversationMBean extends ConversationalMBean<Person> impleme
         List<Person> selectedPerson = (List<Person>) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add((Person) getPersonService().getDao().load(person.getId()));
+                getEntity().getFriends().add((Person) getPersonService().crud().load(person.getId()));
             }
         }
     }

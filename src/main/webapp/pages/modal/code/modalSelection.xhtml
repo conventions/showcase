@@ -43,11 +43,11 @@ and open the template in the editor.
                                             &lt;p:commandButton value="Find Person from modal 1" 
                                                              action="\#{personSelectionMBean.initPersonSelectionModal}"
                                                              update=":findPersonDlg:findPersonDlg_panel" 
-                                                             oncomplete="findPersonDlg.show();;tablevar1.getPaginator().setPage(0);" 
+                                                             oncomplete="PF('findPersonDlg').show();;tablevar1.getPaginator().setPage(0);"
                                                              icon="ui-icon ui-icon-zoomin"/&gt;
                                             &lt;p:commandButton value="Find Person from modal 2" 
                                                              update=":findPersonDlg2:findPersonDlg2_panel" 
-                                                             oncomplete="findPersonDlg2.show();tablevar2.getPaginator().setPage(0);" 
+                                                             oncomplete="PF('findPersonDlg2').show();tablevar2.getPaginator().setPage(0);"
                                                              icon="ui-icon ui-icon-zoomin"/&gt;
                                         &lt;/h:column&gt;
                                     &lt;/h:panelGrid&gt;
@@ -91,7 +91,7 @@ and open the template in the editor.
                 
                 &lt;framework:modalRemoval mbean="\#{personSelectionMBean}"
                                         update=":personSelectionForm:pageControl :personSelectionForm:msg"
-                                        appendToBody="true"
+                                        appendTo="@(body)"
                                         oncomplete="hideMsg(args);"
                                         removeAction="removeFromList"
                                         widgetVar="removeGridPersonModal"&gt;

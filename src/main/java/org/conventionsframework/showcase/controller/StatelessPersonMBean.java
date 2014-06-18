@@ -5,7 +5,7 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.showcase.model.Person;
@@ -83,7 +83,7 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
      */
     @Override
     public void delete() {
-        setEntityAux(getStatelessPersonService().getDao().get(getEntityAux().getId()));//attach person to session - again -
+        setEntityAux(getStatelessPersonService().crud().get(getEntityAux().getId()));//attach person to session - again -
         super.delete();
     }
 
@@ -177,7 +177,7 @@ public class StatelessPersonMBean extends BaseMBean<Person> implements Serializa
     private List<Person> attachPersons(List<Person> friends) {
         List<Person> attachedPersons = new ArrayList<Person>();
         for (Person person : friends) {
-            attachedPersons.add(getStatelessPersonService().getDao().load(person.getId()));
+            attachedPersons.add(getStatelessPersonService().crud().load(person.getId()));
         }
         return attachedPersons;
     }

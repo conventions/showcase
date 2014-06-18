@@ -4,14 +4,13 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.bean.ModalMBean;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
 import org.primefaces.event.CloseEvent;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;

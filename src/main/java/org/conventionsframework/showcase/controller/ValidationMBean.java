@@ -4,11 +4,12 @@
  */
 package org.conventionsframework.showcase.controller;
 
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.util.MessagesController;
-import java.io.Serializable;
+
 import javax.inject.Named;
 import javax.validation.constraints.Size;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import java.io.Serializable;
 
 /**
  *

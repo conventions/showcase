@@ -5,15 +5,16 @@
 
 package org.conventionsframework.showcase.controller;
 
-import java.io.Serializable;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.model.Phone;
 import org.conventionsframework.showcase.util.QueryUtils;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *

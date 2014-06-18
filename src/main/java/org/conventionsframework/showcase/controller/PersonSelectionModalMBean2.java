@@ -4,7 +4,7 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.WindowScoped;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.conventionsframework.bean.ModalMBean;
 import org.conventionsframework.showcase.model.Person;
 import org.conventionsframework.showcase.service.PersonService;
@@ -49,7 +49,7 @@ public class PersonSelectionModalMBean2 extends ModalMBean<Person> implements Se
     public void init(){
         Person p = new Person();
         p.setAge(20);
-        list = getPersonService().getDao().findByExample(p);
+        list = getPersonService().crud().listByExample(p);
     }
 
     public List<Person> getSelectedPeople() {

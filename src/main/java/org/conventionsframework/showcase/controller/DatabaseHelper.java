@@ -36,7 +36,7 @@ public class DatabaseHelper implements Serializable{
          /* populate database */
         try{
             
-        if (baseService.getDao().countAll() == 0) {
+        if (baseService.crud().countAll() == 0) {
             for (int i = 0; i < 1000; i++) {
                 Person p = new Person("Person " + i, "Lastname " + i, i % 100);
                 p.setTelephones(generateTelephones(i));

@@ -11,7 +11,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import org.apache.myfaces.extensions.cdi.core.api.Advanced;
 
 /**
  *
@@ -19,7 +18,6 @@ import org.apache.myfaces.extensions.cdi.core.api.Advanced;
  */
 
 @FacesConverter(value="themeConverter")
-@Advanced
 public class ThemeConverter implements Converter{
     
     @Inject

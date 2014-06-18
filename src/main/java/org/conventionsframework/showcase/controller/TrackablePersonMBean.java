@@ -4,7 +4,7 @@
  */
 package org.conventionsframework.showcase.controller;
 
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.bean.StateMBean;
 import org.conventionsframework.bean.state.CrudState;
 import org.conventionsframework.qualifier.BeanState;
@@ -95,7 +95,7 @@ public class TrackablePersonMBean extends StateMBean<Person> implements Serializ
         List<Person> selectedPerson = (List<Person>) getModalResponse();
         for (Person person : selectedPerson) {
             if (!getEntity().hasFriend(person.getId())) {
-                getEntity().getFriends().add((Person) getPersonService().getDao().load(person.getId()));
+                getEntity().getFriends().add((Person) getPersonService().crud().load(person.getId()));
             }
         }
     }
