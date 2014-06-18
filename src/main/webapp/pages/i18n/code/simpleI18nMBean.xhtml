@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
--->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<ui:composition
+--&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+&lt;ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:ui="http://java.sun.com/jsf/facelets"&gt;
     
 /*
  * To change this template, choose Tools | Templates
@@ -14,18 +14,16 @@ and open the template in the editor.
  */
 package org.conventionsframework.showcase.controller;
 
-import org.conventionsframework.bean.BaseMBean;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.conventionsframework.event.LocaleChangeEvent;
-import org.conventionsframework.model.AbstractBaseEntity;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.conventionsframework.util.ResourceBundle;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
-import org.conventionsframework.util.VersionUtils;
+import java.io.Serializable;
+import java.util.Locale;
 
 /**
  *
@@ -33,13 +31,20 @@ import org.conventionsframework.util.VersionUtils;
  */
 @Named
 @ViewAccessScoped
-public class SimpleI18nMBean extends BaseMBean&lt;AbstractBaseEntity&gt; implements Serializable{
+public class SimpleI18nMBean implements Serializable{
 
     private String selectedLocale;
 
+    @Inject
+    @Named("conventionsVersion")
+    String conventionsVersion;
+
+    @Inject
+    ResourceBundle bundle;
+
     @PostConstruct
     public void initLocale () {
-        selectedLocale = getResourceBundleProvider().getCurrentLocale();
+        selectedLocale = Locale.getDefault().getLanguage();
     }
     
     
@@ -47,12 +52,12 @@ public class SimpleI18nMBean extends BaseMBean&lt;AbstractBaseEntity&gt; impleme
     private Event&lt;LocaleChangeEvent&gt; localeChangeEvent;
     
     public String getSimpleHello(){
-        return getResourceBundle().getString("simpleHello");
+        return bundle.getString("simpleHello");
     }
     
     public String getParametrizedHello(){
          
-        return getResourceBundle().getString("parametrizedHello","Conventions ",VersionUtils.INSTANCE.getCoreVersion().getVersion());
+        return bundle.getString("parametrizedHello", "Conventions ", conventionsVersion);
     }
 
 
@@ -77,4 +82,5 @@ public class SimpleI18nMBean extends BaseMBean&lt;AbstractBaseEntity&gt; impleme
 
 
 
-</ui:composition> 
+
+&lt;/ui:composition&gt; 

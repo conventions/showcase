@@ -5,15 +5,15 @@
 package org.conventionsframework.showcase.controller;
 
 import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
-import org.conventionsframework.bean.BaseMBean;
 import org.conventionsframework.event.LocaleChangeEvent;
-import org.conventionsframework.model.BaseEntity;
+import org.conventionsframework.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  *
@@ -21,7 +21,7 @@ import java.io.Serializable;
  */
 @Named
 @ViewAccessScoped
-public class SimpleI18nMBean extends BaseMBean<BaseEntity> implements Serializable{
+public class SimpleI18nMBean implements Serializable{
 
     private String selectedLocale;
 
@@ -29,9 +29,12 @@ public class SimpleI18nMBean extends BaseMBean<BaseEntity> implements Serializab
     @Named("conventionsVersion")
     String conventionsVersion;
 
+    @Inject
+    ResourceBundle bundle;
+
     @PostConstruct
     public void initLocale () {
-        selectedLocale = getResourceBundleProvider().getCurrentLocale();
+        selectedLocale = Locale.getDefault().getLanguage();
     }
     
     
@@ -39,12 +42,12 @@ public class SimpleI18nMBean extends BaseMBean<BaseEntity> implements Serializab
     private Event<LocaleChangeEvent> localeChangeEvent;
     
     public String getSimpleHello(){
-        return getResourceBundle().getString("simpleHello");
+        return bundle.getString("simpleHello");
     }
     
     public String getParametrizedHello(){
          
-        return getResourceBundle().getString("parametrizedHello","Conventions ",conventionsVersion);
+        return bundle.getString("parametrizedHello", "Conventions ", conventionsVersion);
     }
 
 
