@@ -1,6 +1,5 @@
 package org.conventionsframework.showcase.service.impl;
 
-import org.conventionsframework.crud.CriteriaBuilder;
 import org.conventionsframework.exception.BusinessException;
 import org.conventionsframework.model.SearchModel;
 import org.conventionsframework.qualifier.Log;
@@ -38,9 +37,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
 
     @Inject @Log
     private transient Logger log;
-
-    @Inject
-    CriteriaBuilder<Person> builder;
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     EntityManager em;
@@ -82,20 +78,20 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
         Map<String,Object> filter = searchModel.getDatatableFilter();
         if (filter != null && !filter.isEmpty()) {
             String name = (String) filter.get("name");
-            builder.ilike("name", name, MatchMode.ANYWHERE);
+            crud.ilike("name", name, MatchMode.ANYWHERE);
             String lastname = (String) filter.get("lastname");
-            builder.ilike("lastname", lastname, MatchMode.ANYWHERE);
+            crud.ilike("lastname", lastname, MatchMode.ANYWHERE);
             String age = (String) filter.get("age");
             if(Assert.hasText(age)){
-                builder.eq("age", new Integer(age));
+                crud.eq("age", new Integer(age));
             }
             Long ignoreId = (Long) filter.get("ignoreId");
-            builder.ne("id", ignoreId);
+            crud.ne("id", ignoreId);
         }
         //NOTE all the restrictions above are unnecessary cause Conventions can infer restrictions via reflection
         //for basic fields like above(not relationships) and will do a ilike for String fields and eq for long,integer/date fields
         // if you want to use this behavior just return super.configPagination(searchModel,criteria);
-        return configPagination(searchModel,builder.buildCriteria(crud.getSession()));
+        return configPagination(searchModel,crud.getCriteria(true));
     }
 
     @Override

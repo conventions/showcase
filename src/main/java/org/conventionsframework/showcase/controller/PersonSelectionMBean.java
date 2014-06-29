@@ -37,7 +37,7 @@ public class PersonSelectionMBean extends BaseMBean<Person>  implements Serializ
         super.init();
         Person p = new Person();
         p.setAge(100);
-        this.setList(personService.crud().listByExample(p));
+        this.setList(personService.crud().example(p).list());
     }
 
 

@@ -49,7 +49,7 @@ public class PersonSelectionModalMBean2 extends ModalMBean<Person> implements Se
     public void init(){
         Person p = new Person();
         p.setAge(20);
-        list = getPersonService().crud().listByExample(p);
+        list = getPersonService().crud().example(p).list();
     }
 
     public List<Person> getSelectedPeople() {

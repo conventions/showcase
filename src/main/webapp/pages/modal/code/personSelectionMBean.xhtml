@@ -46,7 +46,7 @@ public class PersonSelectionMBean extends BaseMBean&lt;Person&gt;  implements Se
         super.init();
         Person p = new Person();
         p.setAge(100);
-        this.setList(personService.crud().findByExample(p));
+        this.setList(personService.crud().example(p).list());
     }
 
     public void removeFromList() {

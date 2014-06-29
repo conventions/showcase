@@ -48,7 +48,7 @@ public class ComboMBean implements Serializable {
         Person p = new Person(); 
         p.setName("1");
         p.setAge(1);
-        personList = service.crud().maxResult(5).listByExample(p);
+        personList = service.crud().maxResult(5).example(p).list();
         selectedPerson2 = personList.get(2);
     }
 

@@ -15,7 +15,7 @@
         <codi.version>1.0.6</codi.version>
         <primefaces.version>5.0</primefaces.version>
         <primefaces-ext.version>1.2.1</primefaces-ext.version>
-        <conventions.version>1.2.1</conventions.version>
+        <conventions.version>1.3.0</conventions.version>
         <openwebbeans.version>1.1.5</openwebbeans.version>
         <deltaspike.version>1.0.0</deltaspike.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
