@@ -2,14 +2,12 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:pe="http://primefaces.org/ui/extensions"  
                 xmlns:framework="http://java.sun.com/jsf/composite/components/conventions"
                 xmlns:p="http://primefaces.org/ui"
                 template="paginatorHome.xhtml">
 
 
     <ui:define name="sampleContent">
-
         <h1 class="title ui-widget-header ui-corner-all">Advanced Paginator example</h1>
         <div class="entry">
                         <p:panelGrid style="width: 600px">
@@ -34,9 +32,8 @@
                                     <center>
                                         <p:commandButton onclick="PF('tableVar').getPaginator().setPage(0);" value="Search..."  update="paginatorForm:advTable" oncomplete="updateAdvRowCount()" style="width: 120px"/>
                                         <p:spacer width="5px"/>
-                                        <pe:tooltip for="paginatorForm:bt-adv" value="find persons with age between 1 and 10 with phoneNumber IN 11111111, 22222222 and 333333333 (you also can use above filters)" showEffect="fadeIn" hideEffect="fadeIn"  atPosition="top center"/>  
-                                        <p:commandButton onclick="PF('tableVar').getPaginator().setPage(0);" id="bt-adv" value="Advanced Search" action="#{paginatorMBean.advancedSearch}" process="@this" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 150px"/>
-                                        <p:commandButton   onclick="PF('tableVar').getPaginator().setPage(0);" value="Clear Filters" action="#{paginatorMBean.resetFilters}" update="@form" oncomplete="updateAdvRowCount();" style="width: 120px">
+                                        <p:commandButton onclick="PF('tableVar').getPaginator().setPage(0);" id="bt-adv" value="Advanced Search" action="#{paginatorMBean.advancedSearch}" process="@this" update="paginatorForm:advTable" oncomplete="updateAdvRowCount();" style="width: 150px" title="find persons with age between 1 and 10 with phoneNumber IN 11111111, 22222222 and 333333333 (you also can use above filters)"/>
+                                        <p:commandButton onclick="PF('tableVar').getPaginator().setPage(0);" value="Clear Filters" action="#{paginatorMBean.resetFilters}" update="@form" oncomplete="updateAdvRowCount();" style="width: 120px">
                                             <p:resetInput target="@form"/>
                                         </p:commandButton>
                                     </center>

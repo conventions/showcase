@@ -69,7 +69,7 @@ public class PaginatorMBean implements Serializable {
         numbersList.add("11111111");
         numbersList.add("22222222");
         numbersList.add("33333333");
-        //add parammeters to the filter so service layer can get them in configFindPaginated
+        //add parammeters to the filter so service layer can get them in configPagination
         advancedPaginator.getSearchModel().addFilter("numberList", numbersList);
         advancedPaginator.getSearchModel().addFilter("activateBetween", true);
     }

@@ -51,21 +51,21 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person> implement
     @Override
     public Criteria configPagination(SearchModel<Person> searchModel) {
         Map<String,Object> filter = searchModel.getFilter();
-        Criteria Criteria = getCriteria();
+        Criteria criteria = getCriteria();
         Person searchEntity = searchModel.getEntity();
         boolean alreadyJoinedPhone = false;
         if (filter != null && !filter.isEmpty()) {
             Boolean activateBetweenAgesRestriction = (Boolean) filter.get("activateBetween");
             if (activateBetweenAgesRestriction != null && activateBetweenAgesRestriction) {
-                Criteria.add(Restrictions.between("age", 1, 10));
+                criteria.add(Restrictions.between("age", 1, 10));
             }
             List<String> numberList = (List<String>) filter.get("numberList");
             if (numberList != null) {
                 if (!alreadyJoinedPhone) {
                     alreadyJoinedPhone = true;
                     //if alias was not created yet
-                    Criteria.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
-                    Criteria.add(Restrictions.in("telephones.number", numberList));
+                    criteria.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                    criteria.add(Restrictions.in("telephones.number", numberList));
                 }
             }
         }
@@ -73,30 +73,30 @@ public class AdvancedFilterServiceImpl extends BaseServiceImpl<Person> implement
         if (phone != null && !"".endsWith(phone)) {
             //create join with Phone table
             if (!alreadyJoinedPhone) {
-                Criteria.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                criteria.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
                 alreadyJoinedPhone = true;
             }
-            Criteria.add(Restrictions.eq("telephones.number", phone));
+            criteria.add(Restrictions.eq("telephones.number", phone));
         }
 
         PhoneType type = searchEntity.getPhoneType();
         if (type != null) {
             if (!alreadyJoinedPhone) {
                 //if join was not created yet just create it
-                Criteria.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
+                criteria.createAlias("telephones", "telephones", JoinType.LEFT_OUTER_JOIN);
                 alreadyJoinedPhone = true;
             }
-            Criteria.add(Restrictions.eq("telephones.type", type));
+            criteria.add(Restrictions.eq("telephones.type", type));
         }
 
         if (!alreadyJoinedPhone) {
             //create join to sort by phone number
-            Criteria.createAlias("telephones", "telephones");
+            criteria.createAlias("telephones", "telephones");
         }
          //NOTE Conventions will infer restrictions via reflection for basic fields like above(not relationships)
          //and will do a ilike for String fields and eq for long,integer/date fields
          // if you want to use this behavior just return super.configFindPaginated(columnFilters, externalFilter, Criteria);
         //otherwise just return your criteria return Criteria;
-        return super.configPagination(searchModel, Criteria);
+        return super.configPagination(searchModel, criteria);
     }
 }
